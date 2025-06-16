@@ -1,9 +1,7 @@
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 
-// @desc    Register new user
-// @route   POST /api/auth/register
-// @access  Public
+
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -42,9 +40,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -77,9 +73,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Public
+
 const logoutUser = (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
@@ -89,9 +83,7 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: "Logged out successfully." });
 };
 
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
-// @access  Private
+
 const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
