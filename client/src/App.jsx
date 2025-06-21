@@ -1,12 +1,17 @@
 import React from 'react'
+import { Routes, Route } from "react-router-dom";
+import Register from './pages/auth/Register'
+import Login from './pages/auth/Login'
 
 const App = () => {
   return (
     <div>
-      <h3>client side</h3>
-        <h1 class="text-3xl font-bold underline text-red-700">
-    Hello world!
-  </h1>
+      <Routes>
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      {/* <Route path="/recruiter/post-job" element={<PostJob />} />
+      <Route path="/jobs" element={<JobBoard />} /> */}
+    </Routes>
      
     </div>
   )

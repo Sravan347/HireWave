@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
@@ -8,6 +9,11 @@ const connectedDB = require("./DB/connection");
 const cookieParser = require("cookie-parser");
 
 const PORT = process.env.PORT || 5000;
+
+app.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true, 
+}));
 
 app.use(express.json());
 app.use(cookieParser());
