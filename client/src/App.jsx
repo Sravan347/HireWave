@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div>
       <h1 className='bg-red-900'>hello moto</h1>
-      <h1 className='text-green-600'>  from sravan </h1>
+      <h1 className='text-green-600'> sravan </h1>
       <Routes>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
