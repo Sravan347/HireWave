@@ -6,6 +6,7 @@ import Login from './pages/auth/Login'
 const App = () => {
   return (
     <div>
+      <h1 className='bg-red-900'>hello moto</h1>
       <Routes>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
