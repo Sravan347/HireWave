@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 
-// Define allowed roles
+
 const roles = ["candidate", "recruiter", "admin"];
 
 const userSchema = new mongoose.Schema(
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a password"],
       minlength: 6,
-      select: false, // do not return password in queries
+      select: false, 
     },
     role: {
       type: String,
@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
       default: "candidate",
     },
     resumeUrl: {
-      type: String, // Only used for candidates
+      type: String,
     },
     createdAt: {
       type: Date,
@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// 🔐 Hash password before saving
+// Hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -51,7 +51,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// 🔑 Add method to compare passwords
+//  Add method to compare passwords
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

@@ -1,40 +1,45 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
 
-// Candidate applies to a job
 const applyToJob = async (req, res) => {
   try {
-    const { jobId } = req.params;
+    console.log(" Candidate:", req.user);
+    console.log("File Info:", req.file);
 
-    // Check if job is valid and open
-    const job = await Job.findById(jobId);
-    if (!job || job.status !== "open") {
-      return res.status(404).json({ message: "Job not found or closed" });
-    }
-
-    // Ensure resume file is uploaded
     if (!req.file) {
-      return res.status(400).json({ message: "Resume is required" });
+      return res.status(400).json({ message: "Resume file is required." });
     }
 
-    // Prevent duplicate application
+    const job = await Job.findById(req.params.jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found." });
+    }
+
     const alreadyApplied = await Application.findOne({
-      jobId,
+      jobId: req.params.jobId,
       candidateId: req.user._id,
     });
+
     if (alreadyApplied) {
       return res.status(400).json({ message: "Already applied to this job" });
     }
 
     const application = await Application.create({
-      jobId,
+      jobId: req.params.jobId,
       candidateId: req.user._id,
-      resumeUrl: req.file.path, // Cloudinary URL
+      resumeUrl: req.file.path,
+      status: "in progress",
     });
 
+    console.log(" Application saved:", application);
+
     res.status(201).json({ message: "Application submitted", application });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to apply", error: err.message });
+  } catch (error) {
+    console.error(" Error submitting application:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 

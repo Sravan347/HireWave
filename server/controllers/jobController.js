@@ -1,6 +1,6 @@
 const Job = require("../models/Job");
 
-// @desc Create a job (Recruiter only)
+//  Create a job (Recruiter only)
 const createJob = async (req, res) => {
   try {
     const { title, description, status } = req.body;
@@ -19,7 +19,7 @@ const createJob = async (req, res) => {
   }
 };
 
-// @desc Get recruiter's own jobs
+//  Get recruiter's own jobs
 const getRecruiterJobs = async (req, res) => {
   const jobs = await Job.find({ recruiterId: req.user._id });
   res.json(jobs);

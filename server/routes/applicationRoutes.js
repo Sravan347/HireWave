@@ -1,6 +1,6 @@
 const express = require("express");
 const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
-const upload = require("../middleware/upload"); // Cloudinary+Multer
+const upload = require("../middleware/upload"); 
 const { applyToJob } = require("../controllers/applicationController");
 
 const router = express.Router();
