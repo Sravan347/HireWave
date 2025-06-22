@@ -4,10 +4,26 @@ const generateToken = require("../utils/generateToken");
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role, companyName, gstNumber } = req.body;
+    const {
+      name,
+      email,
+      password,
+      role,
+      companyName,
+      gstNumber,
+      mobile,
+      qualification,
+      age,
+      place,
+      experience,
+      designation,
+      website,
+      location,
+      companyType,
+    } = req.body;
 
     if (!name || !email || !password || !role) {
-      return res.status(400).json({ message: "All fields are required." });
+      return res.status(400).json({ message: "All required fields are missing." });
     }
 
     const validRoles = ["candidate", "recruiter"];
@@ -25,12 +41,21 @@ const registerUser = async (req, res) => {
       email,
       password,
       role,
-      companyName: role === 'recruiter' ? companyName : undefined,
-      gstNumber: role === 'recruiter' ? gstNumber : undefined,
-      isApproved: role === 'recruiter' ? false : true,
+      companyName: role === "recruiter" ? companyName : undefined,
+      gstNumber: role === "recruiter" ? gstNumber : undefined,
+      mobile: role === "candidate" ? mobile : undefined,
+      qualification: role === "candidate" ? qualification : undefined,
+      age: role === "candidate" ? age : undefined,
+      place: role === "candidate" ? place : undefined,
+      experience: role === "candidate" ? experience : undefined,
+      designation,
+      website,
+      location,
+      companyType,
+      isApproved: role === "recruiter" ? false : true,
     });
 
-    if (role === 'recruiter') {
+    if (role === "recruiter") {
       return res.status(201).json({ message: "Registration submitted. Await admin approval." });
     }
 
@@ -51,6 +76,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again." });
   }
 };
+
 
 
 const loginUser = async (req, res) => {
