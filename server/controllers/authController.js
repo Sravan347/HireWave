@@ -4,13 +4,13 @@ const generateToken = require("../utils/generateToken");
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, companyName, gstNumber } = req.body;
 
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const validRoles = ["candidate", "recruiter", "admin"];
+    const validRoles = ["candidate", "recruiter"];
     if (!validRoles.includes(role)) {
       return res.status(400).json({ message: "Invalid user role." });
     }
@@ -20,7 +20,19 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists with this email." });
     }
 
-    const user = await User.create({ name, email, password, role });
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role,
+      companyName: role === 'recruiter' ? companyName : undefined,
+      gstNumber: role === 'recruiter' ? gstNumber : undefined,
+      isApproved: role === 'recruiter' ? false : true,
+    });
+
+    if (role === 'recruiter') {
+      return res.status(201).json({ message: "Registration submitted. Await admin approval." });
+    }
 
     const token = generateToken(res, user._id);
 
@@ -55,6 +67,10 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
+    if (user.role === "recruiter" && !user.isApproved) {
+      return res.status(403).json({ message: "Your account is pending admin approval." });
+    }
+
     const token = generateToken(res, user._id);
 
     res.status(200).json({
@@ -72,6 +88,7 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error during login." });
   }
 };
+
 
 
 const logoutUser = (req, res) => {
