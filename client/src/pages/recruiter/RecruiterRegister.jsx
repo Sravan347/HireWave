@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function RecruiterRegister() {
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     mobile: "",
     companyName: "",
     gstNumber: "",
@@ -48,10 +50,10 @@ export default function RecruiterRegister() {
 
     try {
       await API.post("/auth/register", form);
-      alert("Registered successfully! Await admin approval.");
+      toast.success("Registered successfully! Await admin approval.");
       navigate("/");
     } catch (err) {
-      alert(err?.response?.data?.message || "Registration error.");
+      toast.error(err?.response?.data?.message || "Registration error.");
     }
   };
 
@@ -141,7 +143,8 @@ export default function RecruiterRegister() {
 
         <button
           type="submit"
-          className="w-full mt-4 bg-[#2563EB] text-white py-2 rounded hover:bg-[#3B82F6] transition"
+          className="w-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white py-2 rounded hover:shadow-lg transition duration-200 ease-in-out cursor-pointer hover:brightness-110"
+
         >
           Register
         </button>

@@ -70,7 +70,7 @@ export default function Login() {
 
         <button
           type="submit"
-          className="w-full bg-[#2563EB] text-white py-2 rounded hover:bg-[#3B82F6] transition"
+          className="w-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white py-2 rounded hover:shadow-lg transition duration-200 ease-in-out cursor-pointer hover:brightness-110"
         >
           Login
         </button>

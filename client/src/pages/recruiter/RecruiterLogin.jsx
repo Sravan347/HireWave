@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function RecruiterLogin() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -28,10 +29,10 @@ export default function RecruiterLogin() {
         localStorage.setItem("token", data.token);
         navigate("/recruiter/dashboard");
       } else {
-        alert("Only recruiters can login here.");
+        toast.error("Only recruiters can login here.");
       }
     } catch (err) {
-      alert(err?.response?.data?.message || "Login failed.");
+      toast.error(err?.response?.data?.message || "Login failed.");
     }
   };
 
@@ -68,7 +69,8 @@ export default function RecruiterLogin() {
 
         <button
           type="submit"
-          className="w-full bg-[#2563EB] text-white py-2 rounded hover:bg-[#3B82F6] transition"
+          className="w-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white py-2 rounded hover:shadow-lg transition duration-200 ease-in-out cursor-pointer hover:brightness-110"
+
         >
           Login
         </button>
