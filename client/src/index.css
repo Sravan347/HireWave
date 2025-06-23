@@ -32,3 +32,9 @@
   animation: fade-in 0.2s ease-in-out forwards;
 }
 
+
+.input {
+  @apply w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400;
+}
+
+

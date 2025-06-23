@@ -10,6 +10,8 @@ import RecruiterRegister from './pages/recruiter/RecruiterRegister';
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Dashboard from './pages/recruiter/Dashboard';
 
+import PostedJobs from "./pages/recruiter/PostedJobs";
+
 
 
 <div>
@@ -29,6 +31,7 @@ const App = () => {
       <Route path="/jobs" element={<JobBoard />} />
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/recruiter/dashboard" element={<Dashboard />} />
+      <Route path="/recruiter/jobs" element={<PostedJobs />} />
       
     </Routes>
   );

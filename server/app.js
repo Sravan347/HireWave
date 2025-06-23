@@ -23,6 +23,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/application",applicationRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/jobs", require("./routes/jobRoutes"));
+
 
 // app.use((err, req, res, next) => {
 //   console.error(" Unhandled Error:", JSON.stringify(err, null, 2));

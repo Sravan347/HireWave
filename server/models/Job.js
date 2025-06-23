@@ -1,22 +1,58 @@
 const mongoose = require("mongoose");
 
-const jobSchema = new mongoose.Schema({
-  recruiterId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const jobSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: [true, "Job title is required"],
+    },
+    description: {
+      type: String,
+      required: [true, "Job description is required"],
+    },
+    location: {
+      type: String,
+      required: [true, "Location is required"],
+    },
+    jobType: {
+      type: String,
+      enum: ["Full-time", "Part-time", "Remote", "Internship", "Contract"],
+      required: [true, "Job type is required"],
+    },
+    salaryRange: {
+      type: String, // e.g. "₹20,000 - ₹35,000"
+      required: [true, "Salary range is required"],
+    },
+    qualificationsRequired: {
+      type: String,
+      required: [true, "Qualifications are required"],
+    },
+    experience: {
+      type: String,
+      enum: ["Fresher", "1-2 years", "3-5 years", "5+ years"],
+      required: [true, "Experience is required"],
+    },
+    applicationDeadline: {
+      type: Date,
+      required: [true, "Application deadline is required"],
+    },
+    companyName: {
+      type: String,
+      required: [true, "Company name is required"],
+    },
+    postedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Recruiter
+      required: true,
+    },
+    numApplicants: {
+      type: Number,
+      default: 0,
+    },
   },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  status: {
-    type: String,
-    enum: ["draft", "open", "closed"],
-    default: "draft",
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    timestamps: true, // Adds createdAt and updatedAt
+  }
+);
 
 module.exports = mongoose.model("Job", jobSchema);

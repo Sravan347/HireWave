@@ -1,17 +1,18 @@
 const express = require("express");
-const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
 const {
-  createJob,
+  postJob,
   getRecruiterJobs,
-    getOpenJobs,
+  getJobById,
+  deleteJob,
 } = require("../controllers/jobController");
+const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Recruiter-only routes
-router.post("/create", protectRoute, restrictTo("recruiter"), createJob);
-router.get("/myJobs", protectRoute, restrictTo("recruiter"), getRecruiterJobs);
-// Get all open jobs for candidates
-router.get("/", getOpenJobs);
+router.post("/", protectRoute, restrictTo("recruiter"), postJob);
+router.get("/", protectRoute, restrictTo("recruiter"), getRecruiterJobs);
+router.get("/:id", protectRoute, restrictTo("recruiter"), getJobById);
+router.delete("/:id", protectRoute, restrictTo("recruiter"), deleteJob);
 
 module.exports = router;
