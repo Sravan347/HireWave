@@ -15,15 +15,17 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+    score: {
+    type: Number,
+    default: 0
+    },
+   
   status: {
     type: String,
     enum: ["in progress", "shortlisted", "rejected", "hired"],
     default: "in progress",
   },
-  score: {
-    type: Number,
-    default: 0,
-  },
+  
 });
 
 module.exports = mongoose.model("Application", applicationSchema);
