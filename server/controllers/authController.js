@@ -80,40 +80,50 @@ const registerUser = async (req, res) => {
 
 
 const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Please provide email and password." });
-    }
-
     const user = await User.findOne({ email }).select("+password");
 
+    console.log("User found:", user); // 🔍 Add this to see what you're working with
+
     if (!user || !(await user.matchPassword(password))) {
-      return res.status(401).json({ message: "Invalid email or password." });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    if (user.role === "recruiter" && !user.isApproved) {
-      return res.status(403).json({ message: "Your account is pending admin approval." });
+    if (user.role === "recruiter") {
+      console.log("Recruiter approvalStatus:", user.approvalStatus); // 🔍 log this too
+      if (user.approvalStatus === "pending") {
+        return res.status(403).json({ message: "Your account is pending admin approval." });
+      }
+      if (user.approvalStatus === "declined") {
+        return res.status(403).json({ message: "Your account has been declined by the admin." });
+      }
     }
 
     const token = generateToken(res, user._id);
 
-    res.status(200).json({
-      message: "Login successful",
-      token,
-      user: {
+    res
+      .cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
         _id: user._id,
         name: user.name,
-        email: user.email,
         role: user.role,
-      },
-    });
-  } catch (error) {
-    console.error("Login Error:", error);
+        token,
+      });
+  } catch (err) {
+    console.error("Login error:", err);
     res.status(500).json({ message: "Server error during login." });
   }
 };
+
+
 
 
 

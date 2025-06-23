@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -24,16 +26,22 @@ export default function Login() {
 
     try {
       const { data } = await API.post("/auth/login", form);
+
+      // ✅ Save token or full user info
       localStorage.setItem("token", data.token);
-      if (data.user.role === "candidate") {
+      // Optional: Save user data
+      localStorage.setItem("user", JSON.stringify(data));
+
+      // ✅ Redirect based on role
+      if (data.role === "candidate") {
         navigate("/jobs");
-      } else if (data.user.role === "admin") {
+      } else if (data.role === "admin") {
         navigate("/admin/dashboard");
       } else {
-        alert("Recruiters must login from the recruiter portal.");
+        toast.error("Recruiters must login from the recruiter portal.");
       }
     } catch (err) {
-      alert(err?.response?.data?.message || "Login failed.");
+      toast.error(err?.response?.data?.message || "Login failed.");
     }
   };
 
@@ -50,7 +58,7 @@ export default function Login() {
             name="email"
             placeholder="Email"
             onChange={handleChange}
-            className="input"
+            className="input w-full px-3 py-2 border border-gray-300 rounded"
           />
           {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
         </div>
@@ -61,7 +69,7 @@ export default function Login() {
             type="password"
             placeholder="Password"
             onChange={handleChange}
-            className="input"
+            className="input w-full px-3 py-2 border border-gray-300 rounded"
           />
           {errors.password && (
             <p className="text-sm text-red-500">{errors.password}</p>
