@@ -8,6 +8,7 @@ import LandingPage from './pages/LandingPage';
 import RecruiterLogin from './pages/recruiter/RecruiterLogin';
 import RecruiterRegister from './pages/recruiter/RecruiterRegister';
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import Dashboard from './pages/recruiter/Dashboard';
 
 <div>
   <h1 className='text-red'></h1>
@@ -25,7 +26,7 @@ const App = () => {
       <Route path="/recruiter/register" element={<RecruiterRegister />} />
       <Route path="/jobs" element={<JobBoard />} />
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
-
+      <Route path="/recruiter/dashboard" element={<Dashboard />} />
       
     </Routes>
   );
