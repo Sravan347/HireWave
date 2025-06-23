@@ -111,12 +111,15 @@ const userSchema = new mongoose.Schema(
     resumeUrl: {
       type: String,
     },
-    isApproved: {
-      type: Boolean,
+    // Add this field to your userSchema
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "declined"],
       default: function () {
-        return this.role === "recruiter" ? false : true;
+        return this.role === "recruiter" ? "pending" : undefined;
       },
     },
+
     createdAt: {
       type: Date,
       default: Date.now,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RecruiterLogin() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -25,7 +26,8 @@ export default function RecruiterLogin() {
 
     try {
       const { data } = await API.post("/auth/login", form);
-      if (data.user.role === "recruiter") {
+
+      if (data.role === "recruiter") {
         localStorage.setItem("token", data.token);
         navigate("/recruiter/dashboard");
       } else {
@@ -42,14 +44,16 @@ export default function RecruiterLogin() {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md animate-fade-in space-y-4"
       >
-        <h2 className="text-2xl font-semibold text-center text-[#2563EB]">Recruiter Login</h2>
+        <h2 className="text-2xl font-semibold text-center text-[#2563EB]">
+          Recruiter Login
+        </h2>
 
         <div>
           <input
             name="email"
             placeholder="Email"
             onChange={handleChange}
-            className="input"
+            className="input w-full px-3 py-2 border border-gray-300 rounded"
           />
           {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
         </div>
@@ -60,7 +64,7 @@ export default function RecruiterLogin() {
             type="password"
             placeholder="Password"
             onChange={handleChange}
-            className="input"
+            className="input w-full px-3 py-2 border border-gray-300 rounded"
           />
           {errors.password && (
             <p className="text-sm text-red-500">{errors.password}</p>
@@ -70,7 +74,6 @@ export default function RecruiterLogin() {
         <button
           type="submit"
           className="w-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white py-2 rounded hover:shadow-lg transition duration-200 ease-in-out cursor-pointer hover:brightness-110"
-
         >
           Login
         </button>
