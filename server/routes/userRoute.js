@@ -1,7 +1,8 @@
 const express = require("express");
-import { login, logout, register, updateProfile } from "../controllers/user";
-import isAuthenticated from "../middlewares/isAuthenticated";
-import { singleUpload } from "../middlewares/mutler";
+
+const { login, logout, register, updateProfile } = require("../controllers/user");
+const isAuthenticated = require("../middlewares/isAuthenticated");
+const { singleUpload}  = require("../middlewares/mutler");
  
 const router = express.Router();
 

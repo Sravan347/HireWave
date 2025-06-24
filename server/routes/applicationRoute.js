@@ -1,12 +1,13 @@
 const express = require("express");
 
-import {
+
+const {
   applyJob,
   getApplicants,
   getAppliedJobs,
   updateStatus,
-} from "../controllers/application";
-import isAuthenticated from "../middlewares/isAuthenticated";
+} = require("../controllers/application");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 const router = express.Router();
 

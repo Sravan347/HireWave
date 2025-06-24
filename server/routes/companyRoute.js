@@ -1,9 +1,13 @@
 const express = require("express");
 
-import { getCompany, getCompanyById, registerCompany, updateCompany } from "../controllers/company"
-import isAuthenticated from "../middlewares/isAuthenticated";
-import { singleUpload } from "../middlewares/mutler";
-
+const {
+  registerCompany,
+  getCompany,
+  getCompanyById,
+  updateCompany,
+} = require("../controllers/company");
+const isAuthenticated = require("../middlewares/isAuthenticated");
+const{ singleUpload} = require("../middlewares/mutler");
 const router = express.Router();
 
 router.route("/register").post(isAuthenticated,registerCompany);

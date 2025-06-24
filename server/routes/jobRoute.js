@@ -1,6 +1,7 @@
 const express = require("express");
-import isAuthenticated from "../middlewares/isAuthenticated";
-import { getAdminJobs, getAllJobs, getJobById, postJob } from "../controllers/job";
+
+const isAuthenticated = require("../middlewares/isAuthenticated");
+const { getAdminJobs, getAllJobs, getJobById, postJob } = require("../controllers/job");
 
 const router = express.Router();
 
