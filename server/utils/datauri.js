@@ -1,8 +1,9 @@
 
 
-import DataUriParser from "datauri/parser.js"
+// import DataUriParser from "datauri/parser.js"
+const DataUriParser = require("datauri/parser.js").default;
 
-import path from "path";
+const path = require("path");
 
 const getDataUri = (file) => {
     const parser = new DataUriParser();
@@ -10,4 +11,4 @@ const getDataUri = (file) => {
     return parser.format(extName, file.buffer);
 }
 
-export default getDataUri;
+module.exports = getDataUri;
