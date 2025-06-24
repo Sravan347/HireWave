@@ -49,9 +49,18 @@ const jobSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    status: {
+      type: String,
+      enum: ["active", "closed", "draft"],
+      default: "active",
+    },
+    skillsRequired: {
+      type: [String],
+      default: [],
+    },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt
+    timestamps: true,
   }
 );
 

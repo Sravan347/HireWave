@@ -34,6 +34,37 @@ const getRecruiterJobs = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch jobs" });
   }
 };
+// ✅ Get ALL jobs (Public route - for candidates)
+const getAllJobs = async (req, res) => {
+  try {
+    const { keyword, location, jobType } = req.query;
+
+    let filter = { status: "active" };
+
+    if (keyword) {
+      filter.title = { $regex: keyword, $options: "i" };
+    }
+
+    if (location) {
+      filter.location = { $regex: location, $options: "i" };
+    }
+
+    if (jobType) {
+      filter.jobType = jobType;
+    }
+
+    const jobs = await Job.find(filter)
+      .select("-internalNotes -candidateRequirements")
+      .sort({ createdAt: -1 })
+      .populate("postedBy", "companyName logo");
+
+    res.status(200).json(jobs);
+  } catch (err) {
+    console.error("Get All Jobs Error:", err);
+    res.status(500).json({ message: "Failed to fetch jobs" });
+  }
+};
+
 
 // ✅ Get job by ID (useful for edit/view)
 const getJobById = async (req, res) => {
@@ -71,4 +102,5 @@ module.exports = {
   getRecruiterJobs,
   getJobById,
   deleteJob,
+  getAllJobs
 };
