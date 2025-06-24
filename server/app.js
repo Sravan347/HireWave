@@ -2,14 +2,8 @@ const express = require("express");
 const connectedDB = require("./DB/connect");
 require("dotenv").config();
 
-
 const PORT = process.env.PORT || 5000;
 const app = express();
-
-
-
-
-
 
 const server = async () => {
   try {
