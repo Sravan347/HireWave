@@ -34,7 +34,7 @@ export default function Login() {
 
       // ✅ Redirect based on role
       if (data.role === "candidate") {
-        navigate("/jobs");
+        navigate("/candidate/dashboard");
       } else if (data.role === "admin") {
         navigate("/admin/dashboard");
       } else {
