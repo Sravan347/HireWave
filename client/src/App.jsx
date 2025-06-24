@@ -12,6 +12,10 @@ import Dashboard from './pages/recruiter/Dashboard';
 
 import PostedJobs from "./pages/recruiter/PostedJobs";
 
+import CandidateDashboard from "./pages/candidate/CandidateDashboard";
+
+
+
 
 
 <div>
@@ -32,6 +36,12 @@ const App = () => {
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/recruiter/dashboard" element={<Dashboard />} />
       <Route path="/recruiter/jobs" element={<PostedJobs />} />
+
+      <Route path="/candidate/dashboard" element={<CandidateDashboard />} />
+
+      
+
+        
       
     </Routes>
   );
