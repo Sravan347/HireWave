@@ -22,9 +22,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/api/auth", userRoute);
-app.use("/api/v1/company", companyRoute);
-app.use("/api/v1/job", jobRoute);
-app.use("/api/v1/application", applicationRoute);
+app.use("/api/company", companyRoute);
+app.use("/api/job", jobRoute);
+app.use("/api/application", applicationRoute);
 
 
 const server = async () => {
