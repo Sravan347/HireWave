@@ -5,10 +5,11 @@ import './index.css'
 
 
 import { Provider } from 'react-redux'
-import store from './redux/store.js'
+
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Toaster } from 'sonner'
+import store from './redux/store.jsx'
 
 const persistor = persistStore(store);
 
