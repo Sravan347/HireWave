@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -18,7 +19,6 @@
     "mammoth": "^1.9.1",
     "mongoose": "^8.16.0",
     "multer": "^2.0.1",
-    "openai": "^5.7.0",
     "pdf-parse": "^1.1.1"
   },
   "devDependencies": {

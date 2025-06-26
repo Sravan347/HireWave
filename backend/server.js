@@ -1,14 +1,12 @@
 // backend/server.js
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv'); // <-- Import dotenv
 const cors = require('cors');
-const jobRoutes = require('./routes/jobRoutes');
-const applicationRoutes = require('./routes/applicationRoutes');
+const cloudinary = require('cloudinary').v2;
 
-// --- ADD THESE TWO LINES ---
-const cloudinary = require('cloudinary').v2; // Import Cloudinary SDK
-dotenv.config(); // Load environment variables - MUST BE BEFORE CLOUDINARY CONFIG
+// --- CRITICAL: LOAD ENVIRONMENT VARIABLES FIRST ---
+dotenv.config(); // This must be at the very top, before any other module potentially uses process.env
 
 // Configure Cloudinary globally
 cloudinary.config({
@@ -16,7 +14,12 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
-// --- END ADDITIONS ---
+
+// --- IMPORT ROUTES AFTER DOTENV AND CLOUDINARY CONFIG ---
+// The applicationRoutes module will now be able to access process.env.OPENAI_API_KEY
+// because dotenv.config() has already run.
+const jobRoutes = require('./routes/jobRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
 
 
 const app = express();
