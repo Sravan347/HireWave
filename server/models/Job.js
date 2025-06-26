@@ -40,6 +40,11 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: [true, "Company name is required"],
     },
+    companyLogo: {
+      type: String,
+      default: "",
+    },
+
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Recruiter

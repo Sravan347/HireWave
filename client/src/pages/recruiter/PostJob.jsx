@@ -16,6 +16,7 @@ const PostJob = () => {
     experience: "",
     applicationDeadline: "",
     companyName: "",
+    companyLogo: "",
   });
 
   const handleChange = (e) =>
@@ -67,7 +68,9 @@ const PostJob = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-6 md:p-10 overflow-y-auto">
-        <h1 className="text-3xl font-bold text-[#1E3A8A] mb-6">Post a New Job</h1>
+        <h1 className="text-3xl font-bold text-[#1E3A8A] mb-6">
+          Post a New Job
+        </h1>
 
         <form
           onSubmit={handleSubmit}
@@ -140,6 +143,14 @@ const PostJob = () => {
             className="input"
             required
           />
+          <input
+            name="companyLogo"
+            placeholder="Company Logo URL"
+            onChange={handleChange}
+            className="input"
+            required
+          />
+
           <div className="md:col-span-2">
             <textarea
               name="description"

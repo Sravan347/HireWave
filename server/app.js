@@ -23,7 +23,7 @@ app.use(cookieParser());
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
-app.use("/api/application", applicationRoutes);
+app.use("/api/applications", applicationRoutes);
 app.use("/api/admin", adminRoutes);
 
 // Global Error Handler (uncomment if needed)

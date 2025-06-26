@@ -4,9 +4,6 @@ const axios = require("axios");
 const pdfParse = require("pdf-parse");
 const scoreResume = require("../utils/scoreResume"); // 👈 separate util
 
-
-
-
 const applyToJob = async (req, res) => {
   try {
     // 1. Validate resume file
@@ -41,8 +38,8 @@ const applyToJob = async (req, res) => {
     // 6. Extract keywords from job description
     const jobKeywords = job.description
       .split(" ")
-      .map(word => word.toLowerCase().replace(/[^\w]/g, ""))
-      .filter(word => word.length > 3);
+      .map((word) => word.toLowerCase().replace(/[^\w]/g, ""))
+      .filter((word) => word.length > 3);
 
     // 7. Score resume
     const score = scoreResume(resumeText, jobKeywords);
@@ -54,6 +51,11 @@ const applyToJob = async (req, res) => {
       resumeUrl: req.file.path,
       score,
       status: "in progress",
+      qualification: req.body.qualification, // 👈 New
+      backlogInfo: {
+        hasBacklogs: req.body.hasBacklogs === "true",
+        count: req.body.backlogCount || 0,
+      },
     });
 
     res.status(201).json({ message: "Application submitted", application });
@@ -65,8 +67,6 @@ const applyToJob = async (req, res) => {
     });
   }
 };
-
-
 
 const getMyApplications = async (req, res) => {
   try {
@@ -84,4 +84,4 @@ const getMyApplications = async (req, res) => {
   }
 };
 
-module.exports = { applyToJob,getMyApplications };
+module.exports = { applyToJob, getMyApplications };

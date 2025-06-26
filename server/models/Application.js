@@ -11,21 +11,29 @@ const applicationSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  qualification: {
+    type: String,
+    required: true,
+  },
+  backlogInfo: {
+    hasBacklogs: { type: Boolean, required: true },
+    count: { type: Number, default: 0 },
+  },
+
   resumeUrl: {
     type: String,
     required: true,
   },
-    score: {
+  score: {
     type: Number,
-    default: 0
-    },
-   
+    default: 0,
+  },
+
   status: {
     type: String,
     enum: ["in progress", "shortlisted", "rejected", "hired"],
     default: "in progress",
   },
-  
 });
 
 module.exports = mongoose.model("Application", applicationSchema);

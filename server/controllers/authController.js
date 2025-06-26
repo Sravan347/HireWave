@@ -85,11 +85,20 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email }).select("+password");
 
+    console.log("🔐 Login attempt for", email);
+    console.log("✅ User found:", user);
+
+    console.log("Password match:", await user.matchPassword(password));
+
+
     // console.log("User found:", user); // 🔍 Add this to see what you're working with
 
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
+
+    
+
 
     if (user.role === "recruiter") {
       console.log("Recruiter approvalStatus:", user.approvalStatus); // 🔍 log this too

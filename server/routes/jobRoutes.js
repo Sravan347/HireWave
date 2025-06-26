@@ -8,6 +8,8 @@ const {
 } = require("../controllers/jobController");
 const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
 
+
+
 const router = express.Router();
 router.get("/public", getAllJobs); // Open to all (candidates)
 
