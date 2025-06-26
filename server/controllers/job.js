@@ -107,28 +107,50 @@ const getJobById = async (req, res) => {
 };
 
 // Admin: Get jobs created by this admin
+// const getAdminJobs = async (req, res) => {
+//   try {
+//     const adminId = req.id;
+//     const jobs = await Job.find({ created_by: adminId }).populate({
+//       path: "company",
+//     }).sort({ createdAt: -1 });
+
+//     if (!jobs || jobs.length === 0) {
+//       return res.status(404).json({
+//         message: "Jobs not found.",
+//         success: false,
+//       });
+//     }
+
+//     return res.status(200).json({
+//       jobs,
+//       success: true,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 const getAdminJobs = async (req, res) => {
-  try {
-    const adminId = req.id;
-    const jobs = await Job.find({ created_by: adminId }).populate({
-      path: "company",
-    }).sort({ createdAt: -1 });
-
-    if (!jobs || jobs.length === 0) {
-      return res.status(404).json({
-        message: "Jobs not found.",
-        success: false,
-      });
+    try {
+        const adminId = req.id;
+        const jobs = await Job.find({ created_by: adminId }).populate({
+            path:'company',
+            createdAt:-1
+        });
+        if (!jobs) {
+            return res.status(404).json({
+                message: "Jobs not found.",
+                success: false
+            })
+        };
+        return res.status(200).json({
+            jobs,
+            success: true
+        })
+    } catch (error) {
+        console.log(error);
     }
+}
 
-    return res.status(200).json({
-      jobs,
-      success: true,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 module.exports = {
   postJob,
