@@ -1,73 +1,83 @@
-// /pages/candidate/JobBoard.jsx
-
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import API from "../../services/api";
-import JobCard from "./components/JobCard";
-import JobDetailsModal from "./components/JobDetailsModal";
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
-import TagInput from "./components/TagInput";
+import { Briefcase, Calendar, MapPin } from "lucide-react";
+import { format } from "date-fns";
+import { toast } from "react-toastify";
 
-export default function JobBoard() {
-  const [jobs, setJobs] = useState([]);
-  const [filters, setFilters] = useState({ keyword: "", location: "", jobType: "", experience: "" });
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+export default function MyApplications() {
+  const [applications, setApplications] = useState([]);
 
-  const fetchJobs = async () => {
-    const res = await API.get("/jobs/public", { params: filters });
-    setJobs(res.data);
+  const fetchMyApplications = async () => {
+    try {
+      const res = await API.get("/applications/myApplications");
+      setApplications(res.data.applications);
+    } catch (err) {
+      toast.error("Failed to load applications.");
+    }
   };
 
   useEffect(() => {
-    fetchJobs();
-  }, [filters]);
-
-  const onFilterChange = (e) => setFilters(f => ({ ...f, [e.target.name]: e.target.value }));
+    fetchMyApplications();
+  }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 animate-fade-in">
-      {/* <Sidebar /> */}
-      <div className="flex-1 flex flex-col">
-        {/* <Header /> */}
-        <div className="p-6">
-          <div className="space-y-4">
-            <input
-              type="text"
-              name="keyword"
-              placeholder="Search jobs..."
-              value={filters.keyword}
-              onChange={onFilterChange}
-              className="w-full p-3 rounded border"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <select name="location" onChange={onFilterChange} className="p-2 border rounded">
-                <option value="">All Locations</option>
-                {["Kochi", "Mumbai", "Bengaluru", "Trivandrum", "Hyderabad", "Pune", "Delhi"].map(loc => (
-                  <option key={loc} value={loc}>{loc}</option>
-                ))}
-              </select>
-              <select name="jobType" onChange={onFilterChange} className="p-2 border rounded">
-                <option value="">All Job Types</option>
-                {["Full-time", "Part-time", "Remote", "Internship", "Contract"].map(jt => <option key={jt} value={jt}>{jt}</option>)}
-              </select>
-              <select name="experience" onChange={onFilterChange} className="p-2 border rounded">
-                <option value="">All Experience</option>
-                {["Fresher", "1-2 years", "3-5 years", "5+ years"].map(exp => <option key={exp} value={exp}>{exp}</option>)}
-              </select>
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-2xl font-bold mb-6">📄 My Applications</h1>
+
+      {applications.length === 0 ? (
+        <p className="text-gray-500">You haven't applied to any jobs yet.</p>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {applications.map((app) => (
+            <div
+              key={app._id}
+              className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition"
+            >
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="text-lg font-semibold">{app.jobId.title}</h3>
+                  <p className="text-gray-600 text-sm font-medium">
+                    {app.jobId?.companyName}
+                  </p>
+                </div>
+                <span
+                  className={`text-xs font-medium px-2 py-1 rounded-full ${
+                    app.status === "in progress"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : app.status === "shortlisted"
+                      ? "bg-blue-100 text-blue-700"
+                      : app.status === "hired"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {app.status}
+                </span>
+              </div>
+
+              <div className="text-gray-500 text-sm flex items-center gap-2 mt-1">
+                <MapPin size={14} /> {app.jobId.location}
+              </div>
+
+              <p className="text-sm mt-2 text-gray-700">
+                Exp: {app.jobId.experience}
+              </p>
+
+              <div className="mt-2 inline-flex items-center text-green-600 text-sm">
+                <Briefcase size={14} className="mr-1" />₹{" "}
+                {app.jobId.salaryRange}
+              </div>
+
+              {/* <div className="mt-2 inline-flex items-center text-blue-600 text-sm">
+                <Calendar size={14} className="mr-1" />
+                Applied on:{" "}
+                {app.createdAt
+                  ? format(new Date(app.createdAt), "dd MM yyyy")
+                  : "N/A"}
+              </div> */}
             </div>
-          </div>
-
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {jobs.map(job => (
-              <JobCard key={job._id} job={job} onClick={() => { setSelectedJob(job); setModalOpen(true); }} />
-            ))}
-          </div>
+          ))}
         </div>
-      </div>
-
-      {modalOpen && selectedJob && (
-        <JobDetailsModal job={selectedJob} onClose={() => setModalOpen(false)} />
       )}
     </div>
   );

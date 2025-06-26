@@ -42,6 +42,8 @@ const declineRecruiter = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   getAllRecruiters,
   approveRecruiter,

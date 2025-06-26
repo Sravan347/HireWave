@@ -145,6 +145,11 @@ const logoutUser = (req, res) => {
   res.status(200).json({ message: "Logged out successfully." });
 };
 
+const getUserProfile = async (req, res) => {
+  const user = await User.findById(req.user._id);
+  res.status(200).json({ user });
+};
+
 
 const updateUserProfile = async (req, res) => {
   try {
@@ -178,9 +183,12 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
+  getUserProfile,
   updateUserProfile,
 };

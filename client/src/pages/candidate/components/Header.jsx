@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <header className="bg-white px-6 py-4 shadow flex justify-between items-center">
       <h1 className="text-xl font-bold">Hello, {user.name}</h1>
-      <button onClick={logout} className="text-red-600 hover:underline">Logout</button>
+      <button onClick={logout} className="text-red-600 font-bold hover:underline">Logout</button>
     </header>
   );
 }
