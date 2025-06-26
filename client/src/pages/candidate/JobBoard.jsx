@@ -110,42 +110,41 @@ export default function JobBoard() {
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {jobs.length === 0 ? (
-              <p className="text-center col-span-full text-gray-500">
-                No jobs found matching the criteria.
-              </p>
-            ) : (
-              jobs.map((job) => {
-                const isApplied = appliedJobIds.includes(job._id);
-                return (
-                  <JobCard
-                    key={job._id}
-                    job={job}
-                    isApplied={isApplied}
-                    onClick={() => {
-                      if (isApplied) {
-                        toast.info("Already applied to this job");
-                        return;
-                      }
-                      setSelectedJob(job);
-                      setModalOpen(true);
-                    }}
-                  />
-                );
-              })
-            )}
+  <p className="text-center col-span-full text-gray-500">
+    No jobs found matching the criteria.
+  </p>
+) : (
+  jobs.map((job) => {
+    const isApplied = appliedJobIds.includes(job._id);
+    return (
+      <JobCard
+        key={job._id}
+        job={job}
+        isApplied={isApplied}
+        onClick={() => {
+          setSelectedJob(job);
+          setModalOpen(true);
+        }}
+      />
+    );
+  })
+)}
+
           </div>
         </div>
       </div>
 
       {modalOpen && selectedJob && (
-        <JobDetailsModal
-          job={selectedJob}
-          onClose={() => {
-            setModalOpen(false);
-            fetchAppliedJobs(); // Refresh applied list after modal closes
-          }}
-        />
-      )}
+  <JobDetailsModal
+    job={selectedJob}
+    isApplied={appliedJobIds.includes(selectedJob._id)}  
+    onClose={() => {
+      setModalOpen(false);
+      fetchAppliedJobs(); 
+    }}
+  />
+)}
+
     </div>
   );
 }

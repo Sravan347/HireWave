@@ -71,7 +71,7 @@ const applyToJob = async (req, res) => {
 const getMyApplications = async (req, res) => {
   try {
     const applications = await Application.find({ candidateId: req.user._id })
-      .populate("jobId", "title description status") // only needed job fields
+      .populate("jobId", "title description status_id") // only needed job fields
       .sort({ createdAt: -1 });
 
     res.status(200).json({ count: applications.length, applications });

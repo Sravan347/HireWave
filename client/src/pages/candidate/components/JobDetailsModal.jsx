@@ -5,26 +5,33 @@ import API from "../../../services/api";
 import { X } from "lucide-react";
 import { toast } from "react-toastify";
 
-export default function JobDetailsModal({ job, onClose }) {
+export default function JobDetailsModal({ job, isApplied, onClose }) {
   const [resume, setResume] = useState(null);
   const [qualification, setQualification] = useState("");
   const [backlog, setBacklog] = useState("");
 
   const handleApply = async () => {
-    if (!qualification || (!resume && !resume.name)) {
-      return toast.error("Please add qualification and upload resume");
-    }
-    const data = new FormData();
-    data.append("qualification", qualification);
-    data.append("backlog", backlog);
-    data.append("resume", resume);
+  if (!qualification || !resume) {
+    return toast.error("Please add qualification and upload resume");
+  }
 
-    await API.post(`/application/apply/${job._id}`, data, {
+  const data = new FormData();
+  data.append("qualification", qualification);
+  data.append("hasBacklogs", backlog > 0 ? "true" : "false");
+  data.append("backlogCount", backlog);
+  data.append("resume", resume);
+
+  try {
+    await API.post(`/applications/apply/${job._id}`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     toast.success("Application submitted!");
     onClose();
-  };
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Application failed.");
+  }
+};
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -64,9 +71,18 @@ export default function JobDetailsModal({ job, onClose }) {
             required
           />
         </div>
-        <button onClick={handleApply} className="mt-6 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
-          Apply Now
-        </button>
+        {!isApplied && (
+  <button
+    onClick={handleApply}
+    className="mt-6 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+  >
+    Apply Now
+  </button>
+)}
+{isApplied && (
+  <p className="mt-6 text-center text-green-600 font-medium">You have already applied to this job</p>
+)}
+
       </div>
     </div>
   );
