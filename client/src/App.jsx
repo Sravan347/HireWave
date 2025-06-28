@@ -29,7 +29,7 @@ const App = () => {
         <Route path="/jobs" element={<JobBoard />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
-      <Footer />
+      
     </>
   );
 };
