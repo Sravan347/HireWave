@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserRound, Briefcase, ChevronDown } from "lucide-react";
+import logo from '../assets/logo.png';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,10 +20,13 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-[#2563EB] text-white px-6 py-4 shadow-md flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold">HireWave</Link>
-
-      <div className="relative flex items-center gap-6 pr-6">
+    <nav className="bg-[#2563EB] text-white px-6 py-0 shadow-md flex items-center" style={{height: '64px'}}>
+      <div className="flex-shrink-0 flex items-center h-full" style={{height: '100%'}}>
+        <Link to="/" className="block h-full w-[200px]">
+          <img src={logo} alt="HireWave Logo" className="h-full w-auto object-contain" style={{height: '64px', maxHeight: '100%'}} />
+        </Link>
+      </div>
+      <div className="flex-1 flex justify-end items-center gap-6 pr-6">
         <Link
           to="/login"
           className="flex items-center gap-1 font-semibold transition-transform duration-200 hover:scale-105"
