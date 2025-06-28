@@ -1,8 +1,7 @@
-import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#2563EB] text-white py-4 px-6 mt-10 shadow-inner">
+    <footer className="bg-[#2563EB] text-white py-4 px-6 shadow-inner">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
         <div className="text-lg font-semibold">HireWave &copy; {new Date().getFullYear()}</div>
         <div className="flex gap-4 mt-2 md:mt-0 text-sm">
