@@ -22,7 +22,7 @@ import React, { useEffect, useState } from 'react';
 import API from '../services/api';
 import Navbar from '../components/Navbar';
 import JobCard from '../components/JobCard'; // Create this
-import logo from '../assets/logo.png';
+
 
 const LandingPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -56,7 +56,7 @@ const LandingPage = () => {
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <img src={logo} alt="HireWave Logo" className="mx-auto w-24 h-24" />
+       
           <h1 className="text-4xl font-bold text-[#2563EB] dark:text-blue-400">Explore Jobs on HireWave</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Find your dream job today</p>
         </div>
@@ -83,5 +83,5 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage
+export default LandingPage;
 
