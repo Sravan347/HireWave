@@ -49,7 +49,7 @@ const RecruiterDashboard = () => {
           onClick={handleViewJobs}
           className="flex items-center gap-2 hover:bg-blue-700 px-4 py-2 rounded transition"
         >
-          <Briefcase size={18} /> My Posted Jobs
+          <Briefcase size={18} /> Posted Jobs
         </button>
         <button
           onClick={handleLogout}

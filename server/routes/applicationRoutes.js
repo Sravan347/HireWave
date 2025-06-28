@@ -2,15 +2,20 @@ const express = require("express");
 const {
   applyToJob,
   getMyApplications,
-  getApplicantsByJob,      // ⬅️ NEW
-  updateApplicationStatus, // ⬅️ NEW
+  getApplicantsByJob,
+  updateApplicationStatus,
+  uploadTestForApplication,
+  uploadAnswerFile,
+  scheduleInterview,
+  submitInterviewFeedback,
+  uploadOfferLetter,
 } = require("../controllers/applicationController");
 const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
 
 const router = express.Router();
 
-// ─── Candidate routes ─────────────────────────────────────────────────────────
+// ─── Candidate ───────────────────────────────────────────────────────────────
 router.post(
   "/apply/:jobId",
   protectRoute,
@@ -20,15 +25,13 @@ router.post(
 );
 
 router.get(
-  "/job/:jobId",
+  "/myApplications",
   protectRoute,
-  restrictTo("recruiter"),
-  getApplicantsByJob
+  restrictTo("candidate"),
+  getMyApplications
 );
 
-
-// ─── Recruiter routes ────────────────────────────────────────────────────────
-// recruiter: get applicants of a specific job
+// ─── Recruiter ───────────────────────────────────────────────────────────────
 router.get(
   "/job/:jobId/applicants",
   protectRoute,
@@ -36,12 +39,58 @@ router.get(
   getApplicantsByJob
 );
 
-// recruiter: update application status
 router.put(
   "/application/:id/status",
   protectRoute,
   restrictTo("recruiter"),
   updateApplicationStatus
 );
+
+
+
+
+// Recruiter uploads test
+router.post(
+  "/application/:id/upload-test",
+  protectRoute,
+  restrictTo("recruiter"),
+  upload.single("testFile"),
+  uploadTestForApplication
+);
+
+// Candidate uploads answer
+router.post(
+  "/application/:id/upload-answer",
+  protectRoute,
+  restrictTo("candidate"),
+  upload.single("answer"),
+  uploadAnswerFile
+);
+
+router.put(
+  "/application/:id/schedule-interview",
+  protectRoute,
+  restrictTo("recruiter"),
+  scheduleInterview
+);
+
+router.put(
+  "/application/:id/feedback",
+  protectRoute,
+  restrictTo("recruiter"),
+  submitInterviewFeedback
+);
+
+router.post(
+  "/application/:id/upload-offer",
+  protectRoute,
+  restrictTo("recruiter"),
+  upload.single("offer"),
+  uploadOfferLetter
+);
+
+
+
+
 
 module.exports = router;

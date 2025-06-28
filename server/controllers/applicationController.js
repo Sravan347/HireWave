@@ -2,56 +2,49 @@ const Application = require("../models/Application");
 const Job = require("../models/Job");
 const axios = require("axios");
 const pdfParse = require("pdf-parse");
-const scoreResume = require("../utils/scoreResume"); // 👈 separate util
+const scoreResume = require("../utils/scoreResume");
 
-const applyToJob = async (req, res) => {
+// ─────────────────────────────────────────────────────────────────────────────
+// ✨  APPLY TO JOB  ────────────────────────────────────────────────────────────
+exports.applyToJob = async (req, res) => {
   try {
-    // 1. Validate resume file
-    if (!req.file) {
+    if (!req.file)
       return res.status(400).json({ message: "Resume file is required." });
-    }
 
-    // 2. Check if job exists
     const job = await Job.findById(req.params.jobId);
-    if (!job) {
-      return res.status(404).json({ message: "Job not found." });
-    }
+    if (!job) return res.status(404).json({ message: "Job not found." });
 
-    // 3. Prevent duplicate applications
-    const alreadyApplied = await Application.findOne({
-      jobId: req.params.jobId,
+    // Prevent duplicate applications
+    const duplicate = await Application.findOne({
+      jobId: job._id,
       candidateId: req.user._id,
     });
+    if (duplicate)
+      return res.status(400).json({ message: "Already applied to this job." });
 
-    if (alreadyApplied) {
-      return res.status(400).json({ message: "Already applied to this job" });
-    }
-
-    // 4. Download resume from Cloudinary
+    // ── Parse resume PDF from Cloudinary ──
     const resumeBuffer = await axios.get(req.file.path, {
       responseType: "arraybuffer",
     });
-
-    // 5. Extract text using pdf-parse
     const resumeText = (await pdfParse(resumeBuffer.data)).text;
 
-    // 6. Extract keywords from job description
-    const jobKeywords = job.description
-      .split(" ")
-      .map((word) => word.toLowerCase().replace(/[^\w]/g, ""))
-      .filter((word) => word.length > 3);
+    // ── Build job keyword list ──
+    const jobKeywords = (job.description || "")
+      .toLowerCase()
+      .match(/\b\w+\b/g)
+      ?.filter((w) => w.length > 3) || [];
 
-    // 7. Score resume
+    // ── Score resume ──
     const score = scoreResume(resumeText, jobKeywords);
 
-    // 8. Save application
+    // ── Persist application ──
     const application = await Application.create({
-      jobId: req.params.jobId,
+      jobId: job._id,
       candidateId: req.user._id,
       resumeUrl: req.file.path,
       score,
-      status: "in progress",
-      qualification: req.body.qualification, // 👈 New
+      status: "applied", // <‑‑ unified starting status
+      qualification: req.body.qualification,
       backlogInfo: {
         hasBacklogs: req.body.hasBacklogs === "true",
         count: req.body.backlogCount || 0,
@@ -59,84 +52,181 @@ const applyToJob = async (req, res) => {
     });
 
     res.status(201).json({ message: "Application submitted", application });
-  } catch (error) {
-    console.error("Error submitting application:", error);
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: error.message,
-    });
+  } catch (err) {
+    console.error("Error submitting application:", err);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 };
 
-const getMyApplications = async (req, res) => {
+// ─────────────────────────────────────────────────────────────────────────────
+exports.getMyApplications = async (req, res) => {
   try {
     const applications = await Application.find({ candidateId: req.user._id })
-      .populate(
-        "jobId",
-        "title description status location experience jobType salaryRange companyName"
-      )
+      .populate("jobId", "title description location experience jobType salaryRange companyName")
       .sort({ createdAt: -1 });
 
     res.status(200).json({ count: applications.length, applications });
-  } catch (error) {
-    console.error("Error fetching applications:", error);
-    res.status(500).json({
-      message: "Server Error",
-      error: error.message,
-    });
+  } catch (err) {
+    console.error("Error fetching applications:", err);
+    res.status(500).json({ message: "Server Error", error: err.message });
   }
 };
 
-const getApplicantsByJob = async (req, res) => {
+// ─────────────────────────────────────────────────────────────────────────────
+exports.getApplicantsByJob = async (req, res) => {
   try {
-    // 1️⃣  Make sure the recruiter owns this job
     const job = await Job.findById(req.params.jobId);
-    if (!job) return res.status(404).json({ message: "Job not found" });
-
+    if (!job) return res.status(404).json({ message: "Job not found." });
     if (job.postedBy.toString() !== req.user._id.toString())
-      return res.status(403).json({ message: "Unauthorized" });
+      return res.status(403).json({ message: "Unauthorized." });
 
-    // 2️⃣  Fetch applications & populate candidate info
     const applicants = await Application.find({ jobId: job._id })
-      .populate("candidateId", "name email qualification experience");
+      .populate("candidateId", "name email qualification experience")
+      .sort({ score: -1 }); // show best matches first
 
     res.status(200).json({ count: applicants.length, applicants });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error fetching applicants" });
+    res.status(500).json({ message: "Server error fetching applicants." });
   }
 };
 
-const updateApplicationStatus = async (req, res) => {
+// ─────────────────────────────────────────────────────────────────────────────
+exports.updateApplicationStatus = async (req, res) => {
   try {
-    const { status } = req.body; // expected: shortlisted | rejected | hired
-    if (!["shortlisted", "rejected", "hired"].includes(status))
-      return res.status(400).json({ message: "Invalid status" });
+    const { status } = req.body; // shortlisted | interview | offered | rejected | accepted
+    const allowed = ["shortlisted", "interview", "offered", "rejected", "accepted"];
+    if (!allowed.includes(status))
+      return res.status(400).json({ message: "Invalid status." });
 
-    const application = await Application.findById(req.params.id).populate(
-      "jobId"
-    );
-    if (!application)
-      return res.status(404).json({ message: "Application not found" });
+    const application = await Application.findById(req.params.id).populate("jobId");
+    if (!application) return res.status(404).json({ message: "Application not found." });
 
-    // recruiter owns the job?
     if (application.jobId.postedBy.toString() !== req.user._id.toString())
-      return res.status(403).json({ message: "Unauthorized" });
+      return res.status(403).json({ message: "Unauthorized." });
 
     application.status = status;
     await application.save();
 
-    res.status(200).json({ message: "Status updated", application });
+    res.status(200).json({ message: "Status updated.", application });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error updating status" });
+    res.status(500).json({ message: "Server error updating status." });
   }
 };
 
 
-module.exports = {
-  applyToJob,
-  getMyApplications,
-  getApplicantsByJob,
-  updateApplicationStatus,
+// Recruiter uploads test for shortlisted candidate
+exports.uploadTestForApplication = async (req, res) => {
+  try {
+    const application = await Application.findById(req.params.id).populate("jobId");
+
+    if (!application)
+      return res.status(404).json({ message: "Application not found" });
+
+    // Authorization check
+    if (application.jobId.postedBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    if (req.file) {
+      application.testFileUrl = req.file.path;
+      await application.save();
+      res.status(200).json({ message: "Test uploaded", application });
+    } else {
+      res.status(400).json({ message: "No file provided" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Upload failed", error: err.message });
+  }
 };
+
+// Candidate uploads answer for a test
+exports.uploadAnswerFile = async (req, res) => {
+  try {
+    const application = await Application.findById(req.params.id);
+
+    if (!application)
+      return res.status(404).json({ message: "Application not found" });
+
+    if (application.candidateId.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Unauthorized" });
+
+    if (application.answerFileUrl)
+      return res.status(400).json({ message: "Answer already submitted" });
+
+    if (req.file) {
+      application.answerFileUrl = req.file.path;
+      await application.save();
+      res.status(200).json({ message: "Answer submitted", application });
+    } else {
+      res.status(400).json({ message: "No file uploaded" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Upload failed", error: err.message });
+  }
+};
+
+
+
+exports.scheduleInterview = async (req, res) => {
+  try {
+    const { date, link } = req.body;
+    const application = await Application.findById(req.params.id);
+
+    if (!application) return res.status(404).json({ message: "Not found" });
+
+    application.interviewDetails = { date, link };
+    application.status = "interview";
+    await application.save();
+
+    res.status(200).json({ message: "Interview scheduled", application });
+  } catch (err) {
+    console.error("Schedule Interview Error:", err);
+    res.status(500).json({ message: "Failed to schedule interview" });
+  }
+};
+
+
+exports.submitInterviewFeedback = async (req, res) => {
+  try {
+    const { feedback } = req.body;
+    const application = await Application.findById(req.params.id).populate("jobId");
+
+    if (!application) return res.status(404).json({ message: "Application not found" });
+
+    if (application.jobId.postedBy.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Unauthorized" });
+
+    application.feedback = feedback;
+    await application.save();
+
+    res.status(200).json({ message: "Feedback submitted", application });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to submit feedback", error: err.message });
+  }
+};
+
+
+exports.uploadOfferLetter = async (req, res) => {
+  try {
+    const application = await Application.findById(req.params.id).populate("jobId");
+
+    if (!application) return res.status(404).json({ message: "Application not found" });
+
+    if (application.jobId.postedBy.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Unauthorized" });
+
+    if (!req.file)
+      return res.status(400).json({ message: "No file uploaded" });
+
+    application.offerLetterUrl = req.file.path;
+    await application.save();
+
+    res.status(200).json({ message: "Offer letter uploaded", application });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to upload offer letter", error: err.message });
+  }
+};
+
+

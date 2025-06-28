@@ -30,10 +30,36 @@ const applicationSchema = new mongoose.Schema({
   },
 
   status: {
-    type: String,
-    enum: ["in progress", "shortlisted", "rejected", "hired"],
-    default: "in progress",
-  },
+  type: String,
+  enum: ["applied", "shortlisted", "interview", "offered", "rejected", "accepted"],
+  default: "applied",
+},
+
+
+  testFileUrl: {
+  type: String,
+},
+answerFileUrl: {
+  type: String,
+},
+
+interviewDetails: {
+  date: Date,
+  link: String,
+},
+
+feedback: {
+  type: String,
+  default: "",
+},
+
+offerLetterUrl: {
+  type: String,
+},
+
+
+
+
 });
 
 module.exports = mongoose.model("Application", applicationSchema);
