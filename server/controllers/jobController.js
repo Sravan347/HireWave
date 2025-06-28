@@ -1,5 +1,7 @@
 const Job = require("../models/Job");
 const User = require("../models/User");
+const Application = require("../models/Application");
+
 
 // ✅ Post a new job
 const postJob = async (req, res) => {
@@ -28,7 +30,18 @@ const postJob = async (req, res) => {
 const getRecruiterJobs = async (req, res) => {
   try {
     const jobs = await Job.find({ postedBy: req.user._id }).sort({ createdAt: -1 });
-    res.status(200).json(jobs);
+
+    const jobsWithCounts = await Promise.all(
+      jobs.map(async (job) => {
+        const count = await Application.countDocuments({ jobId: job._id });
+        return {
+          ...job.toObject(),
+          numApplicants: count,
+        };
+      })
+    );
+
+    res.status(200).json(jobsWithCounts);
   } catch (err) {
     console.error("Get Recruiter Jobs Error:", err);
     res.status(500).json({ message: "Failed to fetch jobs" });

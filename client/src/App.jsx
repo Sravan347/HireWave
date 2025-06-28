@@ -11,6 +11,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Dashboard from './pages/recruiter/Dashboard';
 
 import PostedJobs from "./pages/recruiter/PostedJobs";
+import ViewApplicants from "./pages/recruiter/ViewApplicants";
 
 
 
@@ -42,6 +43,9 @@ const App = () => {
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/recruiter/dashboard" element={<Dashboard />} />
       <Route path="/recruiter/jobs" element={<PostedJobs />} />
+      <Route path="/recruiter/jobs/:jobId/applicants" element={<ViewApplicants />} />
+
+
 
       {/* ✅ Candidate Dashboard with nested routes */}
       <Route path="/candidate/dashboard" element={<CandidateDashboard />}>

@@ -14,7 +14,7 @@ export default function JobBoard() {
     keyword: "",
     location: "",
     jobType: "",
-    experience: ""
+    experience: "",
   });
   const [selectedJob, setSelectedJob] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function JobBoard() {
   const fetchAppliedJobs = async () => {
     try {
       const res = await API.get("/applications/myApplications");
-      const ids = res.data.applications.map(app => app.jobId._id);
+      const ids = res.data.applications.map((app) => app.jobId._id);
       setAppliedJobIds(ids);
     } catch (err) {
       toast.error("Could not load applied jobs");
@@ -71,13 +71,19 @@ export default function JobBoard() {
                 className="p-2 border rounded"
               >
                 <option value="">All Locations</option>
-                {["Kochi", "Mumbai", "Bengaluru", "Trivandrum", "Hyderabad", "Pune", "Delhi"].map(
-                  (loc) => (
-                    <option key={loc} value={loc}>
-                      {loc}
-                    </option>
-                  )
-                )}
+                {[
+                  "Kochi",
+                  "Mumbai",
+                  "Bengaluru",
+                  "Trivandrum",
+                  "Hyderabad",
+                  "Pune",
+                  "Delhi",
+                ].map((loc) => (
+                  <option key={loc} value={loc}>
+                    {loc}
+                  </option>
+                ))}
               </select>
               <select
                 name="jobType"
@@ -85,13 +91,17 @@ export default function JobBoard() {
                 className="p-2 border rounded"
               >
                 <option value="">All Job Types</option>
-                {["Full-time", "Part-time", "Remote", "Internship", "Contract"].map(
-                  (jt) => (
-                    <option key={jt} value={jt}>
-                      {jt}
-                    </option>
-                  )
-                )}
+                {[
+                  "Full-time",
+                  "Part-time",
+                  "Remote",
+                  "Internship",
+                  "Contract",
+                ].map((jt) => (
+                  <option key={jt} value={jt}>
+                    {jt}
+                  </option>
+                ))}
               </select>
               <select
                 name="experience"
@@ -99,52 +109,52 @@ export default function JobBoard() {
                 className="p-2 border rounded"
               >
                 <option value="">All Experience</option>
-                {["Fresher", "1-2 years", "3-5 years", "5+ years"].map((exp) => (
-                  <option key={exp} value={exp}>
-                    {exp}
-                  </option>
-                ))}
+                {["Fresher", "1-2 years", "3-5 years", "5+ years"].map(
+                  (exp) => (
+                    <option key={exp} value={exp}>
+                      {exp}
+                    </option>
+                  )
+                )}
               </select>
             </div>
           </div>
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {jobs.length === 0 ? (
-  <p className="text-center col-span-full text-gray-500">
-    No jobs found matching the criteria.
-  </p>
-) : (
-  jobs.map((job) => {
-    const isApplied = appliedJobIds.includes(job._id);
-    return (
-      <JobCard
-        key={job._id}
-        job={job}
-        isApplied={isApplied}
-        onClick={() => {
-          setSelectedJob(job);
-          setModalOpen(true);
-        }}
-      />
-    );
-  })
-)}
-
+              <p className="text-center col-span-full text-gray-500">
+                No jobs found matching the criteria.
+              </p>
+            ) : (
+              jobs.map((job) => {
+                const isApplied = appliedJobIds.includes(job._id);
+                return (
+                  <JobCard
+                    key={job._id}
+                    job={job}
+                    isApplied={isApplied}
+                    onClick={() => {
+                      setSelectedJob(job);
+                      setModalOpen(true);
+                    }}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
       </div>
 
       {modalOpen && selectedJob && (
-  <JobDetailsModal
-    job={selectedJob}
-    isApplied={appliedJobIds.includes(selectedJob._id)}  
-    onClose={() => {
-      setModalOpen(false);
-      fetchAppliedJobs(); 
-    }}
-  />
-)}
-
+        <JobDetailsModal
+          job={selectedJob}
+          isApplied={appliedJobIds.includes(selectedJob._id)}
+          onClose={() => {
+            setModalOpen(false);
+            fetchAppliedJobs();
+          }}
+        />
+      )}
     </div>
   );
 }
