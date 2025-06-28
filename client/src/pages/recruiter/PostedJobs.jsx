@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Pencil, Trash2, Eye, LogOut, PlusCircle, Briefcase } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  Eye,
+  LogOut,
+  PlusCircle,
+  Briefcase,
+} from "lucide-react";
+import { UserCheck } from "lucide-react";
 
 export default function PostedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -53,10 +61,8 @@ export default function PostedJobs() {
         >
           <PlusCircle size={18} /> Post New Job
         </button>
-        <button
-          className="flex items-center gap-2 bg-blue-700 px-4 py-2 rounded"
-        >
-          <Briefcase size={18} /> My Posted Jobs
+        <button className="flex items-center gap-2 bg-blue-700 px-4 py-2 rounded">
+          <Briefcase size={18} /> Posted Jobs
         </button>
         <button
           onClick={handleLogout}
@@ -98,8 +104,7 @@ export default function PostedJobs() {
                       {job.location} • {job.jobType}
                     </p>
                     <p className="text-sm text-gray-500">
-                      Posted on{" "}
-                      {new Date(job.createdAt).toLocaleDateString()}
+                      Posted on {new Date(job.createdAt).toLocaleDateString()}
                     </p>
                     <p className="mt-2 text-gray-600 line-clamp-2">
                       {job.description}
@@ -108,6 +113,7 @@ export default function PostedJobs() {
                       Applicants: {job.numApplicants}
                     </p>
                   </div>
+
                   <div className="flex gap-2">
                     <button
                       onClick={() => navigate(`/recruiter/jobs/${job._id}`)}
@@ -131,6 +137,16 @@ export default function PostedJobs() {
                       title="Delete"
                     >
                       <Trash2 size={18} />
+                    </button>
+                    <button
+                      onClick={() =>
+                        navigate(`/recruiter/jobs/${job._id}/applicants`)
+                      }
+                      className="flex items-center gap-1 px-3 py-2 rounded hover:bg-green-50 text-sm font-medium text-green-700 border border-green-200"
+                      title="View Applicants"
+                    >
+                      <UserCheck size={18} />
+                      View Applicants
                     </button>
                   </div>
                 </div>

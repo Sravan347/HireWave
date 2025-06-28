@@ -87,4 +87,56 @@ const getMyApplications = async (req, res) => {
   }
 };
 
-module.exports = { applyToJob, getMyApplications };
+const getApplicantsByJob = async (req, res) => {
+  try {
+    // 1️⃣  Make sure the recruiter owns this job
+    const job = await Job.findById(req.params.jobId);
+    if (!job) return res.status(404).json({ message: "Job not found" });
+
+    if (job.postedBy.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Unauthorized" });
+
+    // 2️⃣  Fetch applications & populate candidate info
+    const applicants = await Application.find({ jobId: job._id })
+      .populate("candidateId", "name email qualification experience");
+
+    res.status(200).json({ count: applicants.length, applicants });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error fetching applicants" });
+  }
+};
+
+const updateApplicationStatus = async (req, res) => {
+  try {
+    const { status } = req.body; // expected: shortlisted | rejected | hired
+    if (!["shortlisted", "rejected", "hired"].includes(status))
+      return res.status(400).json({ message: "Invalid status" });
+
+    const application = await Application.findById(req.params.id).populate(
+      "jobId"
+    );
+    if (!application)
+      return res.status(404).json({ message: "Application not found" });
+
+    // recruiter owns the job?
+    if (application.jobId.postedBy.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Unauthorized" });
+
+    application.status = status;
+    await application.save();
+
+    res.status(200).json({ message: "Status updated", application });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error updating status" });
+  }
+};
+
+
+module.exports = {
+  applyToJob,
+  getMyApplications,
+  getApplicantsByJob,
+  updateApplicationStatus,
+};

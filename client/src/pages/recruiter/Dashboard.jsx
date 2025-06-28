@@ -28,6 +28,7 @@ const RecruiterDashboard = () => {
 
   const handlePostJob = () => navigate("/recruiter/post-job");
   const handleViewJobs = () => navigate("/recruiter/jobs");
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/recruiter/login");
