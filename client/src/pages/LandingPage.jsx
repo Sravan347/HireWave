@@ -56,7 +56,6 @@ const LandingPage = () => {
       <Navbar />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
-       
           <h1 className="text-4xl font-bold text-[#2563EB] dark:text-blue-400">Explore Jobs on HireWave</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Find your dream job today</p>
         </div>
