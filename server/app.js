@@ -1,3 +1,4 @@
+// backend/app.js
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -8,14 +9,15 @@ const authRoutes = require("./routes/authRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const analyticsRoutes = require("./routes/analyticsRoute"); // <--- FIXED: match filename
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
+    origin: "http://localhost:5173",
+    credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -25,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/analytics", analyticsRoutes); // <--- ADD THIS LINE: Your new analytics routes
 
 // Global Error Handler (uncomment if needed)
 // app.use((err, req, res, next) => {
@@ -36,14 +39,14 @@ app.use("/api/admin", adminRoutes);
 // });
 
 const server = async () => {
-  try {
-    await connectedDB(process.env.MONGO_URI);
-    app.listen(PORT, () => {
-      console.log(`The server is running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.log(`Error connecting to the database: ${error.message}`);
-  }
+    try {
+        await connectedDB(process.env.MONGO_URI);
+        app.listen(PORT, () => {
+            console.log(`The server is running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.log(`Error connecting to the database: ${error.message}`);
+    }
 };
 
 server();

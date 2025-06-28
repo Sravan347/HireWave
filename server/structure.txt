@@ -1,0 +1,43 @@
+Folder PATH listing for volume Acer
+Volume serial number is 827E-00D4
+C:.
+|   .env
+|   app.js
+|   package-lock.json
+|   package.json
+|   structure.txt
+|   
++---controllers
+|       adminController.js
+|       applicationController.js
+|       authController.js
+|       jobController.js
+|       
++---DB
+|       connection.js
+|       
++---middleware
+|       authMiddleware.js
+|       roleMiddleware.js
+|       upload.js
+|       
++---models
+|       Application.js
+|       Job.js
+|       User.js
+|       
++---routes
+|       adminRoutes.js
+|       applicationRoutes.js
+|       authRoutes.js
+|       jobRoutes.js
+|       
++---scripts
+|       createAdmin.js
+|       migrateRecruiters.js
+|       
+\---utils
+        cloudinary.js
+        generateToken.js
+        scoreResume.js
+        
