@@ -24,7 +24,7 @@ import CandidateDashboard from "./pages/candidate/CandidateDashboard";
 import MyApplications from "./pages/candidate/MyApplications";
 import MyProfile from "./pages/candidate/MyProfile";
 import Offers from "./pages/candidate/Offers";
-import RecruiterProfilePage from "./pages/candidate/RecruiterProfilePage"; // <--- ADD THIS LINE
+import RecruiterProfilePage from "./pages/candidate/RecruiterProfilePage"; 
 
 
 const App = () => {
@@ -59,7 +59,7 @@ const App = () => {
 
         {/* New: Recruiter Public Profile Page for Reviews */}
         {/* This route allows candidates to view a recruiter's profile and leave reviews */}
-        <Route path="/recruiters/:recruiterId" element={<RecruiterProfilePage />} /> {/* <--- ADD THIS LINE */}
+        <Route path="/recruiters/:recruiterId" element={<RecruiterProfilePage />} /> 
 
         {/* Job Board (public) */}
         <Route path="/jobs" element={<JobBoard />} />
