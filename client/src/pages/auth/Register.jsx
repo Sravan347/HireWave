@@ -90,11 +90,11 @@ export default function CandidateRegister() {
     try {
       const { data } = await API.post("/auth/register", {
         ...form,
-        age: parseInt(form.age), // ensure it's a number
+        age: parseInt(form.age), 
       });
       localStorage.setItem("token", data.token);
       toast.success("Registration successful!");
-      navigate("/jobs");
+      navigate("/login");
     } catch (err) {
       toast.error(err.response?.data?.message || "Registration failed");
     }
