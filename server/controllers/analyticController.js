@@ -1,5 +1,3 @@
-
-
 // Helper function to generate mock usage trends data
 const generateMockUsageTrends = (days = 7) => {
     const data = [];
