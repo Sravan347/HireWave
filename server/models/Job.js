@@ -20,7 +20,7 @@ const jobSchema = new mongoose.Schema(
       required: [true, "Job type is required"],
     },
     salaryRange: {
-      type: String, // e.g. "₹20,000 - ₹35,000"
+      type: String, 
       required: [true, "Salary range is required"],
     },
     qualificationsRequired: {

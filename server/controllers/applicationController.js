@@ -5,7 +5,7 @@ const pdfParse = require("pdf-parse");
 const scoreResume = require("../utils/scoreResume");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ✨  APPLY TO JOB  ────────────────────────────────────────────────────────────
+//   APPLY TO JOB  ────────────────────────────────────────────────────────────
 exports.applyToJob = async (req, res) => {
   try {
     if (!req.file)
@@ -52,6 +52,7 @@ exports.applyToJob = async (req, res) => {
     });
 
     res.status(201).json({ message: "Application submitted", application });
+    console.log("Application submitted:", application);
   } catch (err) {
     console.error("Error submitting application:", err);
     res.status(500).json({ message: "Internal Server Error", error: err.message });
