@@ -1,7 +1,7 @@
 // controllers/adminController.js
 const User = require("../models/User");
 
-// ✅ Get all recruiters
+//  Get all recruiters
 const getAllRecruiters = async (req, res) => {
   try {
     const recruiters = await User.find({ role: "recruiter" }).select("-password");
@@ -12,7 +12,7 @@ const getAllRecruiters = async (req, res) => {
   }
 };
 
-// ✅ Approve recruiter
+//  Approve recruiter
 const approveRecruiter = async (req, res) => {
   try {
     const recruiter = await User.findById(req.params.id);
@@ -27,7 +27,7 @@ const approveRecruiter = async (req, res) => {
   }
 };
 
-// ✅ Decline recruiter
+//  Decline recruiter
 const declineRecruiter = async (req, res) => {
   try {
     const recruiter = await User.findById(req.params.id);

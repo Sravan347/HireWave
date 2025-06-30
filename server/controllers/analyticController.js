@@ -1,4 +1,4 @@
-// backend/controllers/analyticsController.js
+
 
 // Helper function to generate mock usage trends data
 const generateMockUsageTrends = (days = 7) => {
@@ -19,7 +19,7 @@ const generateMockUsageTrends = (days = 7) => {
 // Helper function to generate mock summary metrics
 const generateMockSummaryMetrics = () => {
     return {
-        totalUsers: 1250 + Math.floor(Math.random() * 50), // Add some randomness
+        totalUsers: 1250 + Math.floor(Math.random() * 50),
         activeRecruiters: 320 + Math.floor(Math.random() * 10),
         totalReviews: 680 + Math.floor(Math.random() * 20),
         jobsPostedLastWeek: 150 + Math.floor(Math.random() * 15),
