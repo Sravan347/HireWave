@@ -101,102 +101,138 @@ export default function CandidateRegister() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 px-4">
-      <Card className="bg-[#E6E9F5] shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-center text-[#0A1A4A] text-2xl">
-            Candidate Registration
-          </CardTitle>
-        </CardHeader>
+    <div className="min-h-screen bg-[#E6E9F5] dark:bg-[#181818] px-4 py-8 flex items-center justify-center">
+      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        {/* Image */}
+        <div className="hidden md:flex justify-center items-center">
+          <img
+            src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAzL2ZyZWVpbWFnZXNjb21wYW55X3Bob3RvX29mX3lvdW5nX2luZGlhbl9naXJsX2hvbGRpbmdfc3R1ZGVudF9iYV8zN2QyNjU4Yi0yOWIwLTQyZmQtODhmYy04OGU3ZTcxYmVlNDcucG5n.png"
+            alt="Register illustration"
+            className="w-full max-w-md object-contain"
+          />
+        </div>
 
-        <CardContent>
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"
-          >
-            {[
-              { name: "name", type: "text", placeholder: "Full Name" },
-              { name: "email", type: "email", placeholder: "Email" },
-              { name: "password", type: "password", placeholder: "Password" },
-              {
-                name: "confirmPassword",
-                type: "password",
-                placeholder: "Confirm Password",
-              },
-              { name: "mobile", type: "text", placeholder: "Mobile Number" },
-              { name: "age", type: "number", placeholder: "Age" },
-              { name: "place", type: "text", placeholder: "Place" },
-            ].map((field) => (
-              <div key={field.name}>
-                <Label className="text-[#2D3748] mb-2 block">
-                  {field.placeholder}
+        {/* Form Card */}
+        <Card className="shadow-lg bg-white dark:bg-[#1e1e1e] border border-[#D6CEFA] dark:border-[#333333] w-full">
+          <CardHeader>
+            <CardTitle className="text-center text-[#0A1A4A] dark:text-[#7F5AF0] text-2xl font-bold">
+              Candidate Registration
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"
+            >
+              {[
+                { name: "name", type: "text", placeholder: "Full Name" },
+                { name: "email", type: "email", placeholder: "Email" },
+                { name: "password", type: "password", placeholder: "Password" },
+                {
+                  name: "confirmPassword",
+                  type: "password",
+                  placeholder: "Confirm Password",
+                },
+                { name: "mobile", type: "text", placeholder: "Mobile Number" },
+                { name: "age", type: "number", placeholder: "Age" },
+                { name: "place", type: "text", placeholder: "Place" },
+              ].map((field) => (
+                <div key={field.name}>
+                  <Label className="text-[#2D3748] dark:text-white mb-2 block">
+                    {field.placeholder}
+                  </Label>
+                  <Input
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={form[field.name]}
+                    onChange={handleChange}
+                    className="h-9 text-sm border border-[#1A3A8F] focus:border-[#7F5AF0] focus:ring-[#7F5AF0] dark:bg-[#2a2a2a] dark:text-white"
+                  />
+                  {errors[field.name] && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors[field.name]}
+                    </p>
+                  )}
+                </div>
+              ))}
+
+              {/* Qualification */}
+              <div>
+                <Label className="text-[#2D3748] dark:text-white mb-2 block">
+                  Qualification
                 </Label>
-                <Input
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  value={form[field.name]}
+                <select
+                  name="qualification"
+                  value={form.qualification}
                   onChange={handleChange}
-                  className="h-9 text-sm border border-[#1A3A8F] focus:border-[#7F5AF0] focus:ring-[#7F5AF0]"
-                />
-                {errors[field.name] && (
+                  className="w-full h-9 text-sm border border-[#1A3A8F] rounded px-2 focus:ring-2 focus:ring-[#7F5AF0] dark:bg-[#2a2a2a] dark:text-white"
+                >
+                  <option value="">Select Qualification</option>
+                  <option value="PG">Post Graduate</option>
+                  <option value="UG">Under Graduate</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="Secondary Education">Secondary Education</option>
+                </select>
+                {errors.qualification && (
                   <p className="text-sm text-red-500 mt-1">
-                    {errors[field.name]}
+                    {errors.qualification}
                   </p>
                 )}
               </div>
-            ))}
 
-            {/* Qualification */}
-            <div>
-              <Label className="text-[#2D3748] mb-2 block">Qualification</Label>
-              <select
-                name="qualification"
-                value={form.qualification}
-                onChange={handleChange}
-                className="w-full h-9 text-sm border border-[#1A3A8F] rounded px-2 focus:ring-2 focus:ring-[#7F5AF0]"
-              >
-                <option value="">Select Qualification</option>
-                <option value="PG">Post Graduate</option>
-                <option value="UG">Under Graduate</option>
-                <option value="Diploma">Diploma</option>
-                <option value="Secondary Education">Secondary Education</option>
-              </select>
-              {errors.qualification && (
-                <p className="text-sm text-red-500 mt-1">{errors.qualification}</p>
-              )}
-            </div>
+              {/* Experience */}
+              <div>
+                <Label className="text-[#2D3748] dark:text-white mb-2 block">
+                  Experience
+                </Label>
+                <select
+                  name="experience"
+                  value={form.experience}
+                  onChange={handleChange}
+                  className="w-full h-9 text-sm border border-[#1A3A8F] rounded px-2 focus:ring-2 focus:ring-[#7F5AF0] dark:bg-[#2a2a2a] dark:text-white"
+                >
+                  <option value="">Are you a Fresher or Experienced?</option>
+                  <option value="Fresher">Fresher</option>
+                  <option value="Experienced">Experienced</option>
+                </select>
+                {errors.experience && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors.experience}
+                  </p>
+                )}
+              </div>
 
-            {/* Experience */}
-            <div>
-              <Label className="text-[#2D3748] mb-2 block">Experience</Label>
-              <select
-                name="experience"
-                value={form.experience}
-                onChange={handleChange}
-                className="w-full h-9 text-sm border border-[#1A3A8F] rounded px-2 focus:ring-2 focus:ring-[#7F5AF0]"
-              >
-                <option value="">Are you a Fresher or Experienced?</option>
-                <option value="Fresher">Fresher</option>
-                <option value="Experienced">Experienced</option>
-              </select>
-              {errors.experience && (
-                <p className="text-sm text-red-500 mt-1">{errors.experience}</p>
-              )}
-            </div>
+              {/* Submit Button */}
+              <div className="col-span-1 md:col-span-2 mt-4">
+                <Button
+                  type="submit"
+                  className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white text-sm transition-transform duration-200 hover:scale-[1.02]"
+                >
+                  Register
+                </Button>
+              </div>
+            </form>
 
-            {/* Submit Button */}
-            <div className="col-span-1 md:col-span-2 mt-4">
-              <Button
-                type="submit"
-                className="w-full bg-[#1A3A8F] hover:bg-[#0A1A4A] text-white text-sm"
+            {/* Links */}
+            <div className="mt-6 flex flex-col md:flex-row justify-between items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <div
+                onClick={() => navigate("/login")}
+                className="cursor-pointer font-semibold text-[#7F5AF0] hover:text-[#5A3DF0] transition duration-200 hover:scale-105"
               >
-                Register
-              </Button>
+                🔐 Already have an account? <span className="font-bold">Login</span>
+              </div>
+              <div
+                onClick={() => navigate("/")}
+                className="cursor-pointer font-semibold text-gray-600 dark:text-gray-400 hover:text-blue-600 transition duration-200 hover:scale-105"
+              >
+                ⬅ Back to Home
+              </div>
             </div>
-          </form>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "../../services/api";
 
@@ -48,12 +48,13 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#E6E9F5] dark:bg-[#181818] transition duration-300 px-4">
-      <Card className="w-full max-w-md shadow-lg border border-[#D6CEFA]">
+      <Card className="w-full max-w-md shadow-xl border border-[#D6CEFA] dark:border-[#333333]">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold text-[#0A1A4A] dark:text-[#7F5AF0]">
             Login to HireWave
           </CardTitle>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -83,11 +84,28 @@ export default function Login() {
 
             <Button
               type="submit"
-              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white font-semibold transition duration-200"
+              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white font-semibold transition-transform duration-200 hover:scale-[1.02]"
             >
               Login
             </Button>
           </form>
+
+          {/* Extra Links */}
+          <div className="mt-6 text-center text-sm text-gray-700 dark:text-gray-300 space-y-3">
+            <div
+              onClick={() => navigate("/register")}
+              className="font-semibold text-[#7F5AF0] dark:text-[#B5A9FF] cursor-pointer hover:text-[#5A3DF0] transition-all duration-200 hover:scale-105"
+            >
+              ➕ Don’t have an account? <span className="font-bold">Register here</span>
+            </div>
+
+            <div
+              onClick={() => navigate("/")}
+              className="font-semibold text-gray-600 dark:text-gray-400 cursor-pointer hover:text-blue-600 transition-all duration-200 hover:scale-105"
+            >
+              ⬅ Back to Home
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
