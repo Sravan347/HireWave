@@ -1,13 +1,10 @@
-
-
 import React, { useEffect, useState } from 'react';
-import { Button } from "@/components/ui/button"
-
-import API from '../services/api';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Navbar from '../components/Navbar';
-import JobCard from '../components/JobCard'; // Create this
+import JobCard from '../components/JobCard';
 import Footer from '../components/Footer';
-
+import API from '../services/api';
 
 const LandingPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -36,24 +33,33 @@ const LandingPage = () => {
     setFilteredJobs(filtered);
   }, [search, jobs]);
 
-   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-[#181818] text-gray-800 dark:text-gray-200 transition duration-300">
+  return (
+    <div className="flex flex-col min-h-screen bg-white dark:bg-[#181818] text-[#2D3748] dark:text-[#E6E9F5] transition duration-300">
       <Navbar />
+
       <main className="flex-grow">
         <div className="max-w-6xl mx-auto px-4 py-8">
+          {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-[#2563EB] dark:text-blue-400">Explore Jobs on HireWave</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">Find your dream job today</p>
+            <h1 className="text-4xl font-bold text-[#0A1A4A] dark:text-[#7F5AF0]">
+              Explore Jobs on HireWave
+            </h1>
+            <p className="text-[#2D3748] dark:text-[#D6CEFA] mt-2">
+              Find your dream job today
+            </p>
           </div>
 
-          <input
+          {/* Search Input */}
+          <Input
             type="text"
             placeholder="Search jobs or companies..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-3 mb-6 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-[#282828] focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full mb-6 bg-[#E6E9F5] dark:bg-[#282828] border border-[#1A3A8F] focus:ring-2 focus:ring-[#7F5AF0] text-[#2D3748] dark:text-white"
           />
 
+
+          {/* Job Listings */}
           {filteredJobs.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredJobs.map((job) => (
@@ -61,16 +67,16 @@ const LandingPage = () => {
               ))}
             </div>
           ) : (
-            <p className="text-center mt-10 text-gray-500">No jobs found.</p>
+            <p className="text-center mt-10 text-[#757575] dark:text-[#D6CEFA]">
+              No jobs found.
+            </p>
           )}
-
-        
         </div>
       </main>
-      <Footer /> {/* Add footer at the bottom */}
+
+      <Footer />
     </div>
   );
 };
 
 export default LandingPage;
-

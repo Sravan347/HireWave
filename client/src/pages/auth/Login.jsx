@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import API from "../../services/api";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
@@ -26,13 +31,9 @@ export default function Login() {
 
     try {
       const { data } = await API.post("/auth/login", form);
-
-      // ✅ Save token or full user info
       localStorage.setItem("token", data.token);
-      // Optional: Save user data
       localStorage.setItem("user", JSON.stringify(data));
 
-      // ✅ Redirect based on role
       if (data.role === "candidate") {
         navigate("/candidate/dashboard");
       } else if (data.role === "admin") {
@@ -46,43 +47,49 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] flex justify-center items-center">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md animate-fade-in space-y-4"
-      >
-        <h2 className="text-2xl font-semibold text-center text-[#2563EB]">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#E6E9F5] dark:bg-[#181818] transition duration-300 px-4">
+      <Card className="w-full max-w-md shadow-lg border border-[#D6CEFA]">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-bold text-[#0A1A4A] dark:text-[#7F5AF0]">
+            Login to HireWave
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Input
+                name="email"
+                placeholder="Email"
+                onChange={handleChange}
+                className="bg-white dark:bg-[#282828] border border-[#1A3A8F] text-[#2D3748] dark:text-white"
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+              )}
+            </div>
 
-        <div>
-          <input
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            className="input w-full px-3 py-2 border border-gray-300 rounded"
-          />
-          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-        </div>
+            <div>
+              <Input
+                name="password"
+                type="password"
+                placeholder="Password"
+                onChange={handleChange}
+                className="bg-white dark:bg-[#282828] border border-[#1A3A8F] text-[#2D3748] dark:text-white"
+              />
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+              )}
+            </div>
 
-        <div>
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            onChange={handleChange}
-            className="input w-full px-3 py-2 border border-gray-300 rounded"
-          />
-          {errors.password && (
-            <p className="text-sm text-red-500">{errors.password}</p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white py-2 rounded hover:shadow-lg transition duration-200 ease-in-out cursor-pointer hover:brightness-110"
-        >
-          Login
-        </button>
-      </form>
+            <Button
+              type="submit"
+              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white font-semibold transition duration-200"
+            >
+              Login
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,6 +1,14 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { FaHome, FaBriefcase, FaUser, FaFileAlt, FaSignOutAlt } from 'react-icons/fa';
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  FaHome,
+  FaBriefcase,
+  FaUser,
+  FaFileAlt,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -8,40 +16,48 @@ const Sidebar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login"); // redirect to general login
+    navigate("/login");
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
-      isActive ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-blue-100'
+    `flex items-center gap-3 p-2 px-3 rounded-md font-medium text-sm transition-colors duration-200 ${
+      isActive
+        ? "bg-[#1A3A8F] text-white"
+        : "text-[#2D3748] hover:bg-[#E6E9F5] hover:text-[#0A1A4A]"
     }`;
 
   return (
-    <aside className="w-64 bg-white shadow-md p-4 flex flex-col justify-between min-h-screen">
-      <div>
-        <h1 className="text-2xl font-bold text-blue-600 mb-8 text-center">HireWave</h1>
+    <aside className="w-64 flex-shrink-0 bg-white shadow-md min-h-screen flex flex-col justify-between">
+      <div className="p-6">
+        <h1 className="text-2xl font-bold text-[#1A3A8F] text-center mb-6">
+          HireWave
+        </h1>
         <nav className="space-y-2">
           <NavLink to="/candidate/dashboard" className={linkClass}>
-            <FaHome /> <span>Job Board</span>
+            <FaHome size={16} /> Job Board
           </NavLink>
           <NavLink to="/candidate/dashboard/applications" className={linkClass}>
-            <FaBriefcase /> <span>My Applications</span>
+            <FaBriefcase size={16} /> My Applications
           </NavLink>
           <NavLink to="/candidate/dashboard/profile" className={linkClass}>
-            <FaUser /> <span>My Profile</span>
+            <FaUser size={16} /> My Profile
           </NavLink>
           <NavLink to="/candidate/dashboard/offers" className={linkClass}>
-            <FaFileAlt /> <span>Offers</span>
+            <FaFileAlt size={16} /> Offers
           </NavLink>
         </nav>
       </div>
 
-      <button
-        onClick={handleLogout}
-        className="flex items-center gap-2 mt-10 text-red-600 hover:text-white hover:bg-red-500 p-3 rounded transition"
-      >
-        <FaSignOutAlt /> <span>Logout</span>
-      </button>
+      <div className="p-6">
+        <Separator className="mb-4 bg-[#D6CEFA]" />
+        <Button
+          variant="ghost"
+          onClick={handleLogout}
+          className="w-full justify-start gap-3 text-red-600 hover:bg-red-100"
+        >
+          <FaSignOutAlt size={16} /> Logout
+        </Button>
+      </div>
     </aside>
   );
 };
