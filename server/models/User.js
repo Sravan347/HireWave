@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema(
       },
     },
 
-    // 🏢 Recruiter Specific Fields
+    //  Recruiter Specific Fields
     companyName: {
       type: String,
       required: function () {
@@ -111,7 +111,7 @@ const userSchema = new mongoose.Schema(
     resumeUrl: {
       type: String,
     },
-    // Add this field to your userSchema
+    
     approvalStatus: {
       type: String,
       enum: ["pending", "approved", "declined"],
@@ -130,7 +130,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// 🔒 Password Hashing
+//  Password Hashing
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -138,7 +138,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// 🔐 Password Comparison
+//  Password Comparison
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };

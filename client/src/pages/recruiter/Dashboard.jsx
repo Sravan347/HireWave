@@ -14,7 +14,7 @@ const RecruiterDashboard = () => {
   const fetchJobs = async () => {
     try {
       const res = await API.get("/jobs");
-      setJobs(res.data); // Array of jobs
+      setJobs(res.data); 
     } catch (err) {
       toast.error("Failed to fetch jobs");
     } finally {

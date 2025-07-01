@@ -58,8 +58,6 @@ offerLetterUrl: {
 },
 
 
-
-
 });
 
 module.exports = mongoose.model("Application", applicationSchema);

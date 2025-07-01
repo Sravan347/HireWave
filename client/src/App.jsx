@@ -57,11 +57,11 @@ const App = () => {
           <Route path="offers" element={<Offers />} />
         </Route>
 
-        {/* New: Recruiter Public Profile Page for Reviews */}
+        
         {/* This route allows candidates to view a recruiter's profile and leave reviews */}
         <Route path="/recruiters/:recruiterId" element={<RecruiterProfilePage />} /> 
 
-        {/* Job Board (public) */}
+        {/* Job Board */}
         <Route path="/jobs" element={<JobBoard />} />
       </Routes>
     </>
