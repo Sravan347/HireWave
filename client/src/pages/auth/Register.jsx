@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function CandidateRegister() {
   const navigate = useNavigate();
@@ -40,7 +43,6 @@ export default function CandidateRegister() {
       case "confirmPassword":
         if (value !== form.password) err = "Passwords do not match.";
         break;
-
       case "mobile":
         if (!/^\d{10}$/.test(value)) err = "Mobile must be 10 digits.";
         break;
@@ -73,8 +75,6 @@ export default function CandidateRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Final validation before submission
     const allFields = Object.keys(form);
     let valid = true;
     allFields.forEach((key) => {
@@ -90,7 +90,7 @@ export default function CandidateRegister() {
     try {
       const { data } = await API.post("/auth/register", {
         ...form,
-        age: parseInt(form.age), 
+        age: parseInt(form.age),
       });
       localStorage.setItem("token", data.token);
       toast.success("Registration successful!");
@@ -101,157 +101,102 @@ export default function CandidateRegister() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center text-[#2563EB] mb-6">
-        Candidate Registration
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name */}
-        <div>
-          <input
-            name="name"
-            placeholder="Full Name"
-            value={form.name}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-          />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-          )}
-        </div>
+    <div className="max-w-4xl mx-auto mt-10 px-4">
+      <Card className="bg-[#E6E9F5] shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-center text-[#0A1A4A] text-2xl">
+            Candidate Registration
+          </CardTitle>
+        </CardHeader>
 
-        {/* Email */}
-        <div>
-          <input
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-          )}
-        </div>
-
-        {/* Password */}
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-          )}
-        </div>
-
-        {/* Confirm Password */}
-        <div>
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-          />
-          {errors.confirmPassword && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.confirmPassword}
-            </p>
-          )}
-        </div>
-
-        {/* Mobile */}
-        <div>
-          <input
-            name="mobile"
-            placeholder="Mobile Number"
-            value={form.mobile}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-          />
-          {errors.mobile && (
-            <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>
-          )}
-        </div>
-
-        {/* Age */}
-        <div>
-          <input
-            name="age"
-            type="number"
-            placeholder="Age"
-            value={form.age}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-          />
-          {errors.age && (
-            <p className="text-red-500 text-sm mt-1">{errors.age}</p>
-          )}
-        </div>
-
-        {/* Place */}
-        <div>
-          <input
-            name="place"
-            placeholder="Place"
-            value={form.place}
-            onChange={handleChange}
-            className="input input-bordered w-full"
-          />
-          {errors.place && (
-            <p className="text-red-500 text-sm mt-1">{errors.place}</p>
-          )}
-        </div>
-
-        {/* Qualification */}
-        <div>
-          <select
-            name="qualification"
-            value={form.qualification}
-            onChange={handleChange}
-            className="select select-bordered w-full"
+        <CardContent>
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"
           >
-            <option value="">Select Qualification</option>
-            <option value="PG">Post Graduate</option>
-            <option value="UG">Under Graduate</option>
-            <option value="Diploma">Diploma</option>
-            <option value="Secondary Education">Secondary Education</option>
-          </select>
-          {errors.qualification && (
-            <p className="text-red-500 text-sm mt-1">{errors.qualification}</p>
-          )}
-        </div>
+            {[
+              { name: "name", type: "text", placeholder: "Full Name" },
+              { name: "email", type: "email", placeholder: "Email" },
+              { name: "password", type: "password", placeholder: "Password" },
+              {
+                name: "confirmPassword",
+                type: "password",
+                placeholder: "Confirm Password",
+              },
+              { name: "mobile", type: "text", placeholder: "Mobile Number" },
+              { name: "age", type: "number", placeholder: "Age" },
+              { name: "place", type: "text", placeholder: "Place" },
+            ].map((field) => (
+              <div key={field.name}>
+                <Label className="text-[#2D3748] mb-2 block">
+                  {field.placeholder}
+                </Label>
+                <Input
+                  type={field.type}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  value={form[field.name]}
+                  onChange={handleChange}
+                  className="h-9 text-sm border border-[#1A3A8F] focus:border-[#7F5AF0] focus:ring-[#7F5AF0]"
+                />
+                {errors[field.name] && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {errors[field.name]}
+                  </p>
+                )}
+              </div>
+            ))}
 
-        {/* Experience */}
-        <div>
-          <select
-            name="experience"
-            value={form.experience}
-            onChange={handleChange}
-            className="select select-bordered w-full"
-          >
-            <option value="">Are you a Fresher or Experienced?</option>
-            <option value="Fresher">Fresher</option>
-            <option value="Experienced">Experienced</option>
-          </select>
-          {errors.experience && (
-            <p className="text-red-500 text-sm mt-1">{errors.experience}</p>
-          )}
-        </div>
+            {/* Qualification */}
+            <div>
+              <Label className="text-[#2D3748] mb-2 block">Qualification</Label>
+              <select
+                name="qualification"
+                value={form.qualification}
+                onChange={handleChange}
+                className="w-full h-9 text-sm border border-[#1A3A8F] rounded px-2 focus:ring-2 focus:ring-[#7F5AF0]"
+              >
+                <option value="">Select Qualification</option>
+                <option value="PG">Post Graduate</option>
+                <option value="UG">Under Graduate</option>
+                <option value="Diploma">Diploma</option>
+                <option value="Secondary Education">Secondary Education</option>
+              </select>
+              {errors.qualification && (
+                <p className="text-sm text-red-500 mt-1">{errors.qualification}</p>
+              )}
+            </div>
 
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white py-2 rounded hover:shadow-lg transition duration-200 ease-in-out cursor-pointer hover:brightness-110"
-        >
-          Register
-        </button>
-      </form>
+            {/* Experience */}
+            <div>
+              <Label className="text-[#2D3748] mb-2 block">Experience</Label>
+              <select
+                name="experience"
+                value={form.experience}
+                onChange={handleChange}
+                className="w-full h-9 text-sm border border-[#1A3A8F] rounded px-2 focus:ring-2 focus:ring-[#7F5AF0]"
+              >
+                <option value="">Are you a Fresher or Experienced?</option>
+                <option value="Fresher">Fresher</option>
+                <option value="Experienced">Experienced</option>
+              </select>
+              {errors.experience && (
+                <p className="text-sm text-red-500 mt-1">{errors.experience}</p>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="col-span-1 md:col-span-2 mt-4">
+              <Button
+                type="submit"
+                className="w-full bg-[#1A3A8F] hover:bg-[#0A1A4A] text-white text-sm"
+              >
+                Register
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

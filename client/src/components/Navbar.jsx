@@ -1,108 +1,121 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { UserRound, Briefcase, ChevronDown } from "lucide-react";
-import logo from '../assets/logo.png';
+import { Briefcase, ChevronDown, Menu, UserRound } from "lucide-react";
+import logo from "../assets/logo.png";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef();
-
-  // Close dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
-    <nav className="bg-[#2563EB] text-white px-6 py-0 shadow-md flex items-center" style={{height: '64px'}}>
-      <div className="flex-shrink-0 flex items-center h-full" style={{height: '100%'}}>
-        <Link to="/" className="block h-full w-[200px]">
-          <img src={logo} alt="HireWave Logo" className="h-full w-auto object-contain" style={{height: '64px', maxHeight: '100%'}} />
-        </Link>
-      </div>
-      <div className="flex-1 flex justify-end items-center gap-6 pr-6">
-        <Link
-          to="/login"
-          className="flex items-center gap-1 font-semibold transition-transform duration-200 hover:scale-105"
-        >
-          <UserRound size={18} />
-          Login
+    <nav className="bg-[#0A1A4A] text-white">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="HireWave Logo" className="h-10 w-auto" />
         </Link>
 
-        <Link
-          to="/register"
-          className="flex items-center gap-1 font-semibold transition-transform duration-200 hover:scale-105"
-        >
-          <UserRound size={18} />
-          Register
-        </Link>
-
-        {/* Dropdown Section */}
-        <div ref={dropdownRef} className="relative">
-          <button
-            onClick={() => setDropdownOpen((prev) => !prev)}
-            className="flex items-center gap-1 font-semibold transition-transform duration-200 hover:scale-105"
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-6">
+          <Link
+            to="/login"
+            className="text-sm font-medium hover:text-[#FFD447] flex items-center gap-1 transition"
           >
-            <Briefcase size={18} />
-            For Recruiters
-            <ChevronDown size={16} />
-          </button>
-
-          {dropdownOpen && (
-            <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg w-48 z-50">
-              <Link
-                to="/recruiter/login"
-                onClick={() => setDropdownOpen(false)}
-                className="block px-4 py-2 hover:bg-gray-100 font-medium"
-              >
-                Recruiter Login
-              </Link>
-              <Link
-                to="/recruiter/register"
-                onClick={() => setDropdownOpen(false)}
-                className="block px-4 py-2 hover:bg-gray-100 font-medium"
-              >
-                Recruiter Register
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-[#1e3a8a] px-4 pb-4 space-y-2 font-semibold">
-          <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:text-gray-300">
+            <UserRound size={18} />
             Login
           </Link>
-          <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:text-gray-300">
+
+          <Link
+            to="/register"
+            className="text-sm font-medium hover:text-[#FFD447] flex items-center gap-1 transition"
+          >
+            <UserRound size={18} />
             Register
           </Link>
-          <div>
-            <p className="text-white">For Recruiters</p>
-            <Link
-              to="/recruiter/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block pl-4 text-white hover:text-gray-300"
-            >
-              Recruiter Login
-            </Link>
-            <Link
-              to="/recruiter/register"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block pl-4 text-white hover:text-gray-300"
-            >
-              Recruiter Register
-            </Link>
-          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="text-white hover:text-[#FFD447] px-2 h-8 text-sm font-medium gap-1"
+              >
+                <Briefcase size={18} />
+                For Recruiters
+                <ChevronDown size={16} />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="bg-[#E6E9F5] text-[#2D3748] w-52 mt-2 rounded-md border border-[#1A3A8F] shadow-md">
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/recruiter/login"
+                  className="hover:bg-[#D6CEFA] hover:text-[#0A1A4A] w-full px-2 py-1.5 rounded-sm"
+                >
+                  Recruiter Login
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/recruiter/register"
+                  className="hover:bg-[#D6CEFA] hover:text-[#0A1A4A] w-full px-2 py-1.5 rounded-sm"
+                >
+                  Recruiter Register
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      )}
+
+        {/* Mobile Menu */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" className="text-white p-0">
+                <Menu size={24} />
+              </Button>
+            </SheetTrigger>
+
+            <SheetContent side="right" className="bg-[#1A3A8F] text-white w-64 pt-16">
+              <div className="space-y-4">
+                <Link
+                  to="/login"
+                  className="block font-medium hover:text-[#FFD447]"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="block font-medium hover:text-[#FFD447]"
+                >
+                  Register
+                </Link>
+
+                <div>
+                  <p className="text-sm font-semibold mb-1">For Recruiters</p>
+                  <Link
+                    to="/recruiter/login"
+                    className="block pl-2 hover:text-[#FFD447] text-sm"
+                  >
+                    Recruiter Login
+                  </Link>
+                  <Link
+                    to="/recruiter/register"
+                    className="block pl-2 hover:text-[#FFD447] text-sm"
+                  >
+                    Recruiter Register
+                  </Link>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
     </nav>
   );
 }
