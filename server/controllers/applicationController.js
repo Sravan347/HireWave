@@ -231,3 +231,58 @@ exports.uploadOfferLetter = async (req, res) => {
 };
 
 
+
+// Candidate accepts or rejects the offer
+exports.respondToOffer = async (req, res) => {
+  try {
+    const { decision } = req.body; // 'accepted' or 'rejected'
+    const validDecisions = ["accepted", "rejected"];
+
+    if (!validDecisions.includes(decision)) {
+      return res.status(400).json({ message: "Invalid decision" });
+    }
+
+    const application = await Application.findById(req.params.id);
+    if (!application) return res.status(404).json({ message: "Application not found" });
+
+    if (application.candidateId.toString() !== req.user._id.toString())
+      return res.status(403).json({ message: "Unauthorized" });
+
+    if (application.status !== "offered") {
+      return res.status(400).json({ message: "Offer not available for response" });
+    }
+
+    // ✅ Fix: Update both status & offerResponse
+    application.status = decision;
+    application.offerResponse = decision;
+
+    await application.save();
+
+    res.status(200).json({ message: `Offer ${decision}`, application });
+  } catch (err) {
+    console.error("Offer response error:", err);
+    res.status(500).json({ message: "Server error responding to offer" });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  CANDIDATE  • GET only accepted offers
+exports.getAcceptedOffers = async (req, res) => {
+  try {
+    const offers = await Application.find({
+      candidateId: req.user._id,
+      status: "accepted",
+    })
+      .populate(
+        "jobId",
+        "title companyName description location experience salaryRange"
+      )
+      .sort({ updatedAt: -1 });
+
+    res.status(200).json({ count: offers.length, offers });
+  } catch (err) {
+    console.error("Fetch accepted offers error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+

@@ -58,14 +58,18 @@ export default function MyApplications() {
             <div key={s} className="flex-1 flex items-center">
               <div
                 className={`w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold ${
-                  i <= idx ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-600"
+                  i <= idx
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-300 text-gray-600"
                 }`}
               >
                 {i + 1}
               </div>
               {i < steps.length - 1 && (
                 <div
-                  className={`flex-1 h-1 ${i < idx ? "bg-blue-600" : "bg-gray-300"}`}
+                  className={`flex-1 h-1 ${
+                    i < idx ? "bg-blue-600" : "bg-gray-300"
+                  }`}
                 />
               )}
             </div>
@@ -139,7 +143,7 @@ export default function MyApplications() {
                     </div>
                   ) : (
                     <div className="text-sm text-green-700">
-                      ✅ Answer Submitted — {" "}
+                      ✅ Answer Submitted —{" "}
                       <a
                         href={app.answerFileUrl}
                         target="_blank"
@@ -155,9 +159,14 @@ export default function MyApplications() {
 
               {app.status === "interview" && app.interviewDetails && (
                 <div className="mt-3 bg-blue-50 p-3 rounded border border-blue-200 text-sm">
-                  <p className="font-medium text-blue-800">📅 Interview Scheduled</p>
+                  <p className="font-medium text-blue-800">
+                    📅 Interview Scheduled
+                  </p>
                   <p>
-                    <b>Date:</b> {new Date(app.interviewDetails.date).toLocaleString("en-IN")}
+                    <b>Date:</b>{" "}
+                    {new Date(app.interviewDetails.date).toLocaleString(
+                      "en-IN"
+                    )}
                   </p>
                   <p>
                     <b>Link:</b>{" "}
@@ -180,9 +189,11 @@ export default function MyApplications() {
               )}
 
               {app.status === "offered" && app.offerLetterUrl && (
-                <p className="text-blue-700 text-sm mt-2">
-                  🎉 You are selected! Please check your email for further communication.
-                  <br />📄 Offer Letter — {" "}
+                <div className="text-blue-700 text-sm mt-2">
+                  🎉 You are selected! Please check your email for further
+                  communication.
+                  <br />
+                  📄 Offer Letter —{" "}
                   <a
                     href={app.offerLetterUrl}
                     className="underline"
@@ -191,7 +202,58 @@ export default function MyApplications() {
                   >
                     View
                   </a>
-                </p>
+                  {app.offerResponse === "pending" ? (
+                    <div className="mt-3 flex gap-3">
+                      <Button
+                        onClick={async () => {
+                          try {
+                            await API.put(
+                              `/applications/application/${app._id}/respond-to-offer`,
+                              {
+                                decision: "accepted",
+                              }
+                            );
+                            toast.success("Offer accepted!");
+                            fetchMyApplications();
+                          } catch {
+                            toast.error("Failed to accept offer");
+                          }
+                        }}
+                        className="bg-green-600 text-white px-3 py-1 text-xs hover:bg-green-700"
+                      >
+                        ✅ Accept
+                      </Button>
+
+                      <Button
+                        onClick={async () => {
+                          try {
+                            await API.put(
+                              `/applications/application/${app._id}/respond-to-offer`,
+                              {
+                                decision: "rejected",
+                              }
+                            );
+                            toast.success("Offer rejected.");
+                            fetchMyApplications();
+                          } catch {
+                            toast.error("Failed to reject offer");
+                          }
+                        }}
+                        className="bg-red-500 text-white px-3 py-1 text-xs hover:bg-red-600"
+                      >
+                        ❌ Reject
+                      </Button>
+                    </div>
+                  ) : app.offerResponse === "accepted" ? (
+                    <p className="text-green-600 font-medium mt-2">
+                      ✅ You have accepted the offer.
+                    </p>
+                  ) : (
+                    <p className="text-red-600 font-medium mt-2">
+                      ❌ You have rejected the offer.
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           ))}
