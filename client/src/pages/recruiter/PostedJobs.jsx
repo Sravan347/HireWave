@@ -9,8 +9,10 @@ import {
   LogOut,
   PlusCircle,
   Briefcase,
+  UserCheck,
 } from "lucide-react";
-import { UserCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 
 export default function PostedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -33,7 +35,7 @@ export default function PostedJobs() {
     try {
       await API.delete(`/jobs/${id}`);
       toast.success("Job deleted");
-      fetchJobs(); // Refresh list
+      fetchJobs();
     } catch (err) {
       toast.error("Failed to delete job");
     }
@@ -51,106 +53,98 @@ export default function PostedJobs() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-[#E6E9F5]">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#1E3A8A] text-white p-6 space-y-6 hidden md:flex flex-col">
+      <aside className="w-64 bg-[#0A1A4A] text-white p-6 space-y-6 hidden md:flex flex-col">
         <h2 className="text-2xl font-bold">Recruiter Panel</h2>
-        <button
+        <Button
+          variant="ghost"
+          className="justify-start text-white hover:bg-[#1A3A8F]"
           onClick={handlePostJob}
-          className="flex items-center gap-2 hover:bg-blue-700 px-4 py-2 rounded transition"
         >
-          <PlusCircle size={18} /> Post New Job
-        </button>
-        <button className="flex items-center gap-2 bg-blue-700 px-4 py-2 rounded">
-          <Briefcase size={18} /> Posted Jobs
-        </button>
-        <button
+          <PlusCircle size={18} className="mr-2" /> Post New Job
+        </Button>
+        <Button
+          variant="ghost"
+          className="justify-start bg-[#1A3A8F] hover:bg-[#1A3A8F] text-white"
+        >
+          <Briefcase size={18} className="mr-2" /> Posted Jobs
+        </Button>
+        <Button
+          variant="ghost"
+          className="mt-auto justify-start text-red-300 hover:text-red-400"
           onClick={handleLogout}
-          className="flex items-center gap-2 hover:text-red-300 mt-auto"
         >
-          <LogOut size={18} /> Logout
-        </button>
+          <LogOut size={18} className="mr-2" /> Logout
+        </Button>
       </aside>
 
-      {/* Main content */}
+      {/* Main Content */}
       <main className="flex-1 p-6 md:p-10 overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-[#1E3A8A]">My Posted Jobs</h2>
-          <button
+          <h2 className="text-2xl font-bold text-[#0A1A4A]">My Posted Jobs</h2>
+          <Button
+            className="bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white"
             onClick={handlePostJob}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
           >
             + Post New Job
-          </button>
+          </Button>
         </div>
 
         {loading ? (
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-[#2D3748]">Loading...</p>
         ) : jobs.length === 0 ? (
-          <p className="text-gray-600">No jobs posted yet.</p>
+          <p className="text-[#2D3748]">No jobs posted yet.</p>
         ) : (
           <div className="grid gap-4">
             {jobs.map((job) => (
-              <div
-                key={job._id}
-                className="bg-white shadow rounded p-4 hover:shadow-md transition duration-200"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-xl font-semibold text-[#2563EB]">
-                      {job.title}
-                    </h3>
-                    <p className="text-gray-700">
-                      {job.location} • {job.jobType}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Posted on {new Date(job.createdAt).toLocaleDateString()}
-                    </p>
-                    <p className="mt-2 text-gray-600 line-clamp-2">
-                      {job.description}
-                    </p>
-                    <p className="text-sm mt-1 text-green-700">
-                      Applicants: {job.numApplicants}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button
+              <Card key={job._id} className="bg-white shadow border border-[#D6CEFA]">
+                <CardHeader>
+                  <CardTitle className="text-[#2563EB] text-xl font-semibold">
+                    {job.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-[#2D3748]">{job.location} • {job.jobType}</p>
+                  <p className="text-sm text-[#757575]">
+                    Posted on {new Date(job.createdAt).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-[#343434] line-clamp-2">{job.description}</p>
+                  <p className="text-sm text-green-700">
+                    Applicants: <b>{job.numApplicants}</b>
+                  </p>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    <Button
+                      variant="outline"
+                      className="hover:bg-[#E6E9F5]"
                       onClick={() => navigate(`/recruiter/jobs/${job._id}`)}
-                      className="p-2 rounded hover:bg-blue-50"
-                      title="View"
                     >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      onClick={() =>
-                        navigate(`/recruiter/jobs/edit/${job._id}`)
-                      }
-                      className="p-2 rounded hover:bg-yellow-50"
-                      title="Edit"
+                      <Eye size={16} className="mr-2" /> View
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="hover:bg-[#FFF6D6]"
+                      onClick={() => navigate(`/recruiter/jobs/edit/${job._id}`)}
                     >
-                      <Pencil size={18} />
-                    </button>
-                    <button
+                      <Pencil size={16} className="mr-2" /> Edit
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="hover:bg-[#FBEAEA] text-red-600"
                       onClick={() => handleDelete(job._id)}
-                      className="p-2 rounded hover:bg-red-50"
-                      title="Delete"
                     >
-                      <Trash2 size={18} />
-                    </button>
-                    <button
-                      onClick={() =>
-                        navigate(`/recruiter/jobs/${job._id}/applicants`)
-                      }
-                      className="flex items-center gap-1 px-3 py-2 rounded hover:bg-green-50 text-sm font-medium text-green-700 border border-green-200"
-                      title="View Applicants"
+                      <Trash2 size={16} className="mr-2" /> Delete
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      className="text-green-700 border border-green-300"
+                      onClick={() => navigate(`/recruiter/jobs/${job._id}/applicants`)}
                     >
-                      <UserCheck size={18} />
-                      View Applicants
-                    </button>
+                      <UserCheck size={16} className="mr-2" /> View Applicants
+                    </Button>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}

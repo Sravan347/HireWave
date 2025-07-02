@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
-import {
-  LogOut,
-  Users,
-  BarChart,
-  Star
-} from "lucide-react";
+import { LogOut, Users, BarChart, Star } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -36,7 +31,7 @@ export default function AdminDashboard() {
         approved: all.filter(r => r.approvalStatus === "approved"),
         declined: all.filter(r => r.approvalStatus === "declined")
       });
-    } catch (err) {
+    } catch {
       toast.error("Failed to fetch recruiters");
     } finally {
       setLoading(false);
@@ -82,7 +77,7 @@ export default function AdminDashboard() {
         {showActions && (
           <div className="flex gap-2 pt-4">
             <Button
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-[#5936D9] hover:bg-[#5A3DF0] text-white"
               onClick={() => handleStatusUpdate(recruiter._id, "approve")}
             >
               Approve
@@ -100,42 +95,54 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 bg-[#0A1A4A] text-white p-6 space-y-4">
+    <div className="flex min-h-screen bg-[#F7F7F7]">
+      {/* Fixed Sidebar */}
+      <aside className="fixed top-0 left-0 h-full w-64 bg-[#0A1A4A] text-white p-6 flex flex-col space-y-6 z-10 shadow-lg">
         <h2 className="text-2xl font-bold">Admin Panel</h2>
-        <Tabs value={tab} onValueChange={setTab} className="space-y-2">
-          <TabsList className="flex flex-col space-y-2">
-            {tabs.map(key => {
+        <Tabs value={tab} onValueChange={setTab} className="flex-1">
+          <TabsList className="flex flex-col gap-2 h-full">
+            {tabs.map((key) => {
               const Icon =
                 key === "analytics" ? BarChart : key === "reviews" ? Star : Users;
-              const name =
+              const label =
                 key === "analytics"
                   ? "Platform Analytics"
                   : key === "reviews"
                   ? "User Reviews"
-                  : `${key} Recruiters`;
+                  : `${key.charAt(0).toUpperCase() + key.slice(1)} Recruiters`;
+
+              const isActive = tab === key;
+
               return (
                 <TabsTrigger
                   key={key}
                   value={key}
-                  className="flex items-center gap-2 px-3 py-2 text-sm rounded hover:bg-[#1A3A8F]"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm transition ${
+                    isActive
+                      ? "bg-[#1A3A8F] text-black font-medium"
+                      : "text-black/70 hover:bg-[#1A3A8F] hover:text-white"
+                  }`}
                 >
-                  <Icon size={18} /> {name}
+                  <Icon size={18} />
+                  {label}
                 </TabsTrigger>
               );
             })}
           </TabsList>
         </Tabs>
+
         <div
           onClick={handleLogout}
-          className="flex items-center gap-2 cursor-pointer hover:text-[#F4A261]"
+          className="mt-auto flex items-center gap-2 cursor-pointer hover:text-[#F4A261] transition py-4"
         >
-          <LogOut size={18} /> Logout
+          <LogOut size={18} />
+          <span>Logout</span>
         </div>
       </aside>
 
-      <main className="flex-1 p-8 bg-[#F7F7F7] overflow-y-auto">
-        <h1 className="text-2xl font-bold mb-6 text-[#0A1A4A]">
+      {/* Scrollable Main Content */}
+      <main className="ml-64 flex-1 p-8 overflow-y-auto">
+        <h1 className="text-2xl font-bold mb-6 text-[#0A1A4A] capitalize">
           {tab === "analytics"
             ? "Platform Analytics"
             : tab === "reviews"
@@ -158,12 +165,12 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         ) : loading ? (
-          <p>Loading...</p>
+          <p className="text-[#2D3748]">Loading...</p>
         ) : recruiters[tab].length === 0 ? (
-          <p>No {tab} recruiters found.</p>
+          <p className="text-[#2D3748]">No {tab} recruiters found.</p>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {recruiters[tab].map(rec => (
+            {recruiters[tab].map((rec) => (
               <RecruiterCard
                 key={rec._id}
                 recruiter={rec}

@@ -1,4 +1,3 @@
-// MyApplications.jsx
 import React, { useEffect, useState } from "react";
 import API from "../../services/api";
 import { Briefcase, MapPin } from "lucide-react";
@@ -44,12 +43,13 @@ export default function MyApplications() {
   const steps = ["applied", "shortlisted", "interview", "offered", "accepted"];
 
   const Tracker = ({ status }) => {
-    if (status === "rejected")
+    if (status === "rejected") {
       return (
         <span className="inline-block mt-4 bg-red-100 text-red-700 px-3 py-1 text-xs rounded-full font-medium">
           Rejected
         </span>
       );
+    }
     const idx = steps.indexOf(status);
     return (
       <div className="flex flex-col mt-4 space-y-1">
@@ -58,14 +58,18 @@ export default function MyApplications() {
             <div key={s} className="flex-1 flex items-center">
               <div
                 className={`w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold ${
-                  i <= idx ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-600"
+                  i <= idx
+                    ? "bg-[#1A3A8F] text-white"
+                    : "bg-gray-300 text-gray-600"
                 }`}
               >
                 {i + 1}
               </div>
               {i < steps.length - 1 && (
                 <div
-                  className={`flex-1 h-1 ${i < idx ? "bg-blue-600" : "bg-gray-300"}`}
+                  className={`flex-1 h-1 ${
+                    i < idx ? "bg-[#1A3A8F]" : "bg-gray-300"
+                  }`}
                 />
               )}
             </div>
@@ -83,24 +87,26 @@ export default function MyApplications() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">📄 My Applications</h1>
+    <div className="p-6 bg-[#E6E9F5] min-h-screen">
+      <h1 className="text-2xl font-bold text-[#0A1A4A] mb-6">
+        📄 My Applications
+      </h1>
 
       {applications.length === 0 ? (
-        <p className="text-gray-500">You haven't applied to any jobs yet.</p>
+        <p className="text-[#2D3748]">You haven't applied to any jobs yet.</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {applications.map((app) => (
             <div
               key={app._id}
-              className="bg-white p-4 rounded shadow hover:shadow-lg"
+              className="bg-white p-4 rounded-xl shadow hover:shadow-[0_4px_12px_#5936D9] transition-shadow"
             >
-              <h3 className="text-lg font-semibold">{app.jobId.title}</h3>
-              <p className="text-gray-600 text-sm">{app.jobId?.companyName}</p>
-              <div className="text-gray-500 text-sm flex items-center gap-1 mt-1">
+              <h3 className="text-lg font-semibold text-[#0A1A4A]">{app.jobId.title}</h3>
+              <p className="text-[#2D3748] text-sm">{app.jobId?.companyName}</p>
+              <div className="text-[#757575] text-sm flex items-center gap-1 mt-1">
                 <MapPin size={14} /> {app.jobId.location}
               </div>
-              <p className="text-sm mt-1 text-gray-700">
+              <p className="text-sm mt-1 text-[#343434]">
                 Exp: {app.jobId.experience}
               </p>
               <div className="mt-1 text-green-600 text-sm flex items-center gap-1">
@@ -132,14 +138,14 @@ export default function MyApplications() {
                       />
                       <Button
                         onClick={() => handleAnswerUpload(app._id)}
-                        className="bg-[#5A3DF0] hover:bg-[#5936D9] text-white px-3 py-1 text-xs"
+                        className="bg-[#5A3DF0] hover:bg-[#5936D9] text-white text-xs px-4"
                       >
                         Upload Answer
                       </Button>
                     </div>
                   ) : (
                     <div className="text-sm text-green-700">
-                      ✅ Answer Submitted — {" "}
+                      ✅ Answer Submitted —{" "}
                       <a
                         href={app.answerFileUrl}
                         target="_blank"
@@ -154,10 +160,11 @@ export default function MyApplications() {
               )}
 
               {app.status === "interview" && app.interviewDetails && (
-                <div className="mt-3 bg-blue-50 p-3 rounded border border-blue-200 text-sm">
-                  <p className="font-medium text-blue-800">📅 Interview Scheduled</p>
+                <div className="mt-3 bg-[#D6CEFA] p-3 rounded border border-[#7F5AF0] text-sm">
+                  <p className="font-medium text-[#5A3DF0]">📅 Interview Scheduled</p>
                   <p>
-                    <b>Date:</b> {new Date(app.interviewDetails.date).toLocaleString("en-IN")}
+                    <b>Date:</b>{" "}
+                    {new Date(app.interviewDetails.date).toLocaleString("en-IN")}
                   </p>
                   <p>
                     <b>Link:</b>{" "}
@@ -165,7 +172,7 @@ export default function MyApplications() {
                       href={app.interviewDetails.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline text-blue-600"
+                      className="underline text-[#7F5AF0] hover:text-[#5A3DF0]"
                     >
                       Join
                     </a>
@@ -174,18 +181,18 @@ export default function MyApplications() {
               )}
 
               {app.feedback && (
-                <p className="text-sm text-gray-700 mt-2">
+                <p className="text-sm text-[#2D3748] mt-2">
                   <b>Feedback:</b> {app.feedback}
                 </p>
               )}
 
               {app.status === "offered" && app.offerLetterUrl && (
-                <p className="text-blue-700 text-sm mt-2">
-                  🎉 You are selected! Please check your email for further communication.
-                  <br />📄 Offer Letter — {" "}
+                <p className="text-[#1A3A8F] text-sm mt-2">
+                  🎉 You are selected! Please check your email.
+                  <br />📄 Offer Letter —{" "}
                   <a
                     href={app.offerLetterUrl}
-                    className="underline"
+                    className="underline text-[#7F5AF0]"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

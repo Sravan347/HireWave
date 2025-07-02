@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import { toast } from "react-toastify";
 import { LogOut, Briefcase, PlusCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const PostJob = () => {
   const navigate = useNavigate();
@@ -42,33 +45,34 @@ const PostJob = () => {
   const handleDashboard = () => navigate("/recruiter/dashboard");
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#1E3A8A] text-white p-6 space-y-6 hidden md:flex flex-col">
+    <div className="flex min-h-screen bg-[#E6E9F5]">
+      <aside className="w-64 bg-[#0A1A4A] text-white p-6 space-y-6 hidden md:flex flex-col">
         <h2 className="text-2xl font-bold">Recruiter Panel</h2>
-        <button
+        <Button
+          variant="ghost"
+          className="justify-start text-white hover:bg-[#1A3A8F]"
           onClick={handleDashboard}
-          className="flex items-center gap-2 hover:bg-blue-700 px-4 py-2 rounded transition"
         >
-          <Briefcase size={18} /> Dashboard
-        </button>
-        <button
+          <Briefcase size={18} className="mr-2" /> Dashboard
+        </Button>
+        <Button
+          variant="ghost"
+          className="justify-start text-white hover:bg-[#1A3A8F]"
           onClick={handleMyJobs}
-          className="flex items-center gap-2 hover:bg-blue-700 px-4 py-2 rounded transition"
         >
-          <Briefcase size={18} /> My Posted Jobs
-        </button>
-        <button
+          <Briefcase size={18} className="mr-2" /> My Posted Jobs
+        </Button>
+        <Button
+          variant="ghost"
+          className="mt-auto justify-start text-red-300 hover:text-red-400"
           onClick={handleLogout}
-          className="flex items-center gap-2 hover:text-red-300 mt-auto"
         >
-          <LogOut size={18} /> Logout
-        </button>
+          <LogOut size={18} className="mr-2" /> Logout
+        </Button>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-6 md:p-10 overflow-y-auto">
-        <h1 className="text-3xl font-bold text-[#1E3A8A] mb-6">
+        <h1 className="text-3xl font-bold text-[#0A1A4A] mb-6">
           Post a New Job
         </h1>
 
@@ -76,24 +80,22 @@ const PostJob = () => {
           onSubmit={handleSubmit}
           className="bg-white p-6 rounded shadow grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          <input
+          <Input
             name="title"
             placeholder="Job Title"
             onChange={handleChange}
-            className="input"
             required
           />
-          <input
+          <Input
             name="location"
             placeholder="Job Location"
             onChange={handleChange}
-            className="input"
             required
           />
           <select
             name="jobType"
             onChange={handleChange}
-            className="input"
+            className="border border-gray-300 rounded px-3 py-2"
             required
           >
             <option value="">Select Job Type</option>
@@ -103,24 +105,22 @@ const PostJob = () => {
             <option value="Internship">Internship</option>
             <option value="Contract">Contract</option>
           </select>
-          <input
+          <Input
             name="salaryRange"
             placeholder="Salary Range (e.g. ₹20,000 - ₹40,000)"
             onChange={handleChange}
-            className="input"
             required
           />
-          <input
+          <Input
             name="qualificationsRequired"
             placeholder="Qualifications"
             onChange={handleChange}
-            className="input"
             required
           />
           <select
             name="experience"
             onChange={handleChange}
-            className="input"
+            className="border border-gray-300 rounded px-3 py-2"
             required
           >
             <option value="">Select Experience Level</option>
@@ -129,44 +129,42 @@ const PostJob = () => {
             <option value="3-5 years">3-5 years</option>
             <option value="5+ years">5+ years</option>
           </select>
-          <input
+          <Input
             type="date"
             name="applicationDeadline"
             onChange={handleChange}
-            className="input"
             required
           />
-          <input
+          <Input
             name="companyName"
             placeholder="Company Name"
             onChange={handleChange}
-            className="input"
             required
           />
-          <input
+          <Input
             name="companyLogo"
             placeholder="Company Logo URL"
             onChange={handleChange}
-            className="input"
             required
           />
 
           <div className="md:col-span-2">
-            <textarea
+            <Textarea
               name="description"
               placeholder="Job Description"
               onChange={handleChange}
-              className="input h-32 resize-none"
+              className="resize-none"
               required
             />
           </div>
+
           <div className="md:col-span-2">
-            <button
+            <Button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white"
             >
               Post Job
-            </button>
+            </Button>
           </div>
         </form>
       </main>

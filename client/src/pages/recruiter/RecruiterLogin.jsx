@@ -3,6 +3,9 @@ import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function RecruiterLogin() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -39,45 +42,49 @@ export default function RecruiterLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] flex justify-center items-center">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md animate-fade-in space-y-4"
-      >
-        <h2 className="text-2xl font-semibold text-center text-[#2563EB]">
-          Recruiter Login
-        </h2>
+    <div className="min-h-screen bg-[#E6E9F5] flex justify-center items-center px-4">
+      <Card className="w-full max-w-md shadow-xl animate-fade-in">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center text-[#1A3A8F]">
+            Recruiter Login
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Input
+                name="email"
+                placeholder="Email"
+                onChange={handleChange}
+                className="w-full"
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+              )}
+            </div>
 
-        <div>
-          <input
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            className="input w-full px-3 py-2 border border-gray-300 rounded"
-          />
-          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-        </div>
+            <div>
+              <Input
+                name="password"
+                type="password"
+                placeholder="Password"
+                onChange={handleChange}
+                className="w-full"
+              />
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+              )}
+            </div>
 
-        <div>
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            onChange={handleChange}
-            className="input w-full px-3 py-2 border border-gray-300 rounded"
-          />
-          {errors.password && (
-            <p className="text-sm text-red-500">{errors.password}</p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] text-white py-2 rounded hover:shadow-lg transition duration-200 ease-in-out cursor-pointer hover:brightness-110"
-        >
-          Login
-        </button>
-      </form>
+            <Button
+              type="submit"
+              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white"
+            >
+              Login
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
