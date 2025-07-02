@@ -1,4 +1,4 @@
-// pages/recruiter/ViewApplicants.jsx
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -12,23 +12,18 @@ import {
   FileCheck2,
 } from "lucide-react";
 
-/* ───────────────────── helpers ────────────────────── */
 const Score = ({ val }) => {
   const colour =
-    val >= 70 ? "bg-emerald-500" : val >= 40 ? "bg-amber-400" : "bg-rose-500";
+    val >= 70 ? "bg-[#0A1A4A]" : val >= 40 ? "bg-[#FFD447]" : "bg-[#F4A261]";
 
   return (
     <div className="space-y-1">
       <p className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
-        Résumé Score
+        Resume Score
       </p>
-
       <div className="flex items-center gap-2">
         <div className="w-full h-2 bg-gray-200 rounded">
-          <div
-            style={{ width: `${val}%` }}
-            className={`${colour} h-2 rounded`}
-          />
+          <div style={{ width: `${val}%` }} className={`${colour} h-2 rounded`} />
         </div>
         <span className="text-xs font-semibold text-gray-600">{val}%</span>
       </div>
@@ -36,7 +31,6 @@ const Score = ({ val }) => {
   );
 };
 
-/** Generic chip / link  */
 const Pill = ({ icon, text, colour, href, as = "span" }) => {
   const Comp = href ? "a" : "span";
   return (
@@ -53,15 +47,14 @@ const Pill = ({ icon, text, colour, href, as = "span" }) => {
   );
 };
 
-/* Re‑usable coloured action button
-   (Tailwind needs explicit class strings to avoid purge)            */
 const palette = {
-  emerald: ["bg-emerald-500", "hover:bg-emerald-600"],
-  blue: ["bg-blue-500", "hover:bg-blue-600"],
-  amber: ["bg-amber-500", "hover:bg-amber-600"],
-  rose: ["bg-rose-500", "hover:bg-rose-600"],
-  gray: ["bg-gray-300", ""],
+  emerald: ["bg-[#0A1A4A]", "hover:bg-[#1A3A8F]"],
+  blue: ["bg-[#7F5AF0]", "hover:bg-[#5A3DF0]"],
+  amber: ["bg-[#FFD447]", "hover:bg-[#F4A261]"],
+  rose: ["bg-[#F4A261]", "hover:bg-[#FFD447]"],
+  gray: ["bg-[#757575]", ""],
 };
+
 const Action = ({ colour, disabled, children, ...rest }) => {
   const [bg, hover] = palette[colour] || palette.gray;
   return (
@@ -77,23 +70,18 @@ const Action = ({ colour, disabled, children, ...rest }) => {
   );
 };
 
-/* ───────────────────── component ───────────────────── */
 export default function ViewApplicants() {
   const { jobId } = useParams();
   const nav = useNavigate();
-
   const [apps, setApps] = useState([]);
   const [busy, setBusy] = useState(true);
   const [buf, setBuf] = useState({});
   const [interv, setInterv] = useState({});
   const [fb, setFb] = useState({});
 
-  /* ─── pull applicants ─── */
   const refresh = async () => {
     try {
-      const { data } = await API.get(
-        `/applications/job/${jobId}/applicants`
-      );
+      const { data } = await API.get(`/applications/job/${jobId}/applicants`);
       setApps(data.applicants);
     } catch {
       toast.error("Failed to load applicants");
@@ -101,11 +89,11 @@ export default function ViewApplicants() {
       setBusy(false);
     }
   };
+
   useEffect(() => {
     refresh();
   }, [jobId]);
 
-  /* convenience helpers */
   const post = async (url, body = {}) => {
     try {
       await API.put(url, body);
@@ -115,7 +103,9 @@ export default function ViewApplicants() {
       toast.error("Error");
     }
   };
+
   const buffer = (id, f) => setBuf((p) => ({ ...p, [id]: f }));
+
   const upload = async (id, key, endpoint) => {
     const file = buf[id];
     if (!file) return toast.warn("Pick a file first");
@@ -132,25 +122,23 @@ export default function ViewApplicants() {
     }
   };
 
-  /* ───────────────────── UI ───────────────────── */
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-[#f5f7ff] to-[#eef1ff]">
-      {/*  sidebar  */}
-      <aside className="hidden md:flex w-64 flex-col bg-[#1E3A8A] text-white px-6 py-8 space-y-6 shadow-xl">
+      <aside className="hidden md:flex w-64 flex-col bg-[#0A1A4A] text-white px-6 py-8 space-y-6 shadow-xl">
         <h2 className="text-2xl font-bold">Recruiter Panel</h2>
 
         <button
           onClick={() => nav("/recruiter/post-job")}
-          className="flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-700 transition"
+          className="flex items-center gap-2 px-4 py-2 rounded bg-[#1A3A8F] hover:bg-[#5A3DF0] transition"
         >
-          <PlusCircle size={18} /> Post Job
+          <PlusCircle size={18} /> Post Job
         </button>
 
         <button
           onClick={() => nav("/recruiter/jobs")}
-          className="flex items-center gap-2 px-4 py-2 rounded bg-blue-700"
+          className="flex items-center gap-2 px-4 py-2 rounded bg-[#7F5AF0] hover:bg-[#5A3DF0] transition"
         >
-          <Briefcase size={18} /> My Jobs
+          <Briefcase size={18} /> My Jobs
         </button>
 
         <button
@@ -158,15 +146,14 @@ export default function ViewApplicants() {
             localStorage.removeItem("token");
             nav("/recruiter/login");
           }}
-          className="mt-auto flex items-center gap-2 text-red-200 hover:text-red-400 transition"
+          className="mt-auto flex items-center gap-2 text-[#F4A261] hover:text-[#FFD447] transition"
         >
           <LogOut size={18} /> Logout
         </button>
       </aside>
 
-      {/*  main  */}
       <main className="flex-1 p-6 md:p-10">
-        <h1 className="text-3xl font-extrabold text-[#1E3A8A] mb-8">
+        <h1 className="text-3xl font-extrabold text-[#0A1A4A] mb-8">
           Applicants
         </h1>
 
@@ -191,14 +178,13 @@ export default function ViewApplicants() {
                   transition={{ delay: idx * 0.05 }}
                   className="mb-6 break-inside-avoid"
                 >
-                  <div className="relative rounded-2xl ring-1 ring-white/40 shadow-lg backdrop-blur-lg bg-white/60 hover:shadow-2xl hover:scale-[1.015] transition">
-                    {/* ribbon */}
+                  <div className="relative rounded-2xl ring-1 ring-white/40 shadow-lg bg-[#E6E9F5] hover:shadow-2xl hover:scale-[1.015] transition">
                     {resp !== "pending" && (
                       <span
                         className={`absolute top-3 -right-10 rotate-45 text-[10px] px-10 py-0.5 font-bold text-white ${
                           resp === "accepted"
-                            ? "bg-emerald-500"
-                            : "bg-rose-500"
+                            ? "bg-[#0A1A4A]"
+                            : "bg-[#F4A261]"
                         }`}
                       >
                         {resp.toUpperCase()}
@@ -206,40 +192,38 @@ export default function ViewApplicants() {
                     )}
 
                     <div className="p-6 space-y-4">
-                      {/* header */}
                       <div>
-                        <h3 className="text-lg font-semibold text-[#1E3A8A]">
+                        <h3 className="text-lg font-semibold text-[#0A1A4A]">
                           {a.candidateId?.name}
                         </h3>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-[#2D3748]">
                           {a.candidateId?.email}
                         </p>
                       </div>
 
-                      {/* chips */}
                       <div className="flex flex-wrap gap-2 text-xs">
-                        <span className="px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded">
+                        <span className="px-2 py-0.5 bg-[#D6CEFA] text-[#5936D9] rounded">
                           {a.qualification}
                         </span>
                         <span
                           className={`px-2 py-0.5 rounded ${
                             a.backlogInfo?.hasBacklogs
-                              ? "bg-rose-50 text-rose-600"
-                              : "bg-emerald-50 text-emerald-600"
+                              ? "bg-[#F4A261] text-white"
+                              : "bg-[#D6CEFA] text-[#0A1A4A]"
                           }`}
                         >
                           {a.backlogInfo?.hasBacklogs
                             ? `Backlogs (${a.backlogInfo.count})`
                             : "No Backlogs"}
                         </span>
-                        <span className="px-2 py-0.5 bg-slate-50 text-slate-600 rounded capitalize">
+                        <span className="px-2 py-0.5 bg-[#E6E9F5] text-[#2D3748] rounded capitalize">
                           {a.status}
                         </span>
                       </div>
 
                       <Score val={a.score} />
 
-                      {/* files */}
+                     {/* files */}
                       <div className="flex flex-wrap gap-2">
                         <Pill
                           icon={<FileText size={12} />}
@@ -259,7 +243,7 @@ export default function ViewApplicants() {
                         )}
                         {a.testFileUrl && (
                           <span className="text-xs font-medium px-2 py-0.5 bg-purple-50 text-purple-600 rounded-full">
-                            ✅ Test sent
+                            Test send
                           </span>
                         )}
                       </div>
@@ -286,7 +270,7 @@ export default function ViewApplicants() {
                               }
                               className="text-xs bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700"
                             >
-                              Upload test
+                              Upload test
                             </button>
                           </div>
                         )}
@@ -446,6 +430,9 @@ export default function ViewApplicants() {
                           Reject
                         </Action>
                       </div>
+
+                      
+
                     </div>
                   </div>
                 </motion.div>
@@ -457,3 +444,7 @@ export default function ViewApplicants() {
     </div>
   );
 }
+
+
+
+                  

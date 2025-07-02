@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+
 const JobCard = ({ job }) => {
   return (
     <Card className="bg-white dark:bg-[#2a2a2a] border border-[#E6E9F5] dark:border-[#343434] shadow-md hover:shadow-xl transition rounded-xl">
@@ -25,6 +26,7 @@ const JobCard = ({ job }) => {
         >
           View Details
         </Link>
+      
       </CardContent>
     </Card>
   );

@@ -20,11 +20,11 @@ import PostedJobs from "./pages/recruiter/PostedJobs";
 import ViewApplicants from "./pages/recruiter/ViewApplicants";
 
 import CandidateDashboard from "./pages/candidate/CandidateDashboard";
-// import JobBoard from './pages/candidate/JobBoard'; // Duplicate import removed
+
 import MyApplications from "./pages/candidate/MyApplications";
 import MyProfile from "./pages/candidate/MyProfile";
 import Offers from "./pages/candidate/Offers";
-import RecruiterProfilePage from "./pages/candidate/RecruiterProfilePage"; 
+// import RecruiterProfilePage from "./pages/candidate/RecruiterProfilePage"; 
 
 
 const App = () => {
@@ -58,8 +58,7 @@ const App = () => {
         </Route>
 
         
-        {/* This route allows candidates to view a recruiter's profile and leave reviews */}
-        <Route path="/recruiters/:recruiterId" element={<RecruiterProfilePage />} /> 
+        
 
         {/* Job Board */}
         <Route path="/jobs" element={<JobBoard />} />
