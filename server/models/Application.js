@@ -57,6 +57,13 @@ offerLetterUrl: {
   type: String,
 },
 
+offerResponse: {
+  type: String,
+  enum: ["pending", "accepted", "rejected"],
+  default: "pending"
+}
+
+
 
 });
 

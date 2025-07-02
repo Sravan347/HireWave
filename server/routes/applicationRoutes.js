@@ -9,6 +9,8 @@ const {
   scheduleInterview,
   submitInterviewFeedback,
   uploadOfferLetter,
+  respondToOffer,
+  getAcceptedOffers,
 } = require("../controllers/applicationController");
 const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
@@ -88,6 +90,22 @@ router.post(
   upload.single("offer"),
   uploadOfferLetter
 );
+
+router.put(
+  "/application/:id/respond-to-offer",
+  protectRoute,
+  restrictTo("candidate"),
+  respondToOffer
+);
+
+
+router.get(
+  "/offers",
+  protectRoute,
+  restrictTo("candidate"),
+  getAcceptedOffers
+);
+
 
 
 module.exports = router;
