@@ -3,12 +3,6 @@ import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-<<<<<<< HEAD
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-=======
->>>>>>> akku
 
 export default function RecruiterRegister() {
   const navigate = useNavigate();
@@ -103,81 +97,6 @@ export default function RecruiterRegister() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-[#E6E9F5] flex justify-center items-center px-4">
-      <Card className="w-full max-w-3xl animate-fade-in shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center text-[#1A3A8F]">
-            Recruiter Registration
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Input name="name" placeholder="Full Name" onChange={handleChange} />
-                {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
-              </div>
-              <div>
-                <Input name="email" placeholder="Email" onChange={handleChange} />
-                {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
-              </div>
-              <div>
-                <Input name="password" type="password" placeholder="Password" onChange={handleChange} />
-                {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
-              </div>
-              <div>
-                <Input
-                  name="mobile"
-                  placeholder="Mobile Number"
-                  maxLength={10}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^\d*$/.test(value)) setForm({ ...form, mobile: value });
-                  }}
-                />
-                {errors.mobile && <p className="text-sm text-red-500 mt-1">{errors.mobile}</p>}
-              </div>
-              <div>
-                <Input name="companyName" placeholder="Company Name" onChange={handleChange} />
-                {errors.companyName && <p className="text-sm text-red-500 mt-1">{errors.companyName}</p>}
-              </div>
-              <div>
-                <Input name="gstNumber" placeholder="GST Number" onChange={handleChange} />
-                {errors.gstNumber && <p className="text-sm text-red-500 mt-1">{errors.gstNumber}</p>}
-              </div>
-              <div>
-                <Input name="designation" placeholder="Your Designation" onChange={handleChange} />
-                {errors.designation && <p className="text-sm text-red-500 mt-1">{errors.designation}</p>}
-              </div>
-              <div>
-                <Input name="website" placeholder="Company Website (optional)" onChange={handleChange} />
-                {errors.website && <p className="text-sm text-red-500 mt-1">{errors.website}</p>}
-              </div>
-              <div>
-                <Input name="location" placeholder="Company Location" onChange={handleChange} />
-              </div>
-              <div>
-                <select name="companyType" onChange={handleChange} className="input w-full px-3 py-2 border rounded">
-                  <option value="">Select Company Type</option>
-                  <option value="Startup">Startup</option>
-                  <option value="MNC">MNC</option>
-                  <option value="Government">Government</option>
-                  <option value="NGO">NGO</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-            <Button
-              type="submit"
-              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white"
-            >
-              Register
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-=======
     <div className="min-h-screen bg-[#E6E9F5] dark:bg-[#181818] flex items-center justify-center px-4 py-10">
       <form
         onSubmit={handleSubmit}
@@ -255,7 +174,6 @@ export default function RecruiterRegister() {
           </span>
         </div>
       </form>
->>>>>>> akku
     </div>
   );
 }

@@ -42,51 +42,6 @@ export default function RecruiterLogin() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-[#E6E9F5] flex justify-center items-center px-4">
-      <Card className="w-full max-w-md shadow-xl animate-fade-in">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center text-[#1A3A8F]">
-            Recruiter Login
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Input
-                name="email"
-                placeholder="Email"
-                onChange={handleChange}
-                className="w-full"
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500 mt-1">{errors.email}</p>
-              )}
-            </div>
-
-            <div>
-              <Input
-                name="password"
-                type="password"
-                placeholder="Password"
-                onChange={handleChange}
-                className="w-full"
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500 mt-1">{errors.password}</p>
-              )}
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white"
-            >
-              Login
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-=======
     <div className="min-h-screen bg-[#E6E9F5] dark:bg-[#181818] flex justify-center items-center px-4">
       <div className="w-full max-w-md bg-white dark:bg-[#1e1e1e] p-8 rounded-xl shadow-lg border border-[#D6CEFA] dark:border-[#333333] space-y-6">
         <h2 className="text-2xl font-bold text-center text-[#0A1A4A] dark:text-[#7F5AF0]">
@@ -142,7 +97,6 @@ export default function RecruiterLogin() {
           </div>
         </div>
       </div>
->>>>>>> akku
     </div>
   );
 }
