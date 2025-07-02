@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import studentImage from "../../assets/picture-pleasant-looking-young-schoolgirl-dressed-fashionable-outfit_273609-44773.webp"
 
 export default function CandidateRegister() {
   const navigate = useNavigate();
@@ -111,13 +112,13 @@ export default function CandidateRegister() {
         <div className="hidden md:flex justify-center items-center relative">
           {/* Soft background shape */}
           <div className="absolute inset-0 flex justify-center items-center z-0">
-            <div className="w-80 h-80 rounded-3xl bg-gradient-to-br from-[#D6CEFA] via-[#B5A9FF] to-[#7F5AF0] blur-2xl opacity-60"></div>
+            <div className="w-[28rem] h-[28rem] rounded-[2.5rem] bg-gradient-to-br from-[#D6CEFA] via-[#B5A9FF] to-[#7F5AF0] blur-2xl opacity-60"></div>
           </div>
           {/* The image itself */}
           <img
-            src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAzL2ZyZWVpbWFnZXNjb21wYW55X3Bob3RvX29mX3lvdW5nX2luZGlhbl9naXJsX2hvbGRpbmdfc3R1ZGVudF9iYV8zN2QyNjU4Yi0yOWIwLTQyZmQtODhmYy04OGU3ZTcxYmVlNDcucG5n.png"
+            src={studentImage}
             alt="Register illustration"
-            className="relative z-10 w-72 h-72 object-cover rounded-2xl shadow-2xl border-4 border-white"
+            className="relative z-10 w-96 h-96 object-cover rounded-3xl shadow-2xl"
             style={{ background: "#E6E9F5" }}
           />
         </div>
