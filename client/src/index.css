@@ -154,3 +154,21 @@
   }
 }
 
+
+
+/* tailwind.css or global.css */
+@layer utilities {
+  @keyframes slide-up {
+    0%   {transform: translateY(30px); opacity: 0;}
+    100% {transform: translateY(0);    opacity: 1;}
+  }
+  .animate-slide-up {animation: slide-up 0.5s ease forwards;}
+
+  @keyframes fade {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  .animate-fade {animation: fade 1s ease forwards;}
+}
+
+
