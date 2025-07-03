@@ -1,3 +1,4 @@
+import SplashPge from './pages/splashPge';
 import React from 'react';
 import { Routes, Route } from "react-router-dom"; // Ensure BrowserRouter is somewhere wrapping App if not in main.jsx
 
@@ -31,6 +32,8 @@ const App = () => {
   return (
     <>
       <Routes>
+        {/* Splash Page route */}
+        <Route path="/splashPge" element={<SplashPge />} />
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
