@@ -68,6 +68,9 @@ const userSchema = new mongoose.Schema(
         return this.role === "candidate";
       },
     },
+       profilePic: {
+                     type: String, 
+                        },
 
     //  Recruiter Specific Fields
     companyName: {

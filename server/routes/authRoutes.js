@@ -1,5 +1,5 @@
 const express = require("express");
-const upload = require("../middleware/upload"); 
+const profilePicUpload = require("../middleware/profileUpload"); 
 const {
   registerUser,
   updateUserProfile,
@@ -18,7 +18,7 @@ router.post("/logout", logoutUser);
 // router.put("/profile", protectRoute, updateUserProfile);
 
 router.get("/profile", protectRoute, getUserProfile);
-router.put("/profile", protectRoute, upload.single("resume"), updateUserProfile);
+router.put("/profile", protectRoute,  profilePicUpload.single("profilePic"), updateUserProfile);
 
 
 module.exports = router

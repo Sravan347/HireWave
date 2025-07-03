@@ -151,6 +151,39 @@ const getUserProfile = async (req, res) => {
 };
 
 
+// const updateUserProfile = async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user._id);
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     user.name = req.body.name || user.name;
+//     user.email = req.body.email || user.email;
+
+//     if (req.body.password) {
+//       user.password = req.body.password;
+//     }
+
+//     const updatedUser = await user.save();
+
+//     res.status(200).json({
+//       message: "Profile updated successfully",
+//       user: {
+//         _id: updatedUser._id,
+//         name: updatedUser.name,
+//         email: updatedUser.email,
+//         role: updatedUser.role,
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Profile Update Error:", error);
+//     res.status(500).json({ message: "Server error while updating profile." });
+//   }
+// };
+
+
 const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -159,11 +192,18 @@ const updateUserProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Update basic info
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
+    // Update password if provided
     if (req.body.password) {
       user.password = req.body.password;
+    }
+
+    // ✅ Update profilePic if file is uploaded (Cloudinary URL will be in req.file.path)
+    if (req.file && req.file.path) {
+      user.profilePic = req.file.path;
     }
 
     const updatedUser = await user.save();
@@ -175,6 +215,7 @@ const updateUserProfile = async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         role: updatedUser.role,
+        profilePic: updatedUser.profilePic,
       },
     });
   } catch (error) {
@@ -182,7 +223,6 @@ const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: "Server error while updating profile." });
   }
 };
-
 
 
 module.exports = {
