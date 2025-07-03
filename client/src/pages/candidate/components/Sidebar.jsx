@@ -36,9 +36,12 @@ const Sidebar = () => {
           <NavLink to="/candidate/dashboard" className={linkClass}>
             <FaHome size={16} /> Job Board
           </NavLink>
-          <NavLink to="/candidate/dashboard/applications" className={linkClass}>
+          <NavLink
+            to="/candidate/dashboard/applications" end className={linkClass}
+          >
             <FaBriefcase size={16} /> My Applications
           </NavLink>
+
           <NavLink to="/candidate/dashboard/profile" className={linkClass}>
             <FaUser size={16} /> My Profile
           </NavLink>
