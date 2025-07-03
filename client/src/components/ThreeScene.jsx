@@ -99,22 +99,35 @@ const ThreeScene = () => {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('wheel', handleScroll);
 
-    // Animate
+    // Animate - beautiful floating, bouncing, and smooth rotation
+    let lastTime = performance.now();
     const animate = () => {
       requestAnimationFrame(animate);
+      const now = performance.now();
+      const delta = (now - lastTime) / 1000;
+      lastTime = now;
 
-      cube.rotation.x += (targetRotationX - cube.rotation.x) * 0.05;
-      cube.rotation.y += (targetRotationY - cube.rotation.y) * 0.05;
-      cube.rotation.z += 0.002;
+      // Smoothly rotate with a gentle bounce and float
+      const t = now * 0.001;
+      // Floating up and down
+      cube.position.y = Math.sin(t * 1.2) * 0.4;
+      // Gentle scale pulse
+      const scale = 1 + Math.sin(t * 2.1) * 0.04;
+      cube.scale.set(scale, scale, scale);
+      // Smooth rotation with some wobble
+      cube.rotation.x += (targetRotationX - cube.rotation.x) * 0.08 + Math.sin(t * 1.5) * 0.003;
+      cube.rotation.y += (targetRotationY - cube.rotation.y) * 0.08 + Math.cos(t * 1.2) * 0.003;
+      cube.rotation.z += 0.01 * Math.sin(t * 0.7);
 
-      const t = Date.now() * 0.001;
+      // Animate lights in a circle
       pointLight1.position.x = Math.sin(t * 0.7) * 10;
       pointLight1.position.z = Math.cos(t * 0.7) * 10;
       pointLight2.position.x = Math.sin(t * 0.7 + Math.PI) * 10;
       pointLight2.position.z = Math.cos(t * 0.7 + Math.PI) * 10;
 
-      camera.position.y = scrollY * 2;
-      camera.position.z = 5 - scrollY * 2;
+      // Camera gentle dolly in/out with scroll
+      camera.position.y = scrollY * 2 + Math.sin(t * 0.5) * 0.1;
+      camera.position.z = 5 - scrollY * 2 + Math.cos(t * 0.3) * 0.1;
       camera.lookAt(scene.position);
 
       controls.update();
