@@ -1,119 +1,126 @@
-const Job = require("../models/Job");
-const User = require("../models/User");
+// controllers/jobController.js
+const Job         = require("../models/Job");
 const Application = require("../models/Application");
+const User        = require("../models/User");
 
+/* ════════════════════════════════════════ */
+/*  RECRUITER  CRUD                         */
+/* ════════════════════════════════════════ */
 
-// ✅ Post a new job
-const postJob = async (req, res) => {
+exports.postJob = async (req, res) => {
   try {
-    const recruiterId = req.user._id; // from auth middleware
-
-    const recruiter = await User.findById(recruiterId);
+    const recruiter = await User.findById(req.user._id);
     if (!recruiter || recruiter.role !== "recruiter") {
-      return res.status(403).json({ message: "Unauthorized recruiter access" });
+      return res.status(403).json({ message: "Unauthorized" });
     }
 
     const job = await Job.create({
       ...req.body,
-      postedBy: recruiterId,
-      companyName: recruiter.companyName, // Auto-fill from recruiter
+      postedBy   : recruiter._id,
+      companyName: recruiter.companyName, // auto‑fill
     });
 
-    res.status(201).json({ message: "Job posted successfully", job });
+    res.status(201).json({ job, message: "Job posted" });
   } catch (err) {
-    console.error("Job Post Error:", err);
+    console.error(err);
     res.status(500).json({ message: "Failed to post job" });
   }
 };
 
-// ✅ Get all jobs posted by this recruiter
-const getRecruiterJobs = async (req, res) => {
+exports.getRecruiterJobs = async (req, res) => {
   try {
     const jobs = await Job.find({ postedBy: req.user._id }).sort({ createdAt: -1 });
 
+    // add applicant counts
     const jobsWithCounts = await Promise.all(
-      jobs.map(async (job) => {
-        const count = await Application.countDocuments({ jobId: job._id });
-        return {
-          ...job.toObject(),
-          numApplicants: count,
-        };
-      })
+      jobs.map(async (job) => ({
+        ...job.toObject(),
+        numApplicants: await Application.countDocuments({ jobId: job._id }),
+      }))
     );
 
-    res.status(200).json(jobsWithCounts);
+    res.json(jobsWithCounts);
   } catch (err) {
-    console.error("Get Recruiter Jobs Error:", err);
     res.status(500).json({ message: "Failed to fetch jobs" });
   }
 };
-// ✅ Get ALL jobs (Public route - for candidates)
-const getAllJobs = async (req, res) => {
+
+/* ════════════════════════════════════════ */
+/*  PUBLIC – CANDIDATE JOB FEED             */
+/* ════════════════════════════════════════ */
+
+/**
+ * GET /jobs/public?page=&limit=&keyword=&location=&jobType=&experience=
+ *
+ * returns:
+ * {
+ *   jobs: [ ... ],
+ *   page: 1,
+ *   totalPages: 5,
+ *   totalJobs: 42
+ * }
+ */
+exports.getPublicJobs = async (req, res) => {
   try {
-    const { keyword, location, jobType } = req.query;
+    const {
+      page = 1,
+      limit = 9,
+      keyword,
+      location,
+      jobType,
+      experience,
+    } = req.query;
 
-    let filter = { status: "active" };
+    /* build Mongo filter */
+    const filter = { status: "active" };
 
-    if (keyword) {
-      filter.title = { $regex: keyword, $options: "i" };
-    }
+    if (keyword)   filter.title       = { $regex: keyword, $options: "i" };
+    if (location)  filter.location    = { $regex: location, $options: "i" };
+    if (jobType)   filter.jobType     = jobType;
+    if (experience) filter.experience = experience;   // ⭐ experience filter now works
 
-    if (location) {
-      filter.location = { $regex: location, $options: "i" };
-    }
-
-    if (jobType) {
-      filter.jobType = jobType;
-    }
+    /* count + paginate */
+    const totalJobs   = await Job.countDocuments(filter);
+    const totalPages  = Math.ceil(totalJobs / limit);
+    const skip        = (page - 1) * limit;
 
     const jobs = await Job.find(filter)
       .select("-internalNotes -candidateRequirements")
+      .populate("postedBy", "companyName logo")
       .sort({ createdAt: -1 })
-      .populate("postedBy", "companyName logo");
+      .skip(skip)
+      .limit(Number(limit));
 
-    res.status(200).json(jobs);
+    res.json({ jobs, page: Number(page), totalPages, totalJobs });
   } catch (err) {
-    console.error("Get All Jobs Error:", err);
+    console.error("Public jobs error:", err);
     res.status(500).json({ message: "Failed to fetch jobs" });
   }
 };
 
+/* ════════════════════════════════════════ */
 
-// ✅ Get job by ID (useful for edit/view)
-const getJobById = async (req, res) => {
+exports.getJobById = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
-
     if (!job || job.postedBy.toString() !== req.user._id.toString()) {
       return res.status(404).json({ message: "Job not found" });
     }
-
-    res.status(200).json(job);
-  } catch (err) {
+    res.json(job);
+  } catch {
     res.status(500).json({ message: "Failed to fetch job" });
   }
 };
 
-// ✅ Delete a job
-const deleteJob = async (req, res) => {
+exports.deleteJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
-
     if (!job || job.postedBy.toString() !== req.user._id.toString()) {
       return res.status(404).json({ message: "Job not found" });
     }
-
     await job.deleteOne();
-    res.status(200).json({ message: "Job deleted successfully" });
-  } catch (err) {
+    res.json({ message: "Job deleted" });
+  } catch {
     res.status(500).json({ message: "Failed to delete job" });
   }
-};
-
-module.exports = {
-  postJob,
-  getRecruiterJobs,
-  getJobById,
-  deleteJob,
-  getAllJobs
 };
