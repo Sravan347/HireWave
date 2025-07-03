@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import Navbar from "../components/Navbar";
 import JobCard from "../components/JobCard";
 import Footer from "../components/Footer";
@@ -10,34 +11,41 @@ import { Search } from "lucide-react";
 const LandingPage = () => {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  /* ─ Fetch jobs (public) ─ */
+  // Fetch public jobs
   useEffect(() => {
-    const load = async () => {
+    const loadJobs = async () => {
       try {
+        setLoading(true);
         const { data } = await API.get("/jobs/public");
-        setJobs(data || []);
+        setJobs(Array.isArray(data.jobs) ? data.jobs : []);
       } catch (err) {
         console.error("Jobs fetch error:", err);
+        setJobs([]);
+      } finally {
+        setLoading(false);
       }
     };
-    load();
+    loadJobs();
   }, []);
 
-  /* ─ Filter + limit 6 ─ */
-  const filteredJobs = jobs
-    .filter(
-      (j) =>
-        j.title.toLowerCase().includes(search.toLowerCase()) ||
-        j.company.toLowerCase().includes(search.toLowerCase())
-    )
-    .slice(0, 6); // show only 6
+  // Memoized filtered jobs
+  const filteredJobs = useMemo(() => {
+    return jobs
+      .filter(
+        (j) =>
+          j.title.toLowerCase().includes(search.toLowerCase()) ||
+          j.companyName.toLowerCase().includes(search.toLowerCase())
+      )
+      .slice(0, 6);
+  }, [jobs, search]);
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#181818] transition">
       <Navbar />
 
-      {/* Hero section */}
+      {/* Hero Section */}
       <header className="bg-gradient-to-r from-[#7F5AF0] via-[#4C6EF5] to-[#0A1A4A] text-white py-20 md:py-28">
         <div className="max-w-6xl mx-auto text-center px-4 space-y-4">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight animate-pulse">
@@ -55,20 +63,32 @@ const LandingPage = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search jobs or companies..."
+              aria-label="Search jobs"
               className="pl-10 h-10 bg-white/90 dark:bg-[#282828] border border-transparent focus:border-[#B5A9FF] focus:ring-2 focus:ring-[#B5A9FF] transition"
             />
           </div>
         </div>
       </header>
 
-      {/* Jobs grid */}
+      {/* Job Section */}
       <main className="flex-grow">
         <section className="max-w-6xl mx-auto px-4 py-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-6 text-[#0A1A4A] dark:text-[#B5A9FF]">
             Latest Opportunities
           </h2>
 
-          {filteredJobs.length ? (
+          {loading ? (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="space-y-3 animate-pulse">
+                  <Skeleton className="h-6 w-1/2 rounded bg-gray-300 dark:bg-[#2D2D2D]" />
+                  <Skeleton className="h-4 w-1/3 rounded bg-gray-300 dark:bg-[#2D2D2D]" />
+                  <Skeleton className="h-36 w-full rounded-xl bg-gray-200 dark:bg-[#2A2A2A]" />
+                  <Skeleton className="h-10 w-24 rounded bg-[#7F5AF0]/30 dark:bg-[#5A3DF0]/20" />
+                </div>
+              ))}
+            </div>
+          ) : filteredJobs.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {filteredJobs.map((job, i) => (
                 <div
@@ -86,12 +106,13 @@ const LandingPage = () => {
             </p>
           )}
 
-          {/* Browse‑all button */}
-          {jobs.length > 6 && (
+          {/* Browse all jobs */}
+          {jobs.length > 6 && !loading && (
             <div className="text-center mt-10">
               <Button
                 onClick={() => window.location.assign("/jobs")}
                 className="bg-[#7F5AF0] hover:bg-[#5A3DF0]"
+                type="button"
               >
                 Browse all jobs
               </Button>
