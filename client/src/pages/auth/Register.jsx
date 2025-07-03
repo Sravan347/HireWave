@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import schoolgirlImg from "@/assets/picture-pleasant-looking-young-schoolgirl-dressed-fashionable-outfit_273609-44773.webp";
 
 export default function CandidateRegister() {
   const navigate = useNavigate();
@@ -105,11 +106,13 @@ export default function CandidateRegister() {
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         {/* Image */}
         <div className="hidden md:flex justify-center items-center">
-          <img
-            src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAzL2ZyZWVpbWFnZXNjb21wYW55X3Bob3RvX29mX3lvdW5nX2luZGlhbl9naXJsX2hvbGRpbmdfc3R1ZGVudF9iYV8zN2QyNjU4Yi0yOWIwLTQyZmQtODhmYy04OGU3ZTcxYmVlNDcucG5n.png"
-            alt="Register illustration"
-            className="w-full max-w-md object-contain"
-          />
+          <div className="rounded-2xl shadow-xl p-6 flex items-center justify-center w-full max-w-md transition-transform hover:scale-105 duration-300 bg-transparent">
+            <img
+              src={schoolgirlImg}
+              alt="Register illustration"
+              className="w-full h-auto object-contain rounded-xl drop-shadow-lg transition-transform duration-300 hover:scale-105"
+            />
+          </div>
         </div>
 
         {/* Form Card */}

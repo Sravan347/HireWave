@@ -109,6 +109,17 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  /* HireWave Color Palette */
+  --hw-navy: #0A1A4A;
+  --hw-blue: #1A3A8F;
+  --hw-violet: #7F5AF0;
+  --hw-soft-bg: #E6E9F5;
+  --hw-gray-blue: #2D3748;
+  --hw-purple: #5A3DF0;
+  --hw-pale-violet: #D6CEFA;
+  --hw-deep-violet: #5936D9;
+  --hw-soft-orange: #F4A261;
+  --hw-yellow-gold: #FFD447;
 }
 
 .dark {
