@@ -35,7 +35,7 @@ exports.applyToJob = async (req, res) => {
       ?.filter((w) => w.length > 3) || [];
 
     // ── Score resume ──
-    const score = scoreResume(resumeText, jobKeywords);
+    const score = await scoreResume(resumeText, jobKeywords, job.description);
 
     // ── Persist application ──
     const application = await Application.create({
