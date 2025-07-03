@@ -32,10 +32,12 @@ const App = () => {
   return (
     <>
       <Routes>
-        {/* Splash Page route */}
+        {/* Splash Page as the default route */}
+        <Route path="/" element={<SplashPge />} />
+        {/* Optionally keep /splashPge route for direct access */}
         <Route path="/splashPge" element={<SplashPge />} />
         {/* Public Routes */}
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/landing" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
