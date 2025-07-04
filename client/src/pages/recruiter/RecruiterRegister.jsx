@@ -3,6 +3,8 @@ import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 export default function RecruiterRegister() {
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ export default function RecruiterRegister() {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateField = (name, value) => {
     let error = "";
@@ -75,7 +78,6 @@ export default function RecruiterRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate all fields before submitting
     let isValid = true;
     Object.keys(form).forEach((key) => {
       validateField(key, form[key]);
@@ -87,12 +89,15 @@ export default function RecruiterRegister() {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       await API.post("/auth/register", form);
       toast.success("Registered successfully! Await admin approval.");
       navigate("/recruiter/login");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Registration failed");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -100,63 +105,76 @@ export default function RecruiterRegister() {
     <div className="min-h-screen bg-[#E6E9F5] dark:bg-[#181818] flex items-center justify-center px-4 py-10">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-xl bg-white dark:bg-[#1e1e1e] border border-[#D6CEFA] dark:border-[#333] p-8 rounded-xl shadow-lg space-y-5"
+        className="w-full max-w-4xl bg-white dark:bg-[#1e1e1e] border border-[#D6CEFA] dark:border-[#333] p-8 rounded-xl shadow-lg space-y-6"
       >
         <h2 className="text-2xl font-bold text-center text-[#0A1A4A] dark:text-[#7F5AF0]">
           Recruiter Registration
         </h2>
 
-        {[
-          ["name", "Full Name"],
-          ["email", "Email"],
-          ["password", "Password", "password"],
-          ["confirmPassword", "Confirm Password", "password"],
-          ["mobile", "Mobile Number"],
-          ["companyName", "Company Name"],
-          ["gstNumber", "GST Number (15-characters)"],
-          ["designation", "Designation"],
-          ["website", "Company Website (URL)"],
-          ["location", "Company Location"],
-        ].map(([name, placeholder, type = "text"]) => (
-          <div key={name}>
-            <input
-              type={type}
-              name={name}
-              placeholder={placeholder}
-              value={form[name]}
-              onChange={handleChange}
-              className="w-full h-10 px-3 text-sm rounded border border-[#1A3A8F] dark:bg-[#2a2a2a] dark:text-white focus:ring-2 focus:ring-[#7F5AF0] transition"
-            />
-            {errors[name] && (
-              <p className="text-xs text-red-500 mt-1">{errors[name]}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[
+            ["name", "Full Name"],
+            ["email", "Email"],
+            ["password", "Password", "password"],
+            ["confirmPassword", "Confirm Password", "password"],
+            ["mobile", "Mobile Number"],
+            ["companyName", "Company Name"],
+            ["gstNumber", "GST Number (15-characters)"],
+            ["designation", "Designation"],
+            ["website", "Company Website (URL)"],
+            ["location", "Company Location"],
+          ].map(([name, placeholder, type = "text"]) => (
+            <div key={name} className="flex flex-col">
+              {isSubmitting ? (
+                <Skeleton className="h-10 w-full rounded" />
+              ) : (
+                <>
+                  <input
+                    type={type}
+                    name={name}
+                    placeholder={placeholder}
+                    value={form[name]}
+                    onChange={handleChange}
+                    className="w-full h-10 px-3 text-sm rounded border border-[#1A3A8F] dark:bg-[#2a2a2a] dark:text-white focus:ring-2 focus:ring-[#7F5AF0] transition"
+                  />
+                  {errors[name] && (
+                    <p className="text-xs text-red-500 mt-1">{errors[name]}</p>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
+
+          {/* Company Type Dropdown */}
+          <div className="md:col-span-2">
+            {isSubmitting ? (
+              <Skeleton className="h-10 w-full rounded" />
+            ) : (
+              <select
+                name="companyType"
+                value={form.companyType}
+                onChange={handleChange}
+                className="w-full h-10 text-sm border border-[#1A3A8F] rounded px-2 dark:bg-[#2a2a2a] dark:text-white focus:ring-2 focus:ring-[#7F5AF0]"
+              >
+                <option value="">Select Company Type</option>
+                <option value="Startup">Startup</option>
+                <option value="MNC">MNC</option>
+                <option value="Government">Government</option>
+                <option value="NGO">NGO</option>
+                <option value="Other">Other</option>
+              </select>
             )}
           </div>
-        ))}
-
-        {/* Company Type Dropdown */}
-        <div>
-          <select
-            name="companyType"
-            value={form.companyType}
-            onChange={handleChange}
-            className="w-full h-10 text-sm border border-[#1A3A8F] rounded px-2 dark:bg-[#2a2a2a] dark:text-white focus:ring-2 focus:ring-[#7F5AF0]"
-          >
-            <option value="">Select Company Type</option>
-            <option value="Startup">Startup</option>
-            <option value="MNC">MNC</option>
-            <option value="Government">Government</option>
-            <option value="NGO">NGO</option>
-            <option value="Other">Other</option>
-          </select>
         </div>
 
         {/* Submit Button */}
-        <button
+        <Button
           type="submit"
-          className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white py-2 rounded font-semibold transition hover:scale-105"
+          disabled={isSubmitting}
+          className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white py-2 text-base font-semibold transition"
         >
-          Register
-        </button>
+          {isSubmitting ? "Submitting..." : "Register"}
+        </Button>
 
         {/* Navigation Links */}
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-700 dark:text-gray-300 gap-2 pt-4">
