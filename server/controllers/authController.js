@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
+const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
 
 
 const registerUser = async (req, res) => {
@@ -225,10 +227,60 @@ const updateUserProfile = async (req, res) => {
 };
 
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "No user with that email." });
+
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  const resetURL = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+  const message = `
+    <p>Hello ${user.name || "there"},</p>
+    <p>You requested a password reset for your HireWave account.</p>
+    <p><a href="${resetURL}">Click here to set a new password</a>. This link expires in 10 minutes.</p>
+    <p>If you did not request this, please ignore this email.</p>
+  `;
+
+  try {
+    await sendEmail({ to: user.email, subject: "HireWave Password Reset", html: message });
+    res.status(200).json({ message: "Email sent. Please check your inbox." });
+  } catch (err) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+    console.error("Email send error:", err);
+    res.status(500).json({ message: "Email could not be sent." });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) return res.status(400).json({ message: "Token invalid or expired." });
+
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+
+  const token = generateToken(res, user._id); // auto‑login after reset
+  res.status(200).json({ message: "Password updated.", token });
+};
+
+
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  forgotPassword,
+  resetPassword,
 };

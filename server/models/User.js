@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
+const crypto = require("crypto"); // ✅ built-in, don't install
 
 const roles = ["candidate", "recruiter", "admin"];
 
@@ -68,11 +69,11 @@ const userSchema = new mongoose.Schema(
         return this.role === "candidate";
       },
     },
-       profilePic: {
-                     type: String, 
-                        },
+    profilePic: {
+      type: String,
+    },
 
-    //  Recruiter Specific Fields
+    // 🧑‍💼 Recruiter Specific Fields
     companyName: {
       type: String,
       required: function () {
@@ -97,24 +98,14 @@ const userSchema = new mongoose.Schema(
         message: "Recruiter mobile number must be 10 digits.",
       },
     },
-    designation: {
-      type: String,
-    },
-    website: {
-      type: String,
-    },
-    location: {
-      type: String,
-    },
-    companyType: {
-      type: String,
-    },
+    designation: String,
+    website: String,
+    location: String,
+    companyType: String,
 
-    // Shared Fields
-    resumeUrl: {
-      type: String,
-    },
-    
+    // Shared
+    resumeUrl: String,
+
     approvalStatus: {
       type: String,
       enum: ["pending", "approved", "declined"],
@@ -122,6 +113,10 @@ const userSchema = new mongoose.Schema(
         return this.role === "recruiter" ? "pending" : undefined;
       },
     },
+
+    // 🔐 Password Reset Fields
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
 
     createdAt: {
       type: Date,
@@ -133,7 +128,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-//  Password Hashing
+// 🔒 Hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -141,9 +136,22 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-//  Password Comparison
+// 🔑 Compare password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+// 🔐 Create secure password reset token
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex"); // plain token for email
+
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex"); // hashed and saved in DB
+
+  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+  return resetToken; // send this via email
 };
 
 module.exports = mongoose.model("User", userSchema);

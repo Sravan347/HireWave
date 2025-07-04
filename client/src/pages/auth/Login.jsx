@@ -16,8 +16,10 @@ export default function Login() {
 
   const validate = () => {
     const newErrors = {};
-    if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = "Enter a valid email";
-    if (form.password.length < 6) newErrors.password = "Password must be 6+ characters";
+    if (!/\S+@\S+\.\S+/.test(form.email))
+      newErrors.email = "Enter a valid email";
+    if (form.password.length < 6)
+      newErrors.password = "Password must be 6+ characters";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -96,7 +98,8 @@ export default function Login() {
               onClick={() => navigate("/register")}
               className="font-semibold text-[#7F5AF0] dark:text-[#B5A9FF] cursor-pointer hover:text-[#5A3DF0] transition-all duration-200 hover:scale-105"
             >
-              ➕ Don’t have an account? <span className="font-bold">Register here</span>
+              ➕ Don’t have an account?{" "}
+              <span className="font-bold">Register here</span>
             </div>
 
             <div
@@ -104,6 +107,13 @@ export default function Login() {
               className="font-semibold text-gray-600 dark:text-gray-400 cursor-pointer hover:text-blue-600 transition-all duration-200 hover:scale-105"
             >
               ⬅ Back to Home
+            </div>
+
+            <div
+              onClick={() => navigate("/forgot-password")}
+              className="font-semibold text-[#7F5AF0] dark:text-[#B5A9FF] cursor-pointer hover:text-[#5A3DF0] transition-all duration-200 hover:scale-105"
+            >
+              🔑 Forgot password?
             </div>
           </div>
         </CardContent>
