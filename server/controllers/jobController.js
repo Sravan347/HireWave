@@ -1,11 +1,9 @@
-// controllers/jobController.js
+
 const Job         = require("../models/Job");
 const Application = require("../models/Application");
 const User        = require("../models/User");
 
-/* ════════════════════════════════════════ */
-/*  RECRUITER  CRUD                         */
-/* ════════════════════════════════════════ */
+
 
 exports.postJob = async (req, res) => {
   try {
@@ -45,21 +43,7 @@ exports.getRecruiterJobs = async (req, res) => {
   }
 };
 
-/* ════════════════════════════════════════ */
-/*  PUBLIC – CANDIDATE JOB FEED             */
-/* ════════════════════════════════════════ */
 
-/**
- * GET /jobs/public?page=&limit=&keyword=&location=&jobType=&experience=
- *
- * returns:
- * {
- *   jobs: [ ... ],
- *   page: 1,
- *   totalPages: 5,
- *   totalJobs: 42
- * }
- */
 exports.getPublicJobs = async (req, res) => {
   try {
     const {
@@ -71,13 +55,13 @@ exports.getPublicJobs = async (req, res) => {
       experience,
     } = req.query;
 
-    /* build Mongo filter */
+   
     const filter = { status: "active" };
 
     if (keyword)   filter.title       = { $regex: keyword, $options: "i" };
     if (location)  filter.location    = { $regex: location, $options: "i" };
     if (jobType)   filter.jobType     = jobType;
-    if (experience) filter.experience = experience;   // ⭐ experience filter now works
+    if (experience) filter.experience = experience;   
 
     /* count + paginate */
     const totalJobs   = await Job.countDocuments(filter);

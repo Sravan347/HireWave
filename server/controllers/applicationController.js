@@ -4,8 +4,7 @@ const axios = require("axios");
 const pdfParse = require("pdf-parse");
 const scoreResume = require("../utils/scoreResume");
 
-// ─────────────────────────────────────────────────────────────────────────────
-//   APPLY TO JOB  ────────────────────────────────────────────────────────────
+
 exports.applyToJob = async (req, res) => {
   try {
     if (!req.file)
@@ -43,7 +42,7 @@ exports.applyToJob = async (req, res) => {
       candidateId: req.user._id,
       resumeUrl: req.file.path,
       score,
-      status: "applied", // <‑‑ unified starting status
+      status: "applied", //  unified starting status
       qualification: req.body.qualification,
       backlogInfo: {
         hasBacklogs: req.body.hasBacklogs === "true",
@@ -252,7 +251,7 @@ exports.respondToOffer = async (req, res) => {
       return res.status(400).json({ message: "Offer not available for response" });
     }
 
-    // ✅ Fix: Update both status & offerResponse
+    // Update both status & offerResponse
     application.status = decision;
     application.offerResponse = decision;
 
@@ -265,7 +264,7 @@ exports.respondToOffer = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
+
 //  CANDIDATE  • GET only accepted offers
 exports.getAcceptedOffers = async (req, res) => {
   try {

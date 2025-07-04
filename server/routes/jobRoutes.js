@@ -5,7 +5,7 @@ const {
   getRecruiterJobs,
   getJobById,
   deleteJob,
-  getPublicJobs,   // ← the paginated public feed
+  getPublicJobs,  
 } = require("../controllers/jobController");
 
 const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
@@ -13,7 +13,7 @@ const { protectRoute, restrictTo } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 /* ---------- PUBLIC (candidate) ---------- */
-router.get("/public", getPublicJobs);   // ONE clear public route
+router.get("/public", getPublicJobs);   
 
 /* ---------- RECRUITER‑ONLY -------------- */
 router.post   ("/",     protectRoute, restrictTo("recruiter"), postJob);

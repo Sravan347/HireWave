@@ -1,4 +1,4 @@
-// backend/app.js
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -30,14 +30,7 @@ app.use("/api/applications", applicationRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/analytics", analyticsRoutes); 
 
-// Global Error Handler (uncomment if needed)
-// app.use((err, req, res, next) => {
-//   console.error("Unhandled Error:", JSON.stringify(err, null, 2));
-//   res.status(500).json({
-//     message: "Unhandled Server Error",
-//     error: err.message,
-//   });
-// });
+
 
 const server = async () => {
     try {

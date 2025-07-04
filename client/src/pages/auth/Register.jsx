@@ -106,7 +106,7 @@ export default function CandidateRegister() {
         {/* Image */}
         <div className="hidden md:flex justify-center items-center">
           <img
-            src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTAzL2ZyZWVpbWFnZXNjb21wYW55X3Bob3RvX29mX3lvdW5nX2luZGlhbl9naXJsX2hvbGRpbmdfc3R1ZGVudF9iYV8zN2QyNjU4Yi0yOWIwLTQyZmQtODhmYy04OGU3ZTcxYmVlNDcucG5n.png"
+            src="https://imgs.search.brave.com/HzP0199AK_jF0rdwm2HJAuARquv4R7gOBVL34krmEDg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2Q4L2M5/LzI0L2Q4YzkyNDA4/Zjk3YmJhZDlhMjc3/MzQwNzI5YWMxMzUy/LmpwZw"
             alt="Register illustration"
             className="w-full max-w-md object-contain"
           />

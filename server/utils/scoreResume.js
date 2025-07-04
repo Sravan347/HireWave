@@ -1,9 +1,9 @@
-/**
- * Basic keyword–overlap scoring.
- * @param {string} resumeText  Raw text extracted from the PDF
- * @param {string[]} jobKeywords  Array of lowercase job keywords
- * @returns {number} 0‑100 (%) match score
- */
+// /**
+//  * Basic keyword–overlap scoring.
+//  * @param {string} resumeText  Raw text extracted from the PDF
+//  * @param {string[]} jobKeywords  Array of lowercase job keywords
+//  * @returns {number} 0‑100 (%) match score
+//  */
 module.exports = function scoreResume(resumeText = "", jobKeywords = []) {
   if (!jobKeywords.length) return 0;
 

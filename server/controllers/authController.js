@@ -93,7 +93,7 @@ const loginUser = async (req, res) => {
     console.log("Password match:", await user.matchPassword(password));
 
 
-    // console.log("User found:", user); // 🔍 Add this to see what you're working with
+    // console.log("User found:", user); 
 
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
@@ -103,7 +103,7 @@ const loginUser = async (req, res) => {
 
 
     if (user.role === "recruiter") {
-      console.log("Recruiter approvalStatus:", user.approvalStatus); // 🔍 log this too
+      console.log("Recruiter approvalStatus:", user.approvalStatus); 
       if (user.approvalStatus === "pending") {
         return res.status(403).json({ message: "Your account is pending admin approval." });
       }
@@ -153,37 +153,6 @@ const getUserProfile = async (req, res) => {
 };
 
 
-// const updateUserProfile = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user._id);
-
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     user.name = req.body.name || user.name;
-//     user.email = req.body.email || user.email;
-
-//     if (req.body.password) {
-//       user.password = req.body.password;
-//     }
-
-//     const updatedUser = await user.save();
-
-//     res.status(200).json({
-//       message: "Profile updated successfully",
-//       user: {
-//         _id: updatedUser._id,
-//         name: updatedUser.name,
-//         email: updatedUser.email,
-//         role: updatedUser.role,
-//       },
-//     });
-//   } catch (error) {
-//     console.error("Profile Update Error:", error);
-//     res.status(500).json({ message: "Server error while updating profile." });
-//   }
-// };
 
 
 const updateUserProfile = async (req, res) => {
@@ -203,7 +172,7 @@ const updateUserProfile = async (req, res) => {
       user.password = req.body.password;
     }
 
-    // ✅ Update profilePic if file is uploaded (Cloudinary URL will be in req.file.path)
+    //  Update profilePic if file is uploaded 
     if (req.file && req.file.path) {
       user.profilePic = req.file.path;
     }
@@ -239,7 +208,7 @@ const forgotPassword = async (req, res) => {
   const message = `
     <p>Hello ${user.name || "there"},</p>
     <p>You requested a password reset for your HireWave account.</p>
-    <p><a href="${resetURL}">Click here to set a new password</a>. This link expires in 10 minutes.</p>
+    <p><a href="${resetURL}">Click here to set a new password</a>. This link expires in 10 minutes.</p>
     <p>If you did not request this, please ignore this email.</p>
   `;
 

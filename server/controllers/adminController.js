@@ -1,11 +1,11 @@
-// controllers/adminController.js
+
 const User = require("../models/User");
 
 //  Get all recruiters
 const getAllRecruiters = async (req, res) => {
   try {
     const recruiters = await User.find({ role: "recruiter" }).select("-password");
-    res.status(200).json(recruiters); // 👈 must return array
+    res.status(200).json(recruiters);
   } catch (error) {
     console.error("Error fetching recruiters:", error);
     res.status(500).json({ message: "Failed to fetch recruiters" });
