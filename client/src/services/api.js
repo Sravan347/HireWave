@@ -13,4 +13,9 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+
+export const forgotPassword = (email) => API.post("/auth/forgot-password", { email });
+export const resetPassword = (token, password) =>
+  API.post(`/auth/reset-password/${token}`, { password });
+
 export default API;

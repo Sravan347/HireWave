@@ -19,7 +19,7 @@
 //   const [form, setForm] = useState({
 //     qualification: "",
 //     experience: "",
-//     location: "",
+//     place: "",
 //     profilePic: null,
 //   });
 
@@ -30,7 +30,7 @@
 //       setForm({
 //         qualification: res.data.user.qualification || "",
 //         experience: res.data.user.experience || "",
-//         location: res.data.user.location || "",
+//         place: res.data.user.place || "",
 //         profilePic: null,
 //       });
 //     } catch (err) {
@@ -57,7 +57,7 @@
 //       const data = new FormData();
 //       data.append("qualification", form.qualification);
 //       data.append("experience", form.experience);
-//       data.append("location", form.location);
+//       data.append("place", form.place);
 //       if (form.profilePic) data.append("profilePic", form.profilePic);
 
 //       await API.put("/auth/profile", data);
@@ -174,10 +174,10 @@
 //             </div>
 
 //             <div>
-//               <label className="text-sm font-medium text-[#2D3748]">Location</label>
+//               <label className="text-sm font-medium text-[#2D3748]">place</label>
 //               <Input
-//                 name="location"
-//                 value={form.location}
+//                 name="place"
+//                 value={form.place}
 //                 onChange={handleChange}
 //                 required
 //                 className="h-9 text-sm border border-[#1A3A8F] focus:border-[#7F5AF0] focus:ring-2 focus:ring-[#7F5AF0]"
@@ -217,7 +217,7 @@ export default function MyProfile() {
   const [form, setForm] = useState({
     qualification: "",
     experience: "",
-    location: "",
+    place: "",
     profilePic: null,
   });
 
@@ -228,7 +228,7 @@ export default function MyProfile() {
       setForm({
         qualification: res.data.user.qualification || "",
         experience: res.data.user.experience || "",
-        location: res.data.user.location || "",
+        place: res.data.user.place || "",
         profilePic: null,
       });
     } catch (err) {
@@ -259,7 +259,7 @@ export default function MyProfile() {
       const data = new FormData();
       data.append("qualification", form.qualification);
       data.append("experience", form.experience);
-      data.append("location", form.location);
+      data.append("place", form.place);
       if (form.profilePic) data.append("profilePic", form.profilePic);
 
       await API.put("/auth/profile", data);
@@ -412,10 +412,10 @@ export default function MyProfile() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-[#2D3748]">Location</label>
+              <label className="text-sm font-medium text-[#2D3748]">place</label>
               <Input
-                name="location"
-                value={form.location}
+                name="place"
+                value={form.place}
                 onChange={handleChange}
                 required
                 className="h-9 text-sm border border-[#1A3A8F] focus:border-[#7F5AF0] focus:ring-2 focus:ring-[#7F5AF0]"

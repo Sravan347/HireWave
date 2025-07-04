@@ -10,6 +10,8 @@ import LandingPage from './pages/LandingPage';
 import RecruiterLogin from './pages/recruiter/RecruiterLogin';
 import RecruiterRegister from './pages/recruiter/RecruiterRegister';
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 
 
@@ -35,6 +37,8 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Recruiter Authentication & Job Posting */}
         <Route path="/recruiter/login" element={<RecruiterLogin />} />
