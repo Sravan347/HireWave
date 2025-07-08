@@ -15,7 +15,7 @@ import {
 const PAGE_LIMIT = 9;
 
 export default function JobBoard() {
-  /* ───────── state */
+  /*state */
   const [jobs, setJobs]         = useState([]);
   const [page, setPage]         = useState(1);
   const [totalPages, setTotal]  = useState(1);
@@ -26,13 +26,13 @@ export default function JobBoard() {
     keyword: "", location: "", jobType: "", experience: "",
   });
 
-  /* ───────── data */
+  /* data */
   const loadJobs = async (p = 1) => {
     try {
       const { data } = await API.get("/jobs/public", {
         params: { ...filters, page: p, limit: PAGE_LIMIT },
       });
-      setJobs(data.jobs);          // ← FIX: only the array
+      setJobs(data.jobs);        
       setPage(data.page);
       setTotal(data.totalPages);
     } catch { toast.error("Failed to fetch jobs"); }

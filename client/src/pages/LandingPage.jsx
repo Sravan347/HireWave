@@ -53,7 +53,7 @@ const LandingPage = () => {
             <span className="font-mono">your&nbsp;next&nbsp;career&nbsp;wave</span>
           </h1>
           <p className="text-lg opacity-90">
-            Hand‑picked opportunities updated every day
+            Hand picked opportunities updated every day
           </p>
 
           {/* Search */}
@@ -64,7 +64,7 @@ const LandingPage = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search jobs or companies..."
               aria-label="Search jobs"
-              className="pl-10 h-10 bg-white/90 dark:bg-[#282828] border border-transparent focus:border-[#B5A9FF] focus:ring-2 focus:ring-[#B5A9FF] transition"
+              className="pl-10 h-10 bg-white/90 dark:bg-[#282828] border border-transparent focus:border-[#B5A9FF] focus:ring-2 focus:ring-[#B5A9FF] transition text-gray-700"
             />
           </div>
         </div>
