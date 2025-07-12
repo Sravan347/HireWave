@@ -54,7 +54,15 @@ const LandingPage = () => {
   }, [jobs, search]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      minHeight: '100vh',
+      margin: 0,
+      padding: 0,
+      width: '100%',
+      overflow: 'hidden'
+    }}>
       <Navbar />
 
       {/* Hero Section */}

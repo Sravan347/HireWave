@@ -4,7 +4,6 @@ import {
   AppBar,
   Toolbar,
   Box,
-  Container,
   IconButton,
   Menu,
   MenuItem,
@@ -150,10 +149,25 @@ export default function Navbar() {
       elevation={2}
       sx={{
         background: 'linear-gradient(135deg, #a18cd1 0%, #6d9ee6 50%, #3a7bd5 100%)',
+        width: '100vw',
+        margin: 0,
+        padding: 0,
+        borderRadius: 0,
+        left: '50%',
+        right: '50%',
+        marginLeft: '-50vw',
+        marginRight: '-50vw',
+        position: 'relative',
       }}
     >
-      <Container maxWidth="xl">
-        <Toolbar sx={{ height: 64, px: { xs: 1, md: 2 } }}>
+      <Toolbar sx={{ 
+        height: 64, 
+        px: { xs: 2, md: 4 }, 
+        width: '100%', 
+        maxWidth: 'none',
+        margin: '0 auto',
+        borderRadius: 0,
+      }}>
           {/* Logo */}
           <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', mr: 'auto' }}>
             <Box
@@ -282,7 +296,6 @@ export default function Navbar() {
             </IconButton>
           )}
         </Toolbar>
-      </Container>
 
       {/* Mobile Drawer */}
       <Drawer

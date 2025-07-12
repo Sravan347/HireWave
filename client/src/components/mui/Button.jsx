@@ -2,13 +2,14 @@ import React from 'react';
 import { Button as MuiButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const StyledButton = styled(MuiButton)(({ theme, variant, color }) => ({
-  borderRadius: '9999px',
+const StyledButton = styled(MuiButton)(({ theme, variant, color, fullwidth }) => ({
+  borderRadius: fullwidth ? '0' : '9999px',
   fontWeight: 600,
   textTransform: 'none',
   transition: 'all 0.2s ease-in-out',
+  width: fullwidth ? '100%' : 'auto',
   '&:hover': {
-    transform: 'translateY(-1px)',
+    transform: fullwidth ? 'none' : 'translateY(-1px)',
     boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
   },
   ...(variant === 'contained' && color === 'primary' && {
@@ -25,9 +26,14 @@ const StyledButton = styled(MuiButton)(({ theme, variant, color }) => ({
   }),
 }));
 
-const Button = ({ children, variant = 'contained', color = 'primary', ...props }) => {
+const Button = ({ children, variant = 'contained', color = 'primary', fullWidth = false, ...props }) => {
   return (
-    <StyledButton variant={variant} color={color} {...props}>
+    <StyledButton 
+      variant={variant} 
+      color={color} 
+      fullwidth={fullWidth ? 'true' : undefined}
+      {...props}
+    >
       {children}
     </StyledButton>
   );
