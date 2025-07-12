@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Avatar,
+  Box,
+  Divider,
+  Container,
+} from '@mui/material';
 import ReviewForm from '../../components/reviews/ReviewForm';
 import ReviewList from '../../components/reviews/ReviewList';
 
@@ -94,7 +101,9 @@ export default function RecruiterProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-1 bg-white shadow-md">
           <CardHeader>
-            <CardTitle className="text-[#0A1A4A] text-lg">Leave a Review</CardTitle>
+            <Typography variant="h6" sx={{ color: '#0A1A4A', fontSize: '1.125rem' }}>
+              Leave a Review
+            </Typography>
           </CardHeader>
           <CardContent>
             <ReviewForm
@@ -106,7 +115,9 @@ export default function RecruiterProfilePage() {
 
         <Card className="md:col-span-2 bg-white shadow-md">
           <CardHeader>
-            <CardTitle className="text-[#0A1A4A] text-2xl">What people are saying</CardTitle>
+            <Typography variant="h5" sx={{ color: '#0A1A4A', fontSize: '1.5rem' }}>
+              What people are saying
+            </Typography>
           </CardHeader>
           <Separator className="bg-[#7F5AF0]" />
           <CardContent className="mt-4">

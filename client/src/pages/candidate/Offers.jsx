@@ -3,7 +3,17 @@ import React, { useEffect, useState } from "react";
 import API from "../../services/api";
 import { MapPin, Briefcase } from "lucide-react";
 import { toast } from "react-toastify";
-import { Button } from "@/components/ui/button";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Box,
+  Container,
+  Grid,
+  Chip,
+} from '@mui/material';
 
 export default function Offers() {
   const [offers, setOffers] = useState([]);

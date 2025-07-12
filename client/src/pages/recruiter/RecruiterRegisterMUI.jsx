@@ -16,8 +16,8 @@ import {
   MenuItem,
   Link,
   useTheme,
-  Skeleton,
 } from "@mui/material";
+import { Skeleton } from "../mui/Skeleton";
 
 export default function RecruiterRegister() {
   const theme = useTheme();
@@ -167,7 +167,7 @@ export default function RecruiterRegister() {
 
           <Grid container spacing={3}>
             {formFields.map(([name, placeholder, type = "text"]) => (
-              <Grid size={{ xs: 12, md: 6 }} key={name}>
+              <Grid item xs={12} md={6} key={name}>
                 {isSubmitting ? (
                   <Skeleton height={56} />
                 ) : (
@@ -200,7 +200,7 @@ export default function RecruiterRegister() {
             ))}
 
             {/* Company Type Dropdown */}
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               {isSubmitting ? (
                 <Skeleton height={56} />
               ) : (

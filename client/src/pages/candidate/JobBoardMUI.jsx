@@ -133,7 +133,7 @@ export default function JobBoard() {
         >
           <Grid container spacing={2} alignItems="center">
             {/* Search Field */}
-            <Grid size={{ xs: 12, lg: 5 }}>
+            <Grid item xs={12} lg={5}>
               <TextField
                 name="keyword"
                 placeholder="Search keyword..."
@@ -166,7 +166,7 @@ export default function JobBoard() {
 
             {/* Filter Dropdowns */}
             {filterOptions.map(({ name, label, placeholder, opts }) => (
-              <Grid size={{ xs: 12, sm: 4, lg: 2 }} key={name}>
+              <Grid item xs={12} sm={4} lg={2} key={name}>
                 <FormControl fullWidth size="small">
                   <InputLabel>{label}</InputLabel>
                   <Select
@@ -196,7 +196,7 @@ export default function JobBoard() {
 
             {/* Filter Icon */}
             {!isMobile && (
-              <Grid size={{ lg: 1 }}>
+              <Grid item lg={1}>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Filter size={18} color="#7F5AF0" />
                 </Box>
@@ -217,7 +217,7 @@ export default function JobBoard() {
         ) : (
           <Grid container spacing={3}>
             {jobs.map((job, i) => (
-              <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={job._id}>
+              <Grid item xs={12} sm={6} lg={4} key={job._id}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}

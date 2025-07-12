@@ -263,7 +263,7 @@ const RecruiterDashboard = () => {
           ) : (
             <Grid container spacing={3}>
               {jobs.slice(0, 4).map((job) => (
-                <Grid size={{ xs: 12, md: 6 }} key={job._id}>
+                <Grid item xs={12} md={6} key={job._id}>
                   <Card
                     sx={{
                       backgroundColor: 'white',

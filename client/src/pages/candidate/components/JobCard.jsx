@@ -1,8 +1,7 @@
 import React from "react";
 import { Briefcase, Calendar, MapPin } from "lucide-react";
 import { format } from "date-fns";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, Typography, Chip, Box } from '@mui/material';
 
 export default function JobCard({ job, onClick, isApplied }) {
   return (
@@ -29,9 +28,16 @@ export default function JobCard({ job, onClick, isApplied }) {
           </div>
 
           {isApplied && (
-            <Badge className="bg-green-100 text-green-700 border border-green-300 text-xs">
-              ✅ Applied
-            </Badge>
+            <Chip 
+              label="✅ Applied"
+              size="small"
+              sx={{
+                backgroundColor: '#f0fdf4',
+                color: '#15803d',
+                border: '1px solid #bbf7d0',
+                fontSize: '0.75rem',
+              }}
+            />
           )}
         </div>
       </CardHeader>

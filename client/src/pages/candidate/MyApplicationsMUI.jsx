@@ -161,7 +161,7 @@ export default function MyApplications() {
       ) : (
         <Grid container spacing={3}>
           {applications.map((app, i) => (
-            <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={app._id}>
+            <Grid item xs={12} sm={6} lg={4} key={app._id}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}

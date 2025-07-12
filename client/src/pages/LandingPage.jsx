@@ -1,7 +1,17 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { 
+  Container, 
+  Typography, 
+  Box, 
+  Grid, 
+  InputAdornment,
+  Paper,
+  useTheme,
+  useMediaQuery 
+} from "@mui/material";
+import { Input } from "../components/mui/Input";
+import { Button } from "../components/mui/Button";
+import { Skeleton } from "../components/mui/Skeleton";
 import Navbar from "../components/Navbar";
 import JobCard from "../components/JobCard";
 import Footer from "../components/Footer";
@@ -12,6 +22,8 @@ const LandingPage = () => {
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   // Fetch public jobs
   useEffect(() => {
@@ -42,87 +54,157 @@ const LandingPage = () => {
   }, [jobs, search]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-[#181818] transition">
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
 
       {/* Hero Section */}
-      <header className="bg-gradient-to-r from-[#7F5AF0] via-[#4C6EF5] to-[#0A1A4A] text-white py-20 md:py-28">
-        <div className="max-w-6xl mx-auto text-center px-4 space-y-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight animate-pulse">
-            <span className="font-serif">Dive&nbsp;into</span> <br />
-            <span className="font-mono">your&nbsp;next&nbsp;career&nbsp;wave</span>
-          </h1>
-          <p className="text-lg opacity-90">
-            Hand picked opportunities updated every day
-          </p>
+      <Paper
+        elevation={0}
+        sx={{
+          background: 'linear-gradient(135deg, #7F5AF0 0%, #4C6EF5 50%, #0A1A4A 100%)',
+          color: 'white',
+          py: { xs: 10, md: 14 },
+          borderRadius: 0,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box textAlign="center" sx={{ px: 2 }}>
+            <Typography
+              variant="h1"
+              sx={{
+                fontWeight: 800,
+                mb: 2,
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                lineHeight: 1.1,
+                animation: 'pulse 2s ease-in-out infinite',
+                '@keyframes pulse': {
+                  '0%, 100%': { opacity: 1 },
+                  '50%': { opacity: 0.8 },
+                },
+              }}
+            >
+              <Box component="span" sx={{ fontFamily: 'serif' }}>
+                Dive&nbsp;into
+              </Box>
+              <br />
+              <Box component="span" sx={{ fontFamily: 'monospace' }}>
+                your&nbsp;next&nbsp;career&nbsp;wave
+              </Box>
+            </Typography>
+            
+            <Typography variant="h6" sx={{ opacity: 0.9, mb: 4 }}>
+              Hand picked opportunities updated every day
+            </Typography>
 
-          {/* Search */}
-          <div className="relative max-w-xl mx-auto mt-6">
-            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search jobs or companies..."
-              aria-label="Search jobs"
-              className="pl-10 h-10 bg-white/90 dark:bg-[#282828] border border-transparent focus:border-[#B5A9FF] focus:ring-2 focus:ring-[#B5A9FF] transition text-gray-700"
-            />
-          </div>
-        </div>
-      </header>
+            {/* Search */}
+            <Box sx={{ maxWidth: 600, mx: 'auto', mt: 3 }}>
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search jobs or companies..."
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search size={18} color="#6B7280" />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#B5A9FF',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: '#B5A9FF',
+                      borderWidth: 2,
+                    },
+                  },
+                }}
+              />
+            </Box>
+          </Box>
+        </Container>
+      </Paper>
 
       {/* Job Section */}
-      <main className="flex-grow">
-        <section className="max-w-6xl mx-auto px-4 py-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-[#0A1A4A] dark:text-[#B5A9FF]">
+      <Box component="main" sx={{ flexGrow: 1, py: 6 }}>
+        <Container maxWidth="lg">
+          <Typography
+            variant="h2"
+            sx={{
+              mb: 4,
+              color: '#0A1A4A',
+              fontWeight: 700,
+            }}
+          >
             Latest Opportunities
-          </h2>
+          </Typography>
 
           {loading ? (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <Grid container spacing={4}>
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="space-y-3 animate-pulse">
-                  <Skeleton className="h-6 w-1/2 rounded bg-gray-300 dark:bg-[#2D2D2D]" />
-                  <Skeleton className="h-4 w-1/3 rounded bg-gray-300 dark:bg-[#2D2D2D]" />
-                  <Skeleton className="h-36 w-full rounded-xl bg-gray-200 dark:bg-[#2A2A2A]" />
-                  <Skeleton className="h-10 w-24 rounded bg-[#7F5AF0]/30 dark:bg-[#5A3DF0]/20" />
-                </div>
+                <Grid size={{ xs: 12, md: 6, lg: 4 }} key={i}>
+                  <Box sx={{ p: 2 }}>
+                    <Skeleton variant="text" width="60%" height={32} sx={{ mb: 1 }} />
+                    <Skeleton variant="text" width="40%" height={24} sx={{ mb: 2 }} />
+                    <Skeleton variant="rectangular" height={150} sx={{ borderRadius: 2, mb: 2 }} />
+                    <Skeleton variant="rectangular" width={100} height={40} sx={{ borderRadius: '20px' }} />
+                  </Box>
+                </Grid>
               ))}
-            </div>
+            </Grid>
           ) : filteredJobs.length > 0 ? (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <Grid container spacing={4}>
               {filteredJobs.map((job, i) => (
-                <div
+                <Grid 
+                  size={{ xs: 12, md: 6, lg: 4 }}
                   key={job._id}
-                  className="animate-slide-up"
-                  style={{ animationDelay: `${i * 80}ms` }}
+                  sx={{
+                    animation: 'slideUp 0.5s ease forwards',
+                    animationDelay: `${i * 80}ms`,
+                    '@keyframes slideUp': {
+                      '0%': {
+                        transform: 'translateY(30px)',
+                        opacity: 0,
+                      },
+                      '100%': {
+                        transform: 'translateY(0)',
+                        opacity: 1,
+                      },
+                    },
+                  }}
                 >
                   <JobCard job={job} />
-                </div>
+                </Grid>
               ))}
-            </div>
+            </Grid>
           ) : (
-            <p className="text-center text-gray-500 dark:text-gray-400">
-              No jobs found.
-            </p>
+            <Box textAlign="center" sx={{ py: 8 }}>
+              <Typography variant="body1" color="text.secondary">
+                No jobs found.
+              </Typography>
+            </Box>
           )}
 
           {/* Browse all jobs */}
           {jobs.length > 6 && !loading && (
-            <div className="text-center mt-10">
+            <Box textAlign="center" sx={{ mt: 6 }}>
               <Button
                 onClick={() => window.location.assign("/jobs")}
-                className="bg-[#7F5AF0] hover:bg-[#5A3DF0]"
-                type="button"
+                variant="contained"
+                color="primary"
+                size="large"
               >
                 Browse all jobs
               </Button>
-            </div>
+            </Box>
           )}
-        </section>
-      </main>
+        </Container>
+      </Box>
 
       <Footer />
-    </div>
+    </Box>
   );
 };
 

@@ -3,9 +3,24 @@ import { useNavigate } from "react-router-dom";
 import API from "../../services/api";
 import { toast } from "react-toastify";
 import { LogOut, Briefcase, PlusCircle } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import {
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Box,
+  Container,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
 
 const PostJob = () => {
   const navigate = useNavigate();
@@ -45,130 +60,224 @@ const PostJob = () => {
   const handleDashboard = () => navigate("/recruiter/dashboard");
 
   return (
-    <div className="flex min-h-screen bg-[#E6E9F5]">
-      <aside className="w-64 bg-[#0A1A4A] text-white p-6 space-y-6 hidden md:flex flex-col">
-        <h2 className="text-2xl font-bold">Recruiter Panel</h2>
+    <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#E6E9F5' }}>
+      <Box
+        component="aside"
+        sx={{
+          width: 256,
+          backgroundColor: '#0A1A4A',
+          color: 'white',
+          p: 3,
+          display: { xs: 'none', md: 'flex' },
+          flexDirection: 'column',
+          gap: 3
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+          Recruiter Panel
+        </Typography>
         <Button
-          variant="ghost"
-          className="justify-start text-white hover:bg-[#1A3A8F]"
+          variant="text"
+          sx={{
+            justifyContent: 'flex-start',
+            color: 'white',
+            '&:hover': { backgroundColor: '#1A3A8F' }
+          }}
           onClick={handleDashboard}
         >
-          <Briefcase size={18} className="mr-2" /> Dashboard
+          <Briefcase size={18} style={{ marginRight: 8 }} /> Dashboard
         </Button>
         <Button
-          variant="ghost"
-          className="justify-start text-white hover:bg-[#1A3A8F]"
+          variant="text"
+          sx={{
+            justifyContent: 'flex-start',
+            color: 'white',
+            '&:hover': { backgroundColor: '#1A3A8F' }
+          }}
           onClick={handleMyJobs}
         >
-          <Briefcase size={18} className="mr-2" /> My Posted Jobs
+          <Briefcase size={18} style={{ marginRight: 8 }} /> My Posted Jobs
         </Button>
         <Button
-          variant="ghost"
-          className="mt-auto justify-start text-red-300 hover:text-red-400"
+          variant="text"
+          sx={{
+            mt: 'auto',
+            justifyContent: 'flex-start',
+            color: '#FCA5A5',
+            '&:hover': { color: '#F87171' }
+          }}
           onClick={handleLogout}
         >
-          <LogOut size={18} className="mr-2" /> Logout
+          <LogOut size={18} style={{ marginRight: 8 }} /> Logout
         </Button>
-      </aside>
+      </Box>
 
-      <main className="flex-1 p-6 md:p-10 overflow-y-auto">
-        <h1 className="text-3xl font-bold text-[#0A1A4A] mb-6">
+      <Box component="main" sx={{ flex: 1, p: { xs: 3, md: 5 }, overflow: 'auto' }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#0A1A4A', mb: 3 }}>
           Post a New Job
-        </h1>
+        </Typography>
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded shadow grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          <Input
-            name="title"
-            placeholder="Job Title"
-            onChange={handleChange}
-            required
-          />
-          <Input
-            name="location"
-            placeholder="Job Location"
-            onChange={handleChange}
-            required
-          />
-          <select
-            name="jobType"
-            onChange={handleChange}
-            className="border border-gray-300 rounded px-3 py-2"
-            required
-          >
-            <option value="">Select Job Type</option>
-            <option value="Full-time">Full-time</option>
-            <option value="Part-time">Part-time</option>
-            <option value="Remote">Remote</option>
-            <option value="Internship">Internship</option>
-            <option value="Contract">Contract</option>
-          </select>
-          <Input
-            name="salaryRange"
-            placeholder="Salary Range (e.g. ₹20,000 - ₹40,000)"
-            onChange={handleChange}
-            required
-          />
-          <Input
-            name="qualificationsRequired"
-            placeholder="Qualifications"
-            onChange={handleChange}
-            required
-          />
-          <select
-            name="experience"
-            onChange={handleChange}
-            className="border border-gray-300 rounded px-3 py-2"
-            required
-          >
-            <option value="">Select Experience Level</option>
-            <option value="Fresher">Fresher</option>
-            <option value="1-2 years">1-2 years</option>
-            <option value="3-5 years">3-5 years</option>
-            <option value="5+ years">5+ years</option>
-          </select>
-          <Input
-            type="date"
-            name="applicationDeadline"
-            onChange={handleChange}
-            required
-          />
-          <Input
-            name="companyName"
-            placeholder="Company Name"
-            onChange={handleChange}
-            required
-          />
-          <Input
-            name="companyLogo"
-            placeholder="Company Logo URL"
-            onChange={handleChange}
-            required
-          />
+        <Card>
+          <CardContent sx={{ p: 3 }}>
+            <Box component="form" onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    name="title"
+                    label="Job Title"
+                    placeholder="Job Title"
+                    fullWidth
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    name="location"
+                    label="Job Location"
+                    placeholder="Job Location"
+                    fullWidth
+                    value={formData.location}
+                    onChange={handleChange}
+                    required
+                  />
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth required>
+                    <InputLabel>Job Type</InputLabel>
+                    <Select
+                      name="jobType"
+                      value={formData.jobType}
+                      onChange={handleChange}
+                      label="Job Type"
+                    >
+                      <MenuItem value="">Select Job Type</MenuItem>
+                      <MenuItem value="Full-time">Full-time</MenuItem>
+                      <MenuItem value="Part-time">Part-time</MenuItem>
+                      <MenuItem value="Remote">Remote</MenuItem>
+                      <MenuItem value="Internship">Internship</MenuItem>
+                      <MenuItem value="Contract">Contract</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    name="salaryRange"
+                    label="Salary Range"
+                    placeholder="₹20,000 - ₹40,000"
+                    fullWidth
+                    value={formData.salaryRange}
+                    onChange={handleChange}
+                    required
+                  />
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    name="qualificationsRequired"
+                    label="Qualifications"
+                    placeholder="Required qualifications"
+                    fullWidth
+                    value={formData.qualificationsRequired}
+                    onChange={handleChange}
+                    required
+                  />
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth required>
+                    <InputLabel>Experience Level</InputLabel>
+                    <Select
+                      name="experience"
+                      value={formData.experience}
+                      onChange={handleChange}
+                      label="Experience Level"
+                    >
+                      <MenuItem value="">Select Experience Level</MenuItem>
+                      <MenuItem value="Fresher">Fresher</MenuItem>
+                      <MenuItem value="1-2 years">1-2 years</MenuItem>
+                      <MenuItem value="3-5 years">3-5 years</MenuItem>
+                      <MenuItem value="5+ years">5+ years</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    name="applicationDeadline"
+                    label="Application Deadline"
+                    type="date"
+                    fullWidth
+                    value={formData.applicationDeadline}
+                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                    required
+                  />
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    name="companyName"
+                    label="Company Name"
+                    placeholder="Company Name"
+                    fullWidth
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    required
+                  />
+                </Grid>
+                
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    name="companyLogo"
+                    label="Company Logo URL"
+                    placeholder="Company Logo URL"
+                    fullWidth
+                    value={formData.companyLogo}
+                    onChange={handleChange}
+                    required
+                  />
+                </Grid>
 
-          <div className="md:col-span-2">
-            <Textarea
-              name="description"
-              placeholder="Job Description"
-              onChange={handleChange}
-              className="resize-none"
-              required
-            />
-          </div>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    name="description"
+                    label="Job Description"
+                    placeholder="Detailed job description"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                  />
+                </Grid>
 
-          <div className="md:col-span-2">
-            <Button
-              type="submit"
-              className="w-full bg-[#7F5AF0] hover:bg-[#5A3DF0] text-white"
-            >
-              Post Job
-            </Button>
-          </div>
-        </form>
-      </main>
-    </div>
+                <Grid size={{ xs: 12 }}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      backgroundColor: '#7F5AF0',
+                      '&:hover': { backgroundColor: '#5A3DF0' },
+                      py: 1.5
+                    }}
+                  >
+                    Post Job
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    </Box>
   );
 };
 

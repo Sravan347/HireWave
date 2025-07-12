@@ -1,6 +1,4 @@
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge"
-
+// Simple utility function for conditional classes
 export function cn(...inputs) {
-  return twMerge(clsx(inputs));
+  return inputs.filter(Boolean).join(' ');
 }

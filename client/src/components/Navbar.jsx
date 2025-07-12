@@ -1,121 +1,300 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Briefcase, ChevronDown, Menu, UserRound } from "lucide-react";
-import logo from "../assets/logo.png";
-
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+  AppBar,
+  Toolbar,
+  Box,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  useTheme,
+  useMediaQuery,
+  Divider,
+} from "@mui/material";
+import { Briefcase, ChevronDown, Menu as MenuIcon, UserRound } from "lucide-react";
+import logo from "../assets/logo.png";
+import { Button } from "./mui/Button";
 
 export default function Navbar() {
-  return (
-    <nav className="bg-gradient-to-r from-[#a18cd1] via-[#6d9ee6] to-[#3a7bd5] shadow-md text-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="HireWave Logo" className="h-10 w-auto rounded-full border-2 border-white shadow-sm" />
-        </Link>
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-6">
-          <Link
+  const handleRecruiterMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleRecruiterMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMobileMenuToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const mobileDrawer = (
+    <Box
+      sx={{
+        width: 280,
+        background: 'linear-gradient(135deg, #a18cd1 0%, #6d9ee6 50%, #3a7bd5 100%)',
+        color: 'white',
+        height: '100%',
+        pt: 2,
+      }}
+    >
+      <List sx={{ px: 2 }}>
+        <ListItem sx={{ mb: 2 }}>
+          <Button
+            component={Link}
             to="/login"
-            className="text-sm font-semibold px-4 py-2 rounded-full bg-[#FFD700] text-white shadow hover:bg-[#e6be00] transition-colors duration-200 flex items-center gap-1"
+            variant="contained"
+            fullWidth
+            sx={{
+              background: '#FFD700',
+              color: 'white',
+              '&:hover': {
+                background: '#e6be00',
+              },
+            }}
+            startIcon={<UserRound size={18} />}
           >
-            <UserRound size={18} />
             Login
-          </Link>
-
-          <Link
+          </Button>
+        </ListItem>
+        
+        <ListItem sx={{ mb: 2 }}>
+          <Button
+            component={Link}
             to="/register"
-            className="text-sm font-semibold px-4 py-2 rounded-full bg-[#6d9ee6] hover:bg-[#a18cd1] text-white shadow transition-colors duration-200 flex items-center gap-1"
+            variant="contained"
+            fullWidth
+            sx={{
+              background: '#6d9ee6',
+              '&:hover': {
+                background: '#a18cd1',
+              },
+            }}
+            startIcon={<UserRound size={18} />}
           >
-            <UserRound size={18} />
             Register
-          </Link>
+          </Button>
+        </ListItem>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+        <Divider sx={{ my: 2, borderColor: 'rgba(255,255,255,0.2)' }} />
+        
+        <ListItem>
+          <ListItemText 
+            primary="For Recruiters" 
+            sx={{ 
+              '& .MuiTypography-root': { 
+                fontWeight: 600, 
+                fontSize: '0.875rem',
+                mb: 1 
+              } 
+            }} 
+          />
+        </ListItem>
+        
+        <ListItem 
+          component={Link} 
+          to="/recruiter/login"
+          sx={{ 
+            pl: 3, 
+            '&:hover': { 
+              color: '#ffe066' 
+            } 
+          }}
+        >
+          <ListItemText 
+            primary="Recruiter Login" 
+            sx={{ 
+              '& .MuiTypography-root': { 
+                fontSize: '0.875rem' 
+              } 
+            }} 
+          />
+        </ListItem>
+        
+        <ListItem 
+          component={Link} 
+          to="/recruiter/register"
+          sx={{ 
+            pl: 3, 
+            '&:hover': { 
+              color: '#ffe066' 
+            } 
+          }}
+        >
+          <ListItemText 
+            primary="Recruiter Register" 
+            sx={{ 
+              '& .MuiTypography-root': { 
+                fontSize: '0.875rem' 
+              } 
+            }} 
+          />
+        </ListItem>
+      </List>
+    </Box>
+  );
+
+  return (
+    <AppBar
+      position="static"
+      elevation={2}
+      sx={{
+        background: 'linear-gradient(135deg, #a18cd1 0%, #6d9ee6 50%, #3a7bd5 100%)',
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar sx={{ height: 64, px: { xs: 1, md: 2 } }}>
+          {/* Logo */}
+          <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', mr: 'auto' }}>
+            <Box
+              component="img"
+              src={logo}
+              alt="HireWave Logo"
+              sx={{
+                height: 40,
+                borderRadius: '50%',
+                border: '2px solid white',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              }}
+            />
+          </Box>
+
+          {/* Desktop Menu */}
+          {!isMobile && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
               <Button
-                variant="ghost"
-                className="text-white hover:text-[#ffe066] bg-opacity-0 hover:bg-opacity-10 px-4 h-8 text-sm font-semibold gap-1 rounded-full shadow"
+                component={Link}
+                to="/login"
+                variant="contained"
+                startIcon={<UserRound size={18} />}
+                sx={{
+                  background: '#FFD700',
+                  color: 'white',
+                  '&:hover': {
+                    background: '#e6be00',
+                  },
+                }}
               >
-                <Briefcase size={18} />
-                For Recruiters
-                <ChevronDown size={16} />
+                Login
               </Button>
-            </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="bg-white bg-opacity-90 text-[#3a7bd5] w-52 mt-2 rounded-xl border border-[#a18cd1] shadow-lg">
-              <DropdownMenuItem asChild>
-                <Link
+              <Button
+                component={Link}
+                to="/register"
+                variant="contained"
+                startIcon={<UserRound size={18} />}
+                sx={{
+                  background: '#6d9ee6',
+                  '&:hover': {
+                    background: '#a18cd1',
+                  },
+                }}
+              >
+                Register
+              </Button>
+
+              <Button
+                variant="text"
+                onClick={handleRecruiterMenuOpen}
+                endIcon={<ChevronDown size={16} />}
+                startIcon={<Briefcase size={18} />}
+                sx={{
+                  color: 'white',
+                  '&:hover': {
+                    color: '#ffe066',
+                    backgroundColor: 'rgba(255,255,255,0.1)',
+                  },
+                }}
+              >
+                For Recruiters
+              </Button>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleRecruiterMenuClose}
+                sx={{
+                  '& .MuiPaper-root': {
+                    borderRadius: 2,
+                    mt: 1,
+                    backgroundColor: 'rgba(255,255,255,0.95)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid #a18cd1',
+                    minWidth: 200,
+                  },
+                }}
+              >
+                <MenuItem
+                  component={Link}
                   to="/recruiter/login"
-                  className="hover:bg-[#a18cd1] hover:text-white w-full px-2 py-2 rounded-lg transition-colors"
+                  onClick={handleRecruiterMenuClose}
+                  sx={{
+                    color: '#3a7bd5',
+                    '&:hover': {
+                      backgroundColor: '#a18cd1',
+                      color: 'white',
+                    },
+                  }}
                 >
                   Recruiter Login
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link
+                </MenuItem>
+                <MenuItem
+                  component={Link}
                   to="/recruiter/register"
-                  className="hover:bg-[#a18cd1] hover:text-white w-full px-2 py-2 rounded-lg transition-colors"
+                  onClick={handleRecruiterMenuClose}
+                  sx={{
+                    color: '#3a7bd5',
+                    '&:hover': {
+                      backgroundColor: '#a18cd1',
+                      color: 'white',
+                    },
+                  }}
                 >
                   Recruiter Register
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
 
-        {/* Mobile Menu */}
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" className="text-white p-0 bg-opacity-0 hover:bg-opacity-10 rounded-full">
-                <Menu size={24} />
-              </Button>
-            </SheetTrigger>
+          {/* Mobile Menu Button */}
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleMobileMenuToggle}
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                },
+              }}
+            >
+              <MenuIcon size={24} />
+            </IconButton>
+          )}
+        </Toolbar>
+      </Container>
 
-            <SheetContent side="right" className="bg-gradient-to-b from-[#a18cd1] via-[#6d9ee6] to-[#3a7bd5] text-white w-64 pt-16 shadow-lg">
-              <div className="space-y-4">
-                <Link
-                  to="/login"
-                  className="block font-semibold px-4 py-2 rounded-full bg-[#FFD700] text-white shadow hover:bg-[#e6be00] transition-colors"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="block font-semibold px-4 py-2 rounded-full bg-[#6d9ee6] hover:bg-[#a18cd1] text-white shadow transition-colors"
-                >
-                  Register
-                </Link>
-
-                <div>
-                  <p className="text-sm font-semibold mb-1">For Recruiters</p>
-                  <Link
-                    to="/recruiter/login"
-                    className="block pl-2 hover:text-[#ffe066] text-sm py-1"
-                  >
-                    Recruiter Login
-                  </Link>
-                  <Link
-                    to="/recruiter/register"
-                    className="block pl-2 hover:text-[#ffe066] text-sm py-1"
-                  >
-                    Recruiter Register
-                  </Link>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </div>
-    </nav>
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleMobileMenuToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+      >
+        {mobileDrawer}
+      </Drawer>
+    </AppBar>
   );
 }

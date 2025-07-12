@@ -10,13 +10,14 @@ import {
   Typography,
   TextField,
   Button,
+  Alert,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
 import API from "../../services/api";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Login() {
+export default function LoginMUI() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -172,7 +173,7 @@ export default function Login() {
             </Box>
 
             {/* Extra Links */}
-            <Box sx={{ mt: 3, textAlign: 'center' }}>
+            <Box sx={{ mt: 3, textAlign: 'center', space: 2 }}>
               <Typography
                 variant="body2"
                 sx={{

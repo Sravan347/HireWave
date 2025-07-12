@@ -5,68 +5,182 @@ import { motion } from "framer-motion";
 import API from "../../services/api";
 import { toast } from "react-toastify";
 import {
+  Box,
+  Typography,
+  LinearProgress,
+  Chip,
+  Button,
+  TextField,
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemButton,
+  useTheme,
+  alpha,
+  Divider,
+  Container,
+  Grid,
+  Paper,
+  InputLabel,
+  styled,
+  Link
+} from "@mui/material";
+import {
   PlusCircle,
   Briefcase,
   LogOut,
   FileText,
   FileCheck2,
+  Home,
+  User,
+  Users2,
+  Calendar,
 } from "lucide-react";
 
-const Score = ({ val }) => {
-  const colour =
-    val >= 70 ? "bg-[#0A1A4A]" : val >= 40 ? "bg-[#FFD447]" : "bg-[#F4A261]";
+const StyledLinearProgress = styled(LinearProgress)(({ theme, value }) => ({
+  height: 8,
+  borderRadius: 4,
+  backgroundColor: '#E5E7EB',
+  '& .MuiLinearProgress-bar': {
+    borderRadius: 4,
+    backgroundColor: 
+      value >= 70 ? '#0A1A4A' : 
+      value >= 40 ? '#FFD447' : 
+      '#F4A261'
+  }
+}));
 
+const Score = ({ val }) => {
   return (
-    <div className="space-y-1">
-      <p className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
+    <Box sx={{ mb: 1 }}>
+      <Typography 
+        variant="caption" 
+        sx={{ 
+          fontSize: '11px',
+          fontWeight: 500,
+          color: '#6B7280',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+          display: 'block',
+          mb: 0.5
+        }}
+      >
         Resume Score
-      </p>
-      <div className="flex items-center gap-2">
-        <div className="w-full h-2 bg-gray-200 rounded">
-          <div style={{ width: `${val}%` }} className={`${colour} h-2 rounded`} />
-        </div>
-        <span className="text-xs font-semibold text-gray-600">{val}%</span>
-      </div>
-    </div>
+      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <StyledLinearProgress
+          variant="determinate"
+          value={val}
+          sx={{ 
+            flexGrow: 1,
+            height: 8,
+            borderRadius: 1,
+            bgcolor: '#E5E7EB'
+          }}
+        />
+        <Typography 
+          variant="caption" 
+          sx={{ 
+            fontSize: '12px', 
+            fontWeight: 600, 
+            color: '#4B5563' 
+          }}
+        >
+          {val}%
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
 const Pill = ({ icon, text, colour, href, as = "span" }) => {
-  const Comp = href ? "a" : "span";
-  return (
-    <Comp
-      {...(href && {
-        href,
-        target: "_blank",
-        rel: "noopener noreferrer",
-      })}
-      className={`flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${colour} hover:opacity-90 transition`}
-    >
-      {icon} {text}
-    </Comp>
+  const baseStyles = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 0.5,
+    px: 1.5,
+    py: 0.5,
+    borderRadius: 2,
+    fontSize: '12px',
+    fontWeight: 500,
+    textDecoration: 'none',
+    cursor: href ? 'pointer' : 'default',
+    transition: 'all 0.2s ease',
+    '&:hover': href ? {
+      transform: 'translateY(-1px)',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    } : {}
+  };
+
+  const colorMap = {
+    'bg-blue-50 text-blue-600': { 
+      backgroundColor: '#EFF6FF', 
+      color: '#2563EB' 
+    },
+    'bg-emerald-50 text-emerald-600': { 
+      backgroundColor: '#ECFDF5', 
+      color: '#059669' 
+    },
+    'bg-purple-50 text-purple-600': { 
+      backgroundColor: '#FAF5FF', 
+      color: '#9333EA' 
+    }
+  };
+
+  const content = (
+    <Box sx={{ 
+      ...baseStyles, 
+      ...colorMap[colour] || { backgroundColor: '#F3F4F6', color: '#374151' }
+    }}>
+      {icon}
+      <span>{text}</span>
+    </Box>
   );
+
+  return href ? (
+    <Link href={href} target="_blank" rel="noopener" sx={{ textDecoration: 'none' }}>
+      {content}
+    </Link>
+  ) : content;
 };
 
-const palette = {
-  emerald: ["bg-[#0A1A4A]", "hover:bg-[#1A3A8F]"],
-  blue: ["bg-[#7F5AF0]", "hover:bg-[#5A3DF0]"],
-  amber: ["bg-[#FFD447]", "hover:bg-[#F4A261]"],
-  rose: ["bg-[#F4A261]", "hover:bg-[#FFD447]"],
-  gray: ["bg-[#757575]", ""],
-};
+const Action = ({ onClick, colour, disabled, children }) => {
+  const colorMap = {
+    emerald: { backgroundColor: '#10B981', color: 'white' },
+    amber: { backgroundColor: '#F59E0B', color: 'white' },
+    blue: { backgroundColor: '#3B82F6', color: 'white' },
+    rose: { backgroundColor: '#EF4444', color: 'white' },
+    gray: { backgroundColor: '#6B7280', color: 'white' }
+  };
 
-const Action = ({ colour, disabled, children, ...rest }) => {
-  const [bg, hover] = palette[colour] || palette.gray;
   return (
-    <button
+    <Button
+      onClick={onClick}
       disabled={disabled}
-      className={`text-xs px-3 py-1 rounded text-white ${bg} ${
-        disabled ? "cursor-not-allowed opacity-60" : hover
-      } transition`}
-      {...rest}
+      sx={{
+        fontSize: '12px',
+        fontWeight: 600,
+        px: 2,
+        py: 0.5,
+        borderRadius: 1,
+        textTransform: 'none',
+        minWidth: 'auto',
+        ...colorMap[colour],
+        '&:hover': {
+          ...colorMap[colour],
+          opacity: 0.8
+        },
+        '&:disabled': {
+          backgroundColor: '#9CA3AF',
+          color: 'white'
+        }
+      }}
     >
       {children}
-    </button>
+    </Button>
   );
 };
 

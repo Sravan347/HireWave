@@ -11,8 +11,20 @@ import {
   Briefcase,
   UserCheck,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Box,
+  Container,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Grid,
+  Chip,
+} from '@mui/material';
 
 export default function PostedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -96,57 +108,82 @@ export default function PostedJobs() {
         ) : jobs.length === 0 ? (
           <p className="text-[#2D3748]">No jobs posted yet.</p>
         ) : (
-          <div className="grid gap-4">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {jobs.map((job) => (
-              <Card key={job._id} className="bg-white shadow border border-[#D6CEFA]">
+              <Card key={job._id} sx={{ backgroundColor: 'white', border: '1px solid #D6CEFA' }}>
                 <CardHeader>
-                  <CardTitle className="text-[#2563EB] text-xl font-semibold">
+                  <Typography variant="h6" sx={{ color: '#2563EB', fontWeight: 600 }}>
                     {job.title}
-                  </CardTitle>
+                  </Typography>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  <p className="text-[#2D3748]">{job.location} • {job.jobType}</p>
-                  <p className="text-sm text-[#757575]">
-                    Posted on {new Date(job.createdAt).toLocaleDateString()}
-                  </p>
-                  <p className="text-sm text-[#343434] line-clamp-2">{job.description}</p>
-                  <p className="text-sm text-green-700">
-                    Applicants: <b>{job.numApplicants}</b>
-                  </p>
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    <Button
-                      variant="outline"
-                      className="hover:bg-[#E6E9F5]"
-                      onClick={() => navigate(`/recruiter/jobs/${job._id}`)}
+                <CardContent>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Typography variant="body2" sx={{ color: '#2D3748' }}>
+                      {job.location} • {job.jobType}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#757575', fontSize: '0.875rem' }}>
+                      Posted on {new Date(job.createdAt).toLocaleDateString()}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: '#343434', 
+                        fontSize: '0.875rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}
                     >
-                      <Eye size={16} className="mr-2" /> View
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="hover:bg-[#FFF6D6]"
-                      onClick={() => navigate(`/recruiter/jobs/edit/${job._id}`)}
-                    >
-                      <Pencil size={16} className="mr-2" /> Edit
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="hover:bg-[#FBEAEA] text-red-600"
-                      onClick={() => handleDelete(job._id)}
-                    >
-                      <Trash2 size={16} className="mr-2" /> Delete
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      className="text-green-700 border border-green-300"
-                      onClick={() => navigate(`/recruiter/jobs/${job._id}/applicants`)}
-                    >
-                      <UserCheck size={16} className="mr-2" /> View Applicants
-                    </Button>
-                  </div>
+                      {job.description}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'green' }}>
+                      Applicants: <Box component="span" sx={{ fontWeight: 'bold' }}>{job.numApplicants}</Box>
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, pt: 1 }}>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        sx={{ '&:hover': { backgroundColor: '#E6E9F5' } }}
+                        onClick={() => navigate(`/recruiter/jobs/${job._id}`)}
+                      >
+                        <Eye size={16} style={{ marginRight: 8 }} /> View
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        sx={{ '&:hover': { backgroundColor: '#FFF6D6' } }}
+                        onClick={() => navigate(`/recruiter/jobs/edit/${job._id}`)}
+                      >
+                        <Pencil size={16} style={{ marginRight: 8 }} /> Edit
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="error"
+                        sx={{ '&:hover': { backgroundColor: '#FBEAEA' } }}
+                        onClick={() => handleDelete(job._id)}
+                      >
+                        <Trash2 size={16} style={{ marginRight: 8 }} /> Delete
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        sx={{ 
+                          color: 'green', 
+                          borderColor: 'green',
+                          '&:hover': { borderColor: 'green', backgroundColor: '#F0FDF4' }
+                        }}
+                        onClick={() => navigate(`/recruiter/jobs/${job._id}/applicants`)}
+                      >
+                        <UserCheck size={16} style={{ marginRight: 8 }} /> View Applicants
+                      </Button>
+                    </Box>
+                  </Box>
                 </CardContent>
               </Card>
             ))}
-          </div>
+          </Box>
         )}
       </main>
     </div>

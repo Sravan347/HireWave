@@ -158,7 +158,7 @@ export default function CandidateRegister() {
           <CardContent>
             <Box component="form" onSubmit={handleSubmit}>
               <Grid container spacing={3}>
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="name"
                     label="Full Name"
@@ -176,7 +176,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="email"
                     type="email"
@@ -195,7 +195,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="password"
                     type="password"
@@ -214,7 +214,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="confirmPassword"
                     type="password"
@@ -233,7 +233,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="mobile"
                     label="Mobile Number"
@@ -251,7 +251,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="age"
                     type="number"
@@ -270,7 +270,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="place"
                     label="Location"
@@ -288,7 +288,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     name="qualification"
                     label="Qualification"
@@ -306,7 +306,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <TextField
                     name="experience"
                     label="Experience"
@@ -326,7 +326,7 @@ export default function CandidateRegister() {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Button
                     type="submit"
                     fullWidth

@@ -343,7 +343,7 @@ export default function AdminDashboard() {
         ) : (
           <Grid container spacing={3}>
             {recruiters[tab].map((rec) => (
-              <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={rec._id}>
+              <Grid item xs={12} sm={6} lg={4} key={rec._id}>
                 <RecruiterCard
                   recruiter={rec}
                   showActions={tab === "pending"}
