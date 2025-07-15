@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import API from "../../../services/api";
-
 import { toast } from "react-toastify";
 import {
   Dialog,
@@ -10,8 +9,12 @@ import {
   Button,
   Typography,
   Box,
-  Input,
+  IconButton,
+  FormLabel,
+  Divider,
+  Paper
 } from '@mui/material';
+import { X } from 'lucide-react';
 
 export default function JobDetailsModal({ job, isApplied, onClose }) {
   const [resume, setResume] = useState(null);
@@ -41,76 +44,165 @@ export default function JobDetailsModal({ job, isApplied, onClose }) {
   };
 
   return (
-    <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-screen bg-white text-[#2D3748]">
-        <DialogHeader className="flex justify-between items-center">
-          <DialogTitle className="text-[#0A1A4A] text-2xl">
-            {job.companyName} - {job.title}
-          </DialogTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="text-[#7F5AF0] hover:text-[#5A3DF0]"
-          >
+    <Dialog 
+      open 
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      sx={{
+        '& .MuiDialog-paper': {
+          maxHeight: '90vh',
+          backgroundColor: 'white',
+          color: '#2D3748'
+        }
+      }}
+    >
+      <DialogTitle 
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          color: '#0A1A4A',
+          fontSize: '1.5rem',
+          fontWeight: 600
+        }}
+      >
+        {job.companyName} - {job.title}
+        <IconButton
+          onClick={onClose}
+          sx={{ 
+            color: '#7F5AF0',
+            '&:hover': { color: '#5A3DF0' }
+          }}
+        >
+          <X size={20} />
+        </IconButton>
+      </DialogTitle>
+
+      <DialogContent sx={{ p: 3 }}>
+        <Box sx={{ maxHeight: '60vh', overflowY: 'auto', pr: 1 }}>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              {job.description}
+            </Typography>
             
-          </Button>
-        </DialogHeader>
+            <Box sx={{ display: 'grid', gap: 1.5, mb: 3 }}>
+              <Typography><strong>Salary Range:</strong> {job.salaryRange}</Typography>
+              <Typography><strong>Location:</strong> {job.location}</Typography>
+              <Typography><strong>Qualification:</strong> {job.qualificationsRequired}</Typography>
+              <Typography><strong>Experience:</strong> {job.experience}</Typography>
+              <Typography><strong>Job Type:</strong> {job.jobType}</Typography>
+            </Box>
 
-        <ScrollArea className="h-[70vh] pr-4 space-y-4">
-          <p>{job.description}</p>
-          <p><b>Salary Range:</b> {job.salaryRange}</p>
-          <p><b>Location:</b> {job.location}</p>
-          <p><b>Qualification:</b> {job.qualificationsRequired}</p>
-          <p><b>Experience:</b> {job.experience}</p>
-          <p><b>Job Type:</b> {job.jobType}</p>
+            <Divider sx={{ my: 3 }} />
 
-          <div className="space-y-4 pt-4">
-            <div>
-              <Label htmlFor="qualification">Highest Qualification</Label>
-              <Input
-                id="qualification"
-                placeholder="e.g., BTech, MCA"
-                value={qualification}
-                onChange={(e) => setQualification(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="backlog">Backlogs</Label>
-              <Input
-                id="backlog"
-                type="number"
-                placeholder="Number of backlogs"
-                value={backlog}
-                onChange={(e) => setBacklog(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="resume">Upload Resume</Label>
-              <Input
-                id="resume"
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={(e) => setResume(e.target.files[0])}
-                required
-              />
-            </div>
-          </div>
+            <Box sx={{ display: 'grid', gap: 3 }}>
+              <Box>
+                <FormLabel 
+                  htmlFor="qualification"
+                  sx={{ 
+                    display: 'block', 
+                    mb: 1, 
+                    fontWeight: 500,
+                    color: '#374151'
+                  }}
+                >
+                  Highest Qualification
+                </FormLabel>
+                <TextField
+                  id="qualification"
+                  placeholder="e.g., BTech, MCA"
+                  value={qualification}
+                  onChange={(e) => setQualification(e.target.value)}
+                  required
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                />
+              </Box>
+              
+              <Box>
+                <FormLabel 
+                  htmlFor="backlog"
+                  sx={{ 
+                    display: 'block', 
+                    mb: 1, 
+                    fontWeight: 500,
+                    color: '#374151'
+                  }}
+                >
+                  Backlogs
+                </FormLabel>
+                <TextField
+                  id="backlog"
+                  type="number"
+                  placeholder="Number of backlogs"
+                  value={backlog}
+                  onChange={(e) => setBacklog(e.target.value)}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                />
+              </Box>
+              
+              <Box>
+                <FormLabel 
+                  htmlFor="resume"
+                  sx={{ 
+                    display: 'block', 
+                    mb: 1, 
+                    fontWeight: 500,
+                    color: '#374151'
+                  }}
+                >
+                  Upload Resume
+                </FormLabel>
+                <TextField
+                  id="resume"
+                  type="file"
+                  inputProps={{ accept: ".pdf,.doc,.docx" }}
+                  onChange={(e) => setResume(e.target.files[0])}
+                  required
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                />
+              </Box>
+            </Box>
 
-          {!isApplied ? (
-            <Button
-              onClick={handleApply}
-              className="w-full bg-[#1A3A8F] hover:bg-[#0A1A4A] text-white mt-6"
-            >
-              Apply Now
-            </Button>
-          ) : (
-            <p className="text-green-600 text-center font-medium mt-6">
-              ✅ You have already applied to this job
-            </p>
-          )}
-        </ScrollArea>
+            {!isApplied ? (
+              <Button
+                onClick={handleApply}
+                fullWidth
+                variant="contained"
+                sx={{
+                  mt: 3,
+                  backgroundColor: '#1A3A8F',
+                  '&:hover': { backgroundColor: '#0A1A4A' },
+                  color: 'white',
+                  py: 1.5,
+                  fontWeight: 600
+                }}
+              >
+                Apply Now
+              </Button>
+            ) : (
+              <Typography 
+                sx={{ 
+                  color: '#059669', 
+                  textAlign: 'center', 
+                  fontWeight: 500,
+                  mt: 3,
+                  py: 2,
+                  backgroundColor: '#F0FDF4',
+                  borderRadius: 1
+                }}
+              >
+                ✅ You have already applied to this job
+              </Typography>
+            )}
+          </Box>
+        </Box>
       </DialogContent>
     </Dialog>
   );

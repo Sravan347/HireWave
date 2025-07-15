@@ -1,11 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader } from "./mui/Card";
+import { Card, CardContent } from "./mui/Card";
 import { Button } from "./mui/Button";
 import { Typography, Chip, Box } from "@mui/material";
 
 
 const JobCard = ({ job }) => {
+  // Debug: Let's see what data we're getting
+  console.log('Landing JobCard received job data:', job);
+  console.log('Landing Job title:', job?.title);
+  console.log('Landing Company name:', job?.companyName);
+  
   return (
     <Card
       sx={{
@@ -20,7 +25,7 @@ const JobCard = ({ job }) => {
         },
       }}
     >
-      <CardHeader sx={{ pb: 1 }}>
+      <Box sx={{ pb: 1, px: 2, pt: 2 }}>
         <Typography
           variant="h6"
           sx={{
@@ -28,9 +33,11 @@ const JobCard = ({ job }) => {
             fontWeight: 600,
             fontSize: '1.25rem',
             mb: 0.5,
+            display: 'block',
+            lineHeight: 1.4,
           }}
         >
-          {job.title}
+          {job.title || 'Title Not Available'}
         </Typography>
         <Typography
           variant="body2"
@@ -39,9 +46,9 @@ const JobCard = ({ job }) => {
             fontSize: '0.875rem',
           }}
         >
-          {job.company}
+          {job.companyName || job.company || 'Company Not Available'}
         </Typography>
-      </CardHeader>
+      </Box>
 
       <CardContent sx={{ pt: 1 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
